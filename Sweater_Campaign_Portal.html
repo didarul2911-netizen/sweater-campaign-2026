@@ -975,7 +975,7 @@
 
             document.getElementById('banner-zone').textContent = r.zone;
             document.getElementById('banner-region').textContent = `SAP: ${r.sap_region_code}`;
-            document.getElementById('banner-rh').textContent = `${r.region_name} Region (${r.regional_head})`;
+            document.getElementById('banner-rh').textContent = `Region: ${r.region_name} (${r.regional_head})`;
 
             renderTerritoryTabs();
             if (!isRestoringSession) {
