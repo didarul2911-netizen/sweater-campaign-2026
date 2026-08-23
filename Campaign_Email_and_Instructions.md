@@ -45,7 +45,7 @@ Every single Territory is allocated exactly **8 Sweaters** under two distinct sc
 ### 3. How to Submit Information via Web Portal / Google Sheet
 
 #### Step-by-Step Regional Head Login:
-1. Open [`Sweater_Campaign_Portal.html`](file:///G:/Exium/2026/4Q'26/Sweater/Sweater_Campaign_Portal.html) in your web browser.
+1. Open the Web Portal: **https://tinyurl.com/exium-sweater-2026** (or `Sweater_Campaign_Portal.html` in browser).
 2. **Step 1:** Select your **Zone** (from 35 Zones).
 3. **Step 2:** Select your **Region** (from 252 Regions). Your name as Regional Head will appear automatically.
 4. **Step 3:** Enter your **Password (Your 5-digit SAP Region Code)** to unlock your territories.
