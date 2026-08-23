@@ -57,6 +57,8 @@ zone_options = '<option value="">-- Choose Your Zone (35 Zones) --</option>\n'
 for z in zones:
     zone_options += f'                        <option value="{z}">{z}</option>\n'
 
+DEFAULT_CLOUD_URL = "https://script.google.com/macros/s/AKfycbzEnDTtNiXEAyB5qHqrxLj1RbNytgOJAB_lKjw_VVVd1C8CiaeYU6iTROiJabkyX_-b/exec"
+
 html_template = """<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -1033,7 +1035,7 @@ html_template = """<!DOCTYPE html>
                             </div>
                             <div id="cloud-test-result" class="hidden text-xs font-bold p-2 rounded-xl"></div>
                             <p class="text-[11px] text-slate-400 leading-relaxed">
-                                💡 <strong>How it works:</strong> Paste your Google Apps Script Web App URL here. Once connected, every territory submission automatically populates in your Google Sheet in Google Drive. You can also click <strong>"Push All Stored Data to Google Sheet"</strong> below to sync everything immediately!
+                                💡 <strong>Connected Google Sheet:</strong> All submissions from across Bangladesh are automatically streaming live into your Google Sheet! You can also click <strong>"Push All Stored Data to Google Sheet"</strong> below to sync everything immediately!
                             </p>
                         </div>
 
@@ -1230,6 +1232,7 @@ html_template = """<!DOCTYPE html>
         const REGION_MAP = ###REGION_MAP###;
         const ALL_TERRITORIES = ###ALL_TERRITORIES###;
         const ZONES = ###ZONES###;
+        const DEFAULT_CLOUD_URL = "###DEFAULT_CLOUD_URL###";
 
         const SWEATER_DETAILS = {
             "01": { code: "01", name: "Men's Sleeveless V-Neck Sweater", color: "Solid Ash / Grey Textured", gender: "Men's", sizes: "S, M, L, XL, XXL", img: "###B64_01###", fallback_img: "Image/01 (Men).jpeg" },
@@ -1242,7 +1245,7 @@ html_template = """<!DOCTYPE html>
         let store = JSON.parse(localStorage.getItem('EXIUM_SWEATER_STORE') || '{}');
         let regionLocks = JSON.parse(localStorage.getItem('EXIUM_REGION_LOCKS') || '{}');
         let isGlobalAccessOpen = JSON.parse(localStorage.getItem('EXIUM_GLOBAL_ACCESS') || 'true');
-        let cloudApiUrl = localStorage.getItem('EXIUM_CLOUD_URL') || '';
+        let cloudApiUrl = localStorage.getItem('EXIUM_CLOUD_URL') || DEFAULT_CLOUD_URL;
 
         let currentRegionCode = null;
         let activeTerritoryIndex = 0;
@@ -1627,7 +1630,7 @@ html_template = """<!DOCTYPE html>
             const name = t ? t.territory_name : 'Territory';
             const terrCode = t ? String(t.sap_territory_code) : '';
 
-            // Silent background Cloud Sync
+            // Silent background Cloud Sync to Google Sheets
             if (terrCode && t) {
                 syncTerritoryToCloud(terrCode, store[terrCode]);
             }
@@ -1791,14 +1794,14 @@ html_template = """<!DOCTYPE html>
 
         function saveCloudUrlSetting() {
             const url = document.getElementById('custom-cloud-url-input').value.trim();
-            cloudApiUrl = url;
-            localStorage.setItem('EXIUM_CLOUD_URL', url);
+            cloudApiUrl = url || DEFAULT_CLOUD_URL;
+            localStorage.setItem('EXIUM_CLOUD_URL', cloudApiUrl);
             showCloudTestResult("✅ Cloud URL saved to local session. Testing connection...", "text-emerald-300 bg-emerald-950/60");
             testGoogleDriveConnection();
         }
 
         async function testGoogleDriveConnection() {
-            const url = cloudApiUrl || document.getElementById('custom-cloud-url-input')?.value.trim();
+            const url = cloudApiUrl || DEFAULT_CLOUD_URL;
             if (!url) {
                 showCloudTestResult("⚠️ Please paste your Google Apps Script Web App URL first.", "text-amber-300 bg-amber-950/60");
                 return;
@@ -1810,7 +1813,7 @@ html_template = """<!DOCTYPE html>
                 const res = await fetch(url + (url.includes('?') ? '&' : '?') + 'action=ping');
                 const json = await res.json();
                 if (json && json.status === 'success') {
-                    showCloudTestResult(`✅ Connected successfully to Google Sheet! (${json.message})`, "text-emerald-300 bg-emerald-950/60");
+                    showCloudTestResult(`✅ Connected successfully to Google Sheet! (${json.message || 'OK'})`, "text-emerald-300 bg-emerald-950/60");
                 } else {
                     showCloudTestResult("⚠️ Received response, but status was not success. Check script permissions.", "text-amber-300 bg-amber-950/60");
                 }
@@ -1828,7 +1831,8 @@ html_template = """<!DOCTYPE html>
         }
 
         async function syncTerritoryToCloud(terrCode, terrData) {
-            if (!cloudApiUrl || !terrData) return;
+            const url = cloudApiUrl || DEFAULT_CLOUD_URL;
+            if (!url || !terrData) return;
 
             try {
                 const payload = {
@@ -1837,8 +1841,7 @@ html_template = """<!DOCTYPE html>
                     data: terrData
                 };
 
-                // Use text/plain with no-cors or redirect follow for Google Apps Script
-                await fetch(cloudApiUrl, {
+                await fetch(url, {
                     method: 'POST',
                     mode: 'no-cors',
                     headers: { 'Content-Type': 'text/plain;charset=utf-8' },
@@ -1851,7 +1854,8 @@ html_template = """<!DOCTYPE html>
         }
 
         async function pushAllStoredDataToGoogleSheet() {
-            if (!cloudApiUrl) {
+            const url = cloudApiUrl || DEFAULT_CLOUD_URL;
+            if (!url) {
                 alert("Please enter and save your Google Apps Script URL first!");
                 return;
             }
@@ -1872,7 +1876,7 @@ html_template = """<!DOCTYPE html>
                     batch: store
                 };
 
-                await fetch(cloudApiUrl, {
+                await fetch(url, {
                     method: 'POST',
                     mode: 'no-cors',
                     headers: { 'Content-Type': 'text/plain;charset=utf-8' },
@@ -1887,7 +1891,8 @@ html_template = """<!DOCTYPE html>
         }
 
         async function pullCloudData(showFeedback = false) {
-            if (!cloudApiUrl) {
+            const url = cloudApiUrl || DEFAULT_CLOUD_URL;
+            if (!url) {
                 if (showFeedback) {
                     alert('ℹ️ Please set up your Google Apps Script Web App URL in "Google Drive / Cloud API" settings to pull remote submissions.');
                     toggleCloudSettings();
@@ -1897,7 +1902,7 @@ html_template = """<!DOCTYPE html>
 
             try {
                 if (showFeedback) showToast("🔄 Fetching latest data from Google Cloud...");
-                const res = await fetch(cloudApiUrl + (cloudApiUrl.includes('?') ? '&' : '?') + 'action=get_all');
+                const res = await fetch(url + (url.includes('?') ? '&' : '?') + 'action=get_all');
                 const json = await res.json();
 
                 if (json && json.status === 'success' && json.store) {
@@ -1905,6 +1910,8 @@ html_template = """<!DOCTYPE html>
                     localStorage.setItem('EXIUM_SWEATER_STORE', JSON.stringify(store));
                     if (isAdminLoggedIn) showAdminDashboard();
                     if (showFeedback) showToast(`✅ Synced ${json.total_territories || Object.keys(json.store).length} territories from Cloud!`);
+                } else if (showFeedback) {
+                    showToast("✅ Cloud database check complete.");
                 }
             } catch (err) {
                 console.warn("[Cloud Pull Error]:", err);
@@ -2218,10 +2225,10 @@ html_template = """<!DOCTYPE html>
             localStorage.removeItem('EXIUM_SWEATER_STORE');
             localStorage.removeItem('EXIUM_ACTIVE_SESSION');
 
-            // Send reset to cloud if connected
-            if (cloudApiUrl) {
+            const url = cloudApiUrl || DEFAULT_CLOUD_URL;
+            if (url) {
                 try {
-                    fetch(cloudApiUrl, {
+                    fetch(url, {
                         method: 'POST',
                         mode: 'no-cors',
                         headers: { 'Content-Type': 'text/plain;charset=utf-8' },
@@ -2412,6 +2419,7 @@ final_html = final_html.replace("###B64_03###", b64_03)
 final_html = final_html.replace("###B64_04###", b64_04)
 final_html = final_html.replace("###B64_05###", b64_05)
 final_html = final_html.replace("###ZONE_OPTIONS###", zone_options)
+final_html = final_html.replace("###DEFAULT_CLOUD_URL###", DEFAULT_CLOUD_URL)
 final_html = final_html.replace("###REGION_MAP###", json.dumps(region_map))
 final_html = final_html.replace("###ALL_TERRITORIES###", json.dumps(territories))
 final_html = final_html.replace("###ZONES###", json.dumps(zones))
@@ -2425,4 +2433,4 @@ with open(portal_path, "w", encoding="utf-8") as f:
 with open(index_path, "w", encoding="utf-8") as f:
     f.write(final_html)
 
-print(f"Successfully generated clean {portal_path} and {index_path} ({len(final_html)} bytes)!")
+print(f"Successfully generated {portal_path} and {index_path} with embedded Google Cloud URL!")
