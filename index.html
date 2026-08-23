@@ -76,10 +76,6 @@
 
                     <!-- Desktop Buttons -->
                     <div class="hidden sm:flex items-center gap-2">
-                        <div id="cloud-status-indicator" class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-slate-100 text-slate-600 border border-slate-200 flex items-center gap-1.5" title="Cloud Database Connection Status">
-                            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                            <span id="cloud-status-text">Cloud Sync Ready</span>
-                        </div>
                         <button onclick="openCatalogModal()" class="px-3.5 py-1.5 bg-orange-50 hover:bg-orange-100 text-orange-800 border border-orange-200 rounded-xl text-xs font-bold flex items-center gap-1.5 transition shadow-sm active:scale-95 whitespace-nowrap">
                             <i class="fa-solid fa-vest text-orange-600"></i>
                             <span>Catalogue & Sizes</span>
@@ -87,7 +83,7 @@
                         <div id="header-admin-btn-container">
                             <button onclick="openAdminModal()" class="px-3.5 py-1.5 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 transition shadow-sm active:scale-95 whitespace-nowrap">
                                 <i class="fa-solid fa-shield-halved text-orange-400"></i>
-                                <span>Admin Dashboard</span>
+                                <span>Admin</span>
                             </button>
                         </div>
                     </div>
@@ -228,7 +224,7 @@
                     <div id="unlock-btn-container" class="hidden">
                         <button onclick="unlockRegion()" class="w-full py-3 bg-orange-500 hover:bg-orange-600 text-white font-black text-sm rounded-xl shadow-lg shadow-orange-500/25 transition flex items-center justify-center gap-2 active:scale-98">
                             <i class="fa-solid fa-right-to-bracket"></i>
-                            <span>Login to Territory Portal</span>
+                            <span>Login</span>
                         </button>
                     </div>
 
@@ -308,9 +304,9 @@
                             </div>
                         </div>
                         <div class="flex items-center gap-2 flex-shrink-0">
-                            <button onclick="saveCurrentTerritoryClick()" class="px-3 sm:px-4 py-2 bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-black rounded-xl flex items-center gap-1.5 shadow-lg shadow-emerald-500/20 transition active:scale-95">
-                                <i class="fa-solid fa-cloud-arrow-up text-xs"></i>
-                                <span>Save & Sync</span>
+                            <button onclick="saveCurrentTerritoryClick()" class="px-3.5 sm:px-4 py-2 bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-black rounded-xl flex items-center gap-1.5 shadow-lg shadow-emerald-500/20 transition active:scale-95">
+                                <i class="fa-solid fa-floppy-disk text-xs"></i>
+                                <span>Save</span>
                             </button>
                         </div>
                     </div>
@@ -762,9 +758,9 @@
 
                     <!-- Bottom Nav -->
                     <div class="flex items-center justify-between bg-white border border-slate-200 rounded-2xl p-3 sm:p-4 shadow-sm gap-2">
-                        <button onclick="saveCurrentTerritoryClick()" class="px-3.5 sm:px-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-black flex items-center gap-1.5 shadow-sm transition active:scale-95">
-                            <i class="fa-solid fa-cloud-arrow-up"></i>
-                            <span>Save & Cloud Sync</span>
+                        <button onclick="saveCurrentTerritoryClick()" class="px-4 sm:px-6 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-black flex items-center gap-1.5 shadow-sm transition active:scale-95">
+                            <i class="fa-solid fa-floppy-disk"></i>
+                            <span>Save Territory</span>
                         </button>
                         <div class="flex items-center gap-2">
                             <button onclick="navigateTerritory(-1)" class="px-3 sm:px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold flex items-center gap-1 border border-slate-200 transition active:scale-95">
@@ -958,7 +954,7 @@
                         <div class="flex flex-wrap items-center gap-2">
                             <button onclick="pullCloudData(true)" class="px-3.5 py-2 bg-blue-600 hover:bg-blue-500 text-white text-xs font-black rounded-xl flex items-center gap-1.5 shadow-sm transition active:scale-95">
                                 <i class="fa-solid fa-rotate"></i>
-                                <span>Sync / Pull Cloud Data</span>
+                                <span>Pull Cloud Data</span>
                             </button>
                             <button onclick="exportMasterExcelFromAdmin()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-black rounded-xl flex items-center gap-1.5 shadow-md shadow-emerald-600/20 transition active:scale-95">
                                 <i class="fa-solid fa-file-excel text-sm"></i>
@@ -971,13 +967,17 @@
                         </div>
 
                         <div class="flex items-center gap-2 self-start md:self-auto">
+                            <button onclick="deleteAllCampaignData()" class="px-3.5 py-2 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 text-xs font-black rounded-xl flex items-center gap-1.5 transition shadow-sm active:scale-95" title="Reset and Delete All Submissions">
+                                <i class="fa-solid fa-triangle-exclamation"></i>
+                                <span>Delete All Data</span>
+                            </button>
                             <div class="flex items-center gap-1.5 bg-slate-50 border border-slate-200 px-3 py-1.5 rounded-xl text-xs">
                                 <span class="text-slate-500 font-medium">Access:</span>
                                 <button id="toggle-global-access-btn" onclick="toggleGlobalSubmissionsAccess()" class="font-bold text-emerald-600 hover:underline">
                                     Open
                                 </button>
                             </div>
-                            <button onclick="logoutAdmin()" class="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl transition">
+                            <button onclick="logoutAdmin()" class="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl transition" title="Logout">
                                 <i class="fa-solid fa-lock"></i>
                             </button>
                         </div>
@@ -999,25 +999,34 @@
                             <label class="block text-xs font-bold text-slate-300">
                                 Google Apps Script Web App URL (Google Sheets API):
                             </label>
-                            <div class="flex gap-2">
+                            <div class="flex flex-col sm:flex-row gap-2">
                                 <input type="text" id="custom-cloud-url-input" placeholder="https://script.google.com/macros/s/.../exec" class="flex-1 bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white font-mono focus:outline-none focus:border-orange-500">
-                                <button onclick="saveCloudUrlSetting()" class="px-4 py-2 bg-orange-500 hover:bg-orange-400 text-slate-950 text-xs font-black rounded-xl transition">
+                                <button onclick="saveCloudUrlSetting()" class="px-4 py-2 bg-orange-500 hover:bg-orange-400 text-slate-950 text-xs font-black rounded-xl transition whitespace-nowrap">
                                     Save URL
                                 </button>
+                                <button onclick="testGoogleDriveConnection()" class="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white text-xs font-black rounded-xl transition whitespace-nowrap">
+                                    Test Connection
+                                </button>
                             </div>
+                            <div id="cloud-test-result" class="hidden text-xs font-bold p-2 rounded-xl"></div>
                             <p class="text-[11px] text-slate-400 leading-relaxed">
-                                💡 <strong>How it works:</strong> Paste your Google Apps Script Web App URL here. Every submission from any field phone will stream directly into your Google Sheet in Google Drive in real-time! The script template is available in <code class="text-orange-300 bg-slate-950 px-1 py-0.5 rounded">Google_Apps_Script_Backend.js</code>.
+                                💡 <strong>How it works:</strong> Paste your Google Apps Script Web App URL here. Once connected, every territory submission automatically populates in your Google Sheet in Google Drive. You can also click <strong>"Push All Stored Data to Google Sheet"</strong> below to sync everything immediately!
                             </p>
                         </div>
 
-                        <div class="pt-2 border-t border-slate-800 flex flex-wrap items-center gap-2">
-                            <button onclick="downloadAllDataJson()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 border border-slate-600 rounded-xl text-xs font-bold text-slate-200">
-                                <i class="fa-solid fa-download"></i> Backup JSON
-                            </button>
-                            <label class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 border border-slate-600 rounded-xl text-xs font-bold text-slate-200 cursor-pointer">
-                                <i class="fa-solid fa-upload"></i> Restore JSON
-                                <input type="file" id="import-json-file" accept=".json" onchange="importDataJson(event)" class="hidden">
-                            </label>
+                        <div class="pt-3 border-t border-slate-800 flex flex-wrap items-center justify-between gap-3">
+                            <div class="flex flex-wrap items-center gap-2">
+                                <button onclick="pushAllStoredDataToGoogleSheet()" class="px-3.5 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-black shadow transition">
+                                    <i class="fa-solid fa-cloud-arrow-up"></i> Push All Stored Data to Google Sheet
+                                </button>
+                                <button onclick="downloadAllDataJson()" class="px-3 py-2 bg-slate-800 hover:bg-slate-700 border border-slate-600 rounded-xl text-xs font-bold text-slate-200">
+                                    <i class="fa-solid fa-download"></i> Backup JSON
+                                </button>
+                                <label class="px-3 py-2 bg-slate-800 hover:bg-slate-700 border border-slate-600 rounded-xl text-xs font-bold text-slate-200 cursor-pointer">
+                                    <i class="fa-solid fa-upload"></i> Restore JSON
+                                    <input type="file" id="import-json-file" accept=".json" onchange="importDataJson(event)" class="hidden">
+                                </label>
+                            </div>
                         </div>
                     </div>
 
@@ -1220,10 +1229,6 @@
         window.addEventListener('DOMContentLoaded', () => {
             populateZoneDropdown();
             checkGlobalLockBanner();
-            updateCloudStatusBadge();
-
-            // Pull latest cloud data silently in the background on load
-            pullCloudData(false);
 
             const savedSession = JSON.parse(localStorage.getItem('EXIUM_ACTIVE_SESSION') || 'null');
             if (savedSession && savedSession.region_code && REGION_MAP[savedSession.region_code]) {
@@ -1599,18 +1604,12 @@
             const name = t ? t.territory_name : 'Territory';
             const terrCode = t ? String(t.sap_territory_code) : '';
 
-            // Trigger background Cloud Sync
+            // Silent background Cloud Sync
             if (terrCode && t) {
-                syncTerritoryToCloud(terrCode, store[terrCode], {
-                    zone: r.zone,
-                    region_name: r.region_name,
-                    sap_region_code: r.sap_region_code,
-                    regional_head: r.regional_head,
-                    territory_name: t.territory_name
-                });
+                syncTerritoryToCloud(terrCode, store[terrCode]);
             }
 
-            showToast(`✅ ${name} saved & synced!`);
+            showToast(`✅ ${name} saved successfully!`);
         }
 
         function showToast(msg) {
@@ -1758,54 +1757,109 @@
         // =========================================================================
         // CLOUD & GOOGLE DRIVE INTEGRATION
         // =========================================================================
-        function updateCloudStatusBadge() {
-            const badgeText = document.getElementById('cloud-status-text');
-            if (badgeText) {
-                if (cloudApiUrl) {
-                    badgeText.textContent = "Google Drive Connected";
-                } else {
-                    badgeText.textContent = "Cloud Sync Ready";
-                }
-            }
-            const input = document.getElementById('custom-cloud-url-input');
-            if (input) input.value = cloudApiUrl;
-        }
-
         function toggleCloudSettings() {
             const box = document.getElementById('admin-cloud-settings-box');
-            if (box) box.classList.toggle('hidden');
+            if (box) {
+                box.classList.toggle('hidden');
+                const input = document.getElementById('custom-cloud-url-input');
+                if (input) input.value = cloudApiUrl;
+            }
         }
 
         function saveCloudUrlSetting() {
             const url = document.getElementById('custom-cloud-url-input').value.trim();
             cloudApiUrl = url;
             localStorage.setItem('EXIUM_CLOUD_URL', url);
-            updateCloudStatusBadge();
-            alert('✅ Cloud API URL saved! Pulling latest data...');
-            pullCloudData(true);
+            showCloudTestResult("✅ Cloud URL saved to local session. Testing connection...", "text-emerald-300 bg-emerald-950/60");
+            testGoogleDriveConnection();
         }
 
-        async function syncTerritoryToCloud(terrCode, terrData, meta) {
-            if (!cloudApiUrl) return;
+        async function testGoogleDriveConnection() {
+            const url = cloudApiUrl || document.getElementById('custom-cloud-url-input')?.value.trim();
+            if (!url) {
+                showCloudTestResult("⚠️ Please paste your Google Apps Script Web App URL first.", "text-amber-300 bg-amber-950/60");
+                return;
+            }
+
+            showCloudTestResult("⏳ Testing connection to Google Sheet...", "text-blue-300 bg-blue-950/60");
+
+            try {
+                const res = await fetch(url + (url.includes('?') ? '&' : '?') + 'action=ping');
+                const json = await res.json();
+                if (json && json.status === 'success') {
+                    showCloudTestResult(`✅ Connected successfully to Google Sheet! (${json.message})`, "text-emerald-300 bg-emerald-950/60");
+                } else {
+                    showCloudTestResult("⚠️ Received response, but status was not success. Check script permissions.", "text-amber-300 bg-amber-950/60");
+                }
+            } catch (err) {
+                showCloudTestResult(`❌ Connection test failed: ${err.message}. Make sure the Web App deployment is set to 'Anyone'.`, "text-rose-300 bg-rose-950/60");
+            }
+        }
+
+        function showCloudTestResult(msg, className) {
+            const el = document.getElementById('cloud-test-result');
+            if (!el) return;
+            el.innerHTML = msg;
+            el.className = `text-xs font-bold p-2.5 rounded-xl border border-slate-700 ${className}`;
+            el.classList.remove('hidden');
+        }
+
+        async function syncTerritoryToCloud(terrCode, terrData) {
+            if (!cloudApiUrl || !terrData) return;
 
             try {
                 const payload = {
                     action: "save_territory",
                     sap_territory_code: terrCode,
-                    data: terrData,
-                    meta: meta
+                    data: terrData
                 };
 
-                // Use fetch with no-cors or standard POST
+                // Use text/plain with no-cors or redirect follow for Google Apps Script
                 await fetch(cloudApiUrl, {
                     method: 'POST',
                     mode: 'no-cors',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
                     body: JSON.stringify(payload)
                 });
                 console.log(`[Cloud Sync] Synced territory ${terrCode} to Google Drive.`);
             } catch (err) {
-                console.warn("[Cloud Sync] Background sync note:", err);
+                console.warn("[Cloud Sync] Note:", err);
+            }
+        }
+
+        async function pushAllStoredDataToGoogleSheet() {
+            if (!cloudApiUrl) {
+                alert("Please enter and save your Google Apps Script URL first!");
+                return;
+            }
+
+            const allCodes = Object.keys(store);
+            if (allCodes.length === 0) {
+                alert("There are no stored submissions to push yet.");
+                return;
+            }
+
+            if (!confirm(`Push all ${allCodes.length} territory submissions to your Google Sheet now?`)) return;
+
+            showToast("⏳ Pushing all submissions to Google Sheet...");
+
+            try {
+                const payload = {
+                    action: "save_batch",
+                    batch: store
+                };
+
+                await fetch(cloudApiUrl, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify(payload)
+                });
+
+                showToast(`✅ Successfully pushed ${allCodes.length} territories to Google Sheet!`);
+                alert(`✅ Successfully pushed ${allCodes.length} territory submissions to your Google Sheet in Google Drive! Check your Google Sheet to see all rows updated.`);
+            } catch (err) {
+                alert(`❌ Failed to push data: ${err.message}`);
             }
         }
 
@@ -1820,11 +1874,10 @@
 
             try {
                 if (showFeedback) showToast("🔄 Fetching latest data from Google Cloud...");
-                const res = await fetch(cloudApiUrl + '?action=get_all');
+                const res = await fetch(cloudApiUrl + (cloudApiUrl.includes('?') ? '&' : '?') + 'action=get_all');
                 const json = await res.json();
 
                 if (json && json.status === 'success' && json.store) {
-                    // Merge cloud store with local store
                     Object.assign(store, json.store);
                     localStorage.setItem('EXIUM_SWEATER_STORE', JSON.stringify(store));
                     if (isAdminLoggedIn) showAdminDashboard();
@@ -1928,9 +1981,6 @@
             let inProgress = 0;
             let pending = 0;
 
-            let c1Sweaters = 0;
-            let c2Sweaters = 0;
-
             ALL_TERRITORIES.forEach(t => {
                 const d = store[String(t['SAP Territory Code'])];
                 const status = getTerritoryStatus(d);
@@ -1941,15 +1991,6 @@
                     inProgress++;
                 } else {
                     pending++;
-                }
-
-                if (d) {
-                    ['m1', 'm2', 'm3', 'm4'].forEach(m => {
-                        if (d[`c1_${m}_sweater`] && d[`c1_${m}_size`]) c1Sweaters++;
-                    });
-                    ['d1', 'd2', 'd3', 'd4'].forEach(di => {
-                        if (d[`c2_${di}_sweater`] && d[`c2_${di}_size`]) c2Sweaters++;
-                    });
                 }
             });
 
@@ -2048,7 +2089,6 @@
 
             const q = query.toLowerCase();
             const regions = Object.values(REGION_MAP).filter(r => {
-                // Text search
                 const matchText = !q || (
                     r.region_name.toLowerCase().includes(q) ||
                     r.regional_head.toLowerCase().includes(q) ||
@@ -2057,7 +2097,6 @@
                 );
                 if (!matchText) return false;
 
-                // Status Filter
                 let completed = 0;
                 r.territories.forEach(t => {
                     if (getTerritoryStatus(store[String(t.sap_territory_code)]) === 'Complete') completed++;
@@ -2143,6 +2182,40 @@
                 selectTerritoryTab(activeTerritoryIndex, false);
             }
             alert(`🗑️ All data for ${r.region_name} has been cleared.`);
+        }
+
+        function deleteAllCampaignData() {
+            const pass = prompt("⚠️ MASTER RESET WARNING: This will delete ALL territory entries across all 252 regions!\n\nType 'DELETE ALL' to confirm:");
+            if (pass !== 'DELETE ALL') {
+                alert("Master reset cancelled.");
+                return;
+            }
+
+            store = {};
+            localStorage.removeItem('EXIUM_SWEATER_STORE');
+            localStorage.removeItem('EXIUM_ACTIVE_SESSION');
+
+            // Send reset to cloud if connected
+            if (cloudApiUrl) {
+                try {
+                    fetch(cloudApiUrl, {
+                        method: 'POST',
+                        mode: 'no-cors',
+                        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                        body: JSON.stringify({ action: "reset_all" })
+                    });
+                } catch(e) {}
+            }
+
+            renderAdminKpisAndSummaries();
+            renderAdminZoneProgress();
+            renderAdminProductionMatrix();
+            renderAdminRegionsTable();
+            if (currentRegionCode) {
+                renderTerritoryTabs();
+                selectTerritoryTab(activeTerritoryIndex, false);
+            }
+            alert("🗑️ All campaign data has been completely reset and deleted!");
         }
 
         function renderAdminProductionMatrix() {
