@@ -106,9 +106,7 @@
             <span><strong>Notice:</strong> Submissions are currently locked by Central Admin. Inputs are in Read-Only mode.</span>
         </div>
 
-        <!-- =================================================================== -->
-        <!-- VIEW 1: REGIONAL LOGIN (SELECTION VIEW) -->
-        <!-- =================================================================== -->
+        <!-- VIEW 1: REGIONAL LOGIN -->
         <section id="selection-view" class="flex-1 flex items-center justify-center py-4 sm:py-8">
             <div class="bg-white border border-slate-200 rounded-3xl shadow-xl p-5 sm:p-8 max-w-lg w-full">
                 
@@ -121,53 +119,14 @@
                 </div>
 
                 <div class="space-y-4">
-                    
-                    <!-- 1. Select Zone -->
                     <div>
                         <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
                             1. Select Zone
                         </label>
                         <select id="select-zone" onchange="onZoneChanged()" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm font-semibold text-slate-800 focus:ring-2 focus:ring-orange-500 focus:border-orange-500 focus:outline-none transition">
-<option value="">-- Choose Your Zone (35 Zones) --</option>
-                        <option value="B. Baria (GEN-A)">B. Baria (GEN-A)</option>
-                        <option value="Barishal-A (GEN-A)">Barishal-A (GEN-A)</option>
-                        <option value="Barishal-B (GEN-A)">Barishal-B (GEN-A)</option>
-                        <option value="Bogura (GEN-A)">Bogura (GEN-A)</option>
-                        <option value="Chandpur (GEN-A)">Chandpur (GEN-A)</option>
-                        <option value="Chattogram-A (GEN-A)">Chattogram-A (GEN-A)</option>
-                        <option value="Chattogram-B (GEN-A)">Chattogram-B (GEN-A)</option>
-                        <option value="Chattogram-C (GEN-A)">Chattogram-C (GEN-A)</option>
-                        <option value="Chattogram-D (GEN-A)">Chattogram-D (GEN-A)</option>
-                        <option value="Cox Bazar (GEN-A)">Cox Bazar (GEN-A)</option>
-                        <option value="Cumilla (GEN-A)">Cumilla (GEN-A)</option>
-                        <option value="Cumilla-B (GEN-A)">Cumilla-B (GEN-A)</option>
-                        <option value="Dhaka-A (GEN-A)">Dhaka-A (GEN-A)</option>
-                        <option value="Dhaka-B (GEN-A)">Dhaka-B (GEN-A)</option>
-                        <option value="Dhaka-C (GEN-A)">Dhaka-C (GEN-A)</option>
-                        <option value="Dhaka-D (GEN-A)">Dhaka-D (GEN-A)</option>
-                        <option value="Dhaka-I (GEN-A)">Dhaka-I (GEN-A)</option>
-                        <option value="Dinajpur (GEN-A)">Dinajpur (GEN-A)</option>
-                        <option value="Faridpur (GEN-A)">Faridpur (GEN-A)</option>
-                        <option value="Feni (GEN-A)">Feni (GEN-A)</option>
-                        <option value="Gazipur (GEN-A)">Gazipur (GEN-A)</option>
-                        <option value="Jashore (GEN-A)">Jashore (GEN-A)</option>
-                        <option value="Khulna (GEN-A)">Khulna (GEN-A)</option>
-                        <option value="Kushtia (GEN-A)">Kushtia (GEN-A)</option>
-                        <option value="Maizdee (GEN-A)">Maizdee (GEN-A)</option>
-                        <option value="Mymensingh (GEN-A)">Mymensingh (GEN-A)</option>
-                        <option value="Narayangonj (GEN-A)">Narayangonj (GEN-A)</option>
-                        <option value="Narsingdi (GEN-A)">Narsingdi (GEN-A)</option>
-                        <option value="Rajshahi (GEN-A)">Rajshahi (GEN-A)</option>
-                        <option value="Rangpur (GEN-A)">Rangpur (GEN-A)</option>
-                        <option value="Savar (GEN-A)">Savar (GEN-A)</option>
-                        <option value="Sylhet-A (GEN-A)">Sylhet-A (GEN-A)</option>
-                        <option value="Sylhet-B (GEN-A)">Sylhet-B (GEN-A)</option>
-                        <option value="Tangail (GEN-A)">Tangail (GEN-A)</option>
-                        <option value="Uttara (GEN-A)">Uttara (GEN-A)</option>
-                        </select>
+<option value="">-- Choose Your Zone (35 Zones) --</option>\n                        <option value="B. Baria (GEN-A)">B. Baria (GEN-A)</option>\n                        <option value="Barishal-A (GEN-A)">Barishal-A (GEN-A)</option>\n                        <option value="Barishal-B (GEN-A)">Barishal-B (GEN-A)</option>\n                        <option value="Bogura (GEN-A)">Bogura (GEN-A)</option>\n                        <option value="Chandpur (GEN-A)">Chandpur (GEN-A)</option>\n                        <option value="Chattogram-A (GEN-A)">Chattogram-A (GEN-A)</option>\n                        <option value="Chattogram-B (GEN-A)">Chattogram-B (GEN-A)</option>\n                        <option value="Chattogram-C (GEN-A)">Chattogram-C (GEN-A)</option>\n                        <option value="Chattogram-D (GEN-A)">Chattogram-D (GEN-A)</option>\n                        <option value="Cox Bazar (GEN-A)">Cox Bazar (GEN-A)</option>\n                        <option value="Cumilla (GEN-A)">Cumilla (GEN-A)</option>\n                        <option value="Cumilla-B (GEN-A)">Cumilla-B (GEN-A)</option>\n                        <option value="Dhaka-A (GEN-A)">Dhaka-A (GEN-A)</option>\n                        <option value="Dhaka-B (GEN-A)">Dhaka-B (GEN-A)</option>\n                        <option value="Dhaka-C (GEN-A)">Dhaka-C (GEN-A)</option>\n                        <option value="Dhaka-D (GEN-A)">Dhaka-D (GEN-A)</option>\n                        <option value="Dhaka-I (GEN-A)">Dhaka-I (GEN-A)</option>\n                        <option value="Dinajpur (GEN-A)">Dinajpur (GEN-A)</option>\n                        <option value="Faridpur (GEN-A)">Faridpur (GEN-A)</option>\n                        <option value="Feni (GEN-A)">Feni (GEN-A)</option>\n                        <option value="Gazipur (GEN-A)">Gazipur (GEN-A)</option>\n                        <option value="Jashore (GEN-A)">Jashore (GEN-A)</option>\n                        <option value="Khulna (GEN-A)">Khulna (GEN-A)</option>\n                        <option value="Kushtia (GEN-A)">Kushtia (GEN-A)</option>\n                        <option value="Maizdee (GEN-A)">Maizdee (GEN-A)</option>\n                        <option value="Mymensingh (GEN-A)">Mymensingh (GEN-A)</option>\n                        <option value="Narayangonj (GEN-A)">Narayangonj (GEN-A)</option>\n                        <option value="Narsingdi (GEN-A)">Narsingdi (GEN-A)</option>\n                        <option value="Rajshahi (GEN-A)">Rajshahi (GEN-A)</option>\n                        <option value="Rangpur (GEN-A)">Rangpur (GEN-A)</option>\n                        <option value="Savar (GEN-A)">Savar (GEN-A)</option>\n                        <option value="Sylhet-A (GEN-A)">Sylhet-A (GEN-A)</option>\n                        <option value="Sylhet-B (GEN-A)">Sylhet-B (GEN-A)</option>\n                        <option value="Tangail (GEN-A)">Tangail (GEN-A)</option>\n                        <option value="Uttara (GEN-A)">Uttara (GEN-A)</option>\n                        </select>
                     </div>
 
-                    <!-- 2. Select Region -->
                     <div>
                         <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
                             2. Select Region
@@ -177,7 +136,6 @@
                         </select>
                     </div>
 
-                    <!-- Regional Head Info Card -->
                     <div id="rh-info-card" class="hidden bg-slate-50 border border-slate-200 rounded-2xl p-3.5 space-y-1">
                         <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Regional Head</span>
                         <div id="rh-name-display" class="text-sm font-black text-slate-900 flex items-center gap-2">
@@ -189,7 +147,6 @@
                         </div>
                     </div>
 
-                    <!-- 3. Password Input -->
                     <div id="password-section" class="hidden space-y-1.5">
                         <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider">
                             3. Enter Password
@@ -202,7 +159,6 @@
                         </div>
                     </div>
 
-                    <!-- Login Button -->
                     <div id="unlock-btn-container" class="hidden">
                         <button onclick="unlockRegion()" class="w-full py-3 bg-orange-500 hover:bg-orange-600 text-white font-black text-sm rounded-xl shadow-lg shadow-orange-500/25 transition flex items-center justify-center gap-2 active:scale-98">
                             <i class="fa-solid fa-right-to-bracket"></i>
@@ -215,12 +171,9 @@
             </div>
         </section>
 
-        <!-- =================================================================== -->
         <!-- VIEW 2: REGIONAL MANAGER WORKSPACE -->
-        <!-- =================================================================== -->
         <section id="workspace-view" class="hidden flex-col gap-4 sm:gap-6">
             
-            <!-- Region Header Banner -->
             <div class="bg-white border border-slate-200 rounded-3xl p-4 sm:p-6 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div class="space-y-1">
                     <div class="flex items-center gap-2">
@@ -242,7 +195,7 @@
                 </div>
             </div>
 
-            <!-- Layout: Left Nav + Right Forms -->
+            <!-- Layout -->
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6">
                 
                 <!-- Left Nav -->
@@ -297,9 +250,7 @@
                         </div>
                     </div>
 
-                    <!-- ========================================== -->
-                    <!-- CAMPAIGN 1: Gyne Core Doctor (Family Pack) -->
-                    <!-- ========================================== -->
+                    <!-- CAMPAIGN 1 -->
                     <div class="bg-white border-2 border-teal-500/60 rounded-3xl shadow-sm overflow-hidden">
                         <div class="bg-gradient-to-r from-teal-700 via-teal-800 to-emerald-800 text-white px-3.5 sm:px-6 py-2.5 sm:py-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                             <div class="flex items-start sm:items-center gap-2.5 sm:gap-3 min-w-0">
@@ -331,7 +282,6 @@
                                 </div>
                             </div>
 
-                            <!-- 4 Sweaters Grid -->
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
                                 <!-- 1 -->
                                 <div class="bg-slate-50 border border-slate-200 rounded-2xl p-3 space-y-2">
@@ -445,9 +395,7 @@
                         </div>
                     </div>
 
-                    <!-- ========================================== -->
-                    <!-- CAMPAIGN 2: Core Doctor Maximization       -->
-                    <!-- ========================================== -->
+                    <!-- CAMPAIGN 2 -->
                     <div class="bg-white border-2 border-purple-500/60 rounded-3xl shadow-sm overflow-hidden">
                         <div class="bg-gradient-to-r from-purple-700 via-purple-800 to-indigo-800 text-white px-3.5 sm:px-6 py-2.5 sm:py-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                             <div class="flex items-start sm:items-center gap-2.5 sm:gap-3 min-w-0">
@@ -711,7 +659,6 @@
     <div id="admin-modal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm hidden flex items-center justify-center p-2 sm:p-4 lg:p-6" onclick="closeAdminModal()">
         <div class="bg-white border border-slate-200 rounded-3xl shadow-2xl max-w-6xl w-full max-h-[95vh] flex flex-col overflow-hidden" onclick="event.stopPropagation()">
             
-            <!-- Modal Header -->
             <div class="px-4 sm:px-6 py-3.5 border-b border-slate-200 flex items-center justify-between bg-slate-900 text-white flex-shrink-0">
                 <div class="flex items-center gap-3">
                     <div class="w-9 h-9 rounded-2xl bg-orange-500 text-slate-950 flex items-center justify-center font-black text-base shadow">
@@ -728,8 +675,6 @@
             </div>
 
             <div class="p-4 sm:p-6 overflow-y-auto custom-scrollbar space-y-6 flex-1 bg-slate-50/50">
-                
-                <!-- Auth Box -->
                 <div id="admin-auth-view" class="max-w-sm mx-auto py-10 text-center space-y-4 bg-white p-6 rounded-3xl border border-slate-200 shadow-sm">
                     <div class="w-14 h-14 rounded-2xl bg-orange-50 text-orange-600 flex items-center justify-center mx-auto text-2xl border border-orange-200 shadow-inner">
                         <i class="fa-solid fa-key"></i>
@@ -740,17 +685,12 @@
                     </div>
                     <div class="space-y-3">
                         <input type="password" id="admin-pass-input" onkeydown="handleAdminPasswordKey(event)" placeholder="Enter Admin Password..." class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-xs text-slate-900 text-center font-bold focus:ring-2 focus:ring-orange-500 focus:outline-none">
-                        <button onclick="verifyAdminPassword()" class="w-full py-2.5 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-black shadow transition active:scale-98">
-                            Unlock Dashboard
-                        </button>
+                        <button onclick="verifyAdminPassword()" class="w-full py-2.5 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-black shadow transition active:scale-98">Unlock Dashboard</button>
                         <div id="admin-auth-err" class="hidden text-xs text-rose-600 font-bold">Incorrect password! Try again.</div>
                     </div>
                 </div>
 
-                <!-- Dashboard Content (After Login) -->
                 <div id="admin-dashboard-view" class="hidden space-y-6">
-                    
-                    <!-- Action Toolbar & Cloud Sync Bar -->
                     <div class="bg-white p-4 rounded-3xl border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-3">
                         <div class="flex flex-wrap items-center gap-2">
                             <button onclick="pullCloudData(true)" class="px-3.5 py-2 bg-blue-600 hover:bg-blue-500 text-white text-xs font-black rounded-xl flex items-center gap-1.5 shadow-sm transition active:scale-95">
@@ -774,47 +714,30 @@
                             </button>
                             <div class="flex items-center gap-1.5 bg-slate-50 border border-slate-200 px-3 py-1.5 rounded-xl text-xs">
                                 <span class="text-slate-500 font-medium">Access:</span>
-                                <button id="toggle-global-access-btn" onclick="toggleGlobalSubmissionsAccess()" class="font-bold text-emerald-600 hover:underline">
-                                    Open
-                                </button>
+                                <button id="toggle-global-access-btn" onclick="toggleGlobalSubmissionsAccess()" class="font-bold text-emerald-600 hover:underline">Open</button>
                             </div>
-                            <button onclick="logoutAdmin()" class="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl transition" title="Logout">
-                                <i class="fa-solid fa-lock"></i>
-                            </button>
+                            <button onclick="logoutAdmin()" class="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl transition" title="Logout"><i class="fa-solid fa-lock"></i></button>
                         </div>
                     </div>
 
-                    <!-- Cloud Settings Drawer -->
+                    <!-- Cloud Settings Box -->
                     <div id="admin-cloud-settings-box" class="hidden bg-gradient-to-br from-slate-900 to-slate-800 text-white p-5 rounded-3xl border border-slate-700 shadow-xl space-y-4">
                         <div class="flex items-center justify-between border-b border-slate-700 pb-3">
                             <div class="flex items-center gap-2">
                                 <i class="fa-brands fa-google-drive text-orange-400 text-lg"></i>
                                 <h4 class="text-sm font-black text-white">Google Drive / Cloud Synchronization Setup</h4>
                             </div>
-                            <button onclick="toggleCloudSettings()" class="text-slate-400 hover:text-white text-xs">
-                                <i class="fa-solid fa-xmark text-sm"></i>
-                            </button>
+                            <button onclick="toggleCloudSettings()" class="text-slate-400 hover:text-white text-xs"><i class="fa-solid fa-xmark text-sm"></i></button>
                         </div>
-
                         <div class="space-y-2">
-                            <label class="block text-xs font-bold text-slate-300">
-                                Google Apps Script Web App URL (Google Sheets API):
-                            </label>
+                            <label class="block text-xs font-bold text-slate-300">Google Apps Script Web App URL (Google Sheets API):</label>
                             <div class="flex flex-col sm:flex-row gap-2">
                                 <input type="text" id="custom-cloud-url-input" placeholder="https://script.google.com/macros/s/.../exec" class="flex-1 bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white font-mono focus:outline-none focus:border-orange-500">
-                                <button onclick="saveCloudUrlSetting()" class="px-4 py-2 bg-orange-500 hover:bg-orange-400 text-slate-950 text-xs font-black rounded-xl transition whitespace-nowrap">
-                                    Save URL
-                                </button>
-                                <button onclick="testGoogleDriveConnection()" class="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white text-xs font-black rounded-xl transition whitespace-nowrap">
-                                    Test Connection
-                                </button>
+                                <button onclick="saveCloudUrlSetting()" class="px-4 py-2 bg-orange-500 hover:bg-orange-400 text-slate-950 text-xs font-black rounded-xl transition whitespace-nowrap">Save URL</button>
+                                <button onclick="testGoogleDriveConnection()" class="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white text-xs font-black rounded-xl transition whitespace-nowrap">Test Connection</button>
                             </div>
                             <div id="cloud-test-result" class="hidden text-xs font-bold p-2 rounded-xl"></div>
-                            <p class="text-[11px] text-slate-400 leading-relaxed">
-                                💡 <strong>Connected Google Sheet:</strong> All submissions from across Bangladesh are automatically streaming live into your Google Sheet! You can also click <strong>"Push All Stored Data to Google Sheet"</strong> below to sync everything immediately!
-                            </p>
                         </div>
-
                         <div class="pt-3 border-t border-slate-800 flex flex-wrap items-center justify-between gap-3">
                             <div class="flex flex-wrap items-center gap-2">
                                 <button onclick="pushAllStoredDataToGoogleSheet()" class="px-3.5 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-black shadow transition">
@@ -831,129 +754,63 @@
                         </div>
                     </div>
 
-                    <!-- ============================================== -->
-                    <!-- 1. LIVE SUMMARY KPI CARDS                      -->
-                    <!-- ============================================== -->
+                    <!-- Summary Cards -->
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
-                        <!-- Card 1 -->
                         <div class="bg-white border border-slate-200 rounded-3xl p-4 sm:p-5 shadow-sm space-y-2">
-                            <div class="flex items-center justify-between text-slate-400">
-                                <span class="text-[10px] sm:text-xs font-black uppercase tracking-wider">Total Territories</span>
-                                <i class="fa-solid fa-map-location-dot text-base text-slate-400"></i>
-                            </div>
-                            <div class="flex items-baseline gap-1.5">
-                                <span id="kpi-total-territories" class="text-2xl sm:text-3xl font-black text-slate-900">1,856</span>
-                                <span class="text-[11px] font-bold text-slate-500">Territories</span>
-                            </div>
+                            <div class="flex items-center justify-between text-slate-400"><span class="text-[10px] sm:text-xs font-black uppercase tracking-wider">Total Territories</span><i class="fa-solid fa-map-location-dot text-base text-slate-400"></i></div>
+                            <div class="flex items-baseline gap-1.5"><span id="kpi-total-territories" class="text-2xl sm:text-3xl font-black text-slate-900">1,856</span><span class="text-[11px] font-bold text-slate-500">Territories</span></div>
                             <p class="text-[10px] text-slate-400">252 Regions across 35 Zones</p>
                         </div>
-
-                        <!-- Card 2 -->
                         <div class="bg-white border-2 border-emerald-500/40 rounded-3xl p-4 sm:p-5 shadow-sm space-y-2">
-                            <div class="flex items-center justify-between text-emerald-600">
-                                <span class="text-[10px] sm:text-xs font-black uppercase tracking-wider">Completed</span>
-                                <i class="fa-solid fa-circle-check text-base"></i>
-                            </div>
-                            <div class="flex items-baseline gap-1.5">
-                                <span id="kpi-completed-count" class="text-2xl sm:text-3xl font-black text-emerald-600">0</span>
-                                <span id="kpi-completed-pct" class="text-xs font-black text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded-md">0%</span>
-                            </div>
-                            <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
-                                <div id="kpi-completed-bar" class="bg-emerald-500 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
-                            </div>
+                            <div class="flex items-center justify-between text-emerald-600"><span class="text-[10px] sm:text-xs font-black uppercase tracking-wider">Completed</span><i class="fa-solid fa-circle-check text-base"></i></div>
+                            <div class="flex items-baseline gap-1.5"><span id="kpi-completed-count" class="text-2xl sm:text-3xl font-black text-emerald-600">0</span><span id="kpi-completed-pct" class="text-xs font-black text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded-md">0%</span></div>
+                            <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden"><div id="kpi-completed-bar" class="bg-emerald-500 h-full rounded-full transition-all duration-500" style="width: 0%"></div></div>
                         </div>
-
-                        <!-- Card 3 -->
                         <div class="bg-white border border-amber-300 rounded-3xl p-4 sm:p-5 shadow-sm space-y-2">
-                            <div class="flex items-center justify-between text-amber-600">
-                                <span class="text-[10px] sm:text-xs font-black uppercase tracking-wider">In Progress</span>
-                                <i class="fa-solid fa-spinner text-base"></i>
-                            </div>
-                            <div class="flex items-baseline gap-1.5">
-                                <span id="kpi-inprogress-count" class="text-2xl sm:text-3xl font-black text-amber-600">0</span>
-                                <span id="kpi-inprogress-pct" class="text-xs font-black text-amber-700 bg-amber-50 px-1.5 py-0.5 rounded-md">0%</span>
-                            </div>
-                            <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
-                                <div id="kpi-inprogress-bar" class="bg-amber-500 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
-                            </div>
+                            <div class="flex items-center justify-between text-amber-600"><span class="text-[10px] sm:text-xs font-black uppercase tracking-wider">In Progress</span><i class="fa-solid fa-spinner text-base"></i></div>
+                            <div class="flex items-baseline gap-1.5"><span id="kpi-inprogress-count" class="text-2xl sm:text-3xl font-black text-amber-600">0</span><span id="kpi-inprogress-pct" class="text-xs font-black text-amber-700 bg-amber-50 px-1.5 py-0.5 rounded-md">0%</span></div>
+                            <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden"><div id="kpi-inprogress-bar" class="bg-amber-500 h-full rounded-full transition-all duration-500" style="width: 0%"></div></div>
                         </div>
-
-                        <!-- Card 4 -->
                         <div class="bg-white border border-slate-200 rounded-3xl p-4 sm:p-5 shadow-sm space-y-2">
-                            <div class="flex items-center justify-between text-slate-400">
-                                <span class="text-[10px] sm:text-xs font-black uppercase tracking-wider">Remaining</span>
-                                <i class="fa-solid fa-clock text-base text-slate-400"></i>
-                            </div>
-                            <div class="flex items-baseline gap-1.5">
-                                <span id="kpi-pending-count" class="text-2xl sm:text-3xl font-black text-slate-700">1,856</span>
-                                <span id="kpi-pending-pct" class="text-xs font-black text-slate-600 bg-slate-100 px-1.5 py-0.5 rounded-md">100%</span>
-                            </div>
-                            <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
-                                <div id="kpi-pending-bar" class="bg-slate-400 h-full rounded-full transition-all duration-500" style="width: 100%"></div>
-                            </div>
+                            <div class="flex items-center justify-between text-slate-400"><span class="text-[10px] sm:text-xs font-black uppercase tracking-wider">Remaining</span><i class="fa-solid fa-clock text-base text-slate-400"></i></div>
+                            <div class="flex items-baseline gap-1.5"><span id="kpi-pending-count" class="text-2xl sm:text-3xl font-black text-slate-700">1,856</span><span id="kpi-pending-pct" class="text-xs font-black text-slate-600 bg-slate-100 px-1.5 py-0.5 rounded-md">100%</span></div>
+                            <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden"><div id="kpi-pending-bar" class="bg-slate-400 h-full rounded-full transition-all duration-500" style="width: 100%"></div></div>
                         </div>
                     </div>
 
-                    <!-- ============================================== -->
-                    <!-- 2. ZONE-WISE PROGRESS BREAKDOWN (35 ZONES)     -->
-                    <!-- ============================================== -->
+                    <!-- Zone Progress -->
                     <div class="bg-white rounded-3xl border border-slate-200 p-4 sm:p-5 shadow-sm space-y-3">
                         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-3">
-                            <div>
-                                <h4 class="text-xs sm:text-sm font-black uppercase tracking-wider text-slate-900">Zone-Wise Completion Progress (35 Zones)</h4>
-                                <p class="text-[10px] sm:text-xs text-slate-500">Live submission status across all pharmaceutical sales zones</p>
-                            </div>
+                            <div><h4 class="text-xs sm:text-sm font-black uppercase tracking-wider text-slate-900">Zone-Wise Completion Progress (35 Zones)</h4><p class="text-[10px] sm:text-xs text-slate-500">Live submission status across all pharmaceutical sales zones</p></div>
                             <span id="zone-summary-badge" class="text-xs font-black px-2.5 py-1 bg-orange-100 text-orange-800 rounded-xl self-start sm:self-auto">0 / 35 Zones Finished</span>
                         </div>
                         <div class="overflow-x-auto max-h-[300px] overflow-y-auto custom-scrollbar">
                             <table class="w-full text-xs text-left border-collapse">
                                 <thead class="bg-slate-100 text-slate-700 uppercase text-[10px] sticky top-0 border-b border-slate-200">
-                                    <tr>
-                                        <th class="p-2.5">Zone Name</th>
-                                        <th class="p-2.5 text-center">Regions</th>
-                                        <th class="p-2.5 text-center">Territories</th>
-                                        <th class="p-2.5 text-center">Done</th>
-                                        <th class="p-2.5 text-center">Remaining</th>
-                                        <th class="p-2.5">Progress Bar</th>
-                                        <th class="p-2.5 text-right">Status</th>
-                                    </tr>
+                                    <tr><th class="p-2.5">Zone Name</th><th class="p-2.5 text-center">Regions</th><th class="p-2.5 text-center">Territories</th><th class="p-2.5 text-center">Done</th><th class="p-2.5 text-center">Remaining</th><th class="p-2.5">Progress Bar</th><th class="p-2.5 text-right">Status</th></tr>
                                 </thead>
                                 <tbody id="admin-zone-table-body" class="divide-y divide-slate-100 font-semibold"></tbody>
                             </table>
                         </div>
                     </div>
 
-                    <!-- ============================================== -->
-                    <!-- 3. PRODUCTION REQUIREMENT BREAKDOWN MATRIX     -->
-                    <!-- ============================================== -->
+                    <!-- Matrix -->
                     <div class="bg-white rounded-3xl border border-slate-200 p-4 sm:p-5 shadow-sm space-y-3">
-                        <div class="border-b border-slate-100 pb-3">
-                            <h4 class="text-xs sm:text-sm font-black uppercase tracking-wider text-slate-900">Live Production Requirement Breakdown by Size</h4>
-                            <p class="text-[10px] sm:text-xs text-slate-500">Exact sweater counts for Lubnan Trade Consortium Ltd. order generation</p>
-                        </div>
+                        <div class="border-b border-slate-100 pb-3"><h4 class="text-xs sm:text-sm font-black uppercase tracking-wider text-slate-900">Live Production Requirement Breakdown by Size</h4><p class="text-[10px] sm:text-xs text-slate-500">Exact sweater counts for Lubnan Trade Consortium Ltd. order generation</p></div>
                         <div class="overflow-x-auto">
                             <table class="w-full text-xs text-center border-collapse">
                                 <thead class="bg-slate-900 text-white text-[11px] font-bold">
-                                    <tr>
-                                        <th class="p-2.5 text-left">Item Code & Name</th>
-                                        <th class="p-2.5">XS</th><th class="p-2.5">S</th><th class="p-2.5">M</th><th class="p-2.5">L</th><th class="p-2.5">XL</th><th class="p-2.5">XXL</th>
-                                        <th class="p-2.5 bg-orange-600 text-white">Total</th>
-                                    </tr>
+                                    <tr><th class="p-2.5 text-left">Item Code & Name</th><th class="p-2.5">XS</th><th class="p-2.5">S</th><th class="p-2.5">M</th><th class="p-2.5">L</th><th class="p-2.5">XL</th><th class="p-2.5">XXL</th><th class="p-2.5 bg-orange-600 text-white">Total</th></tr>
                                 </thead>
                                 <tbody id="admin-matrix-body" class="divide-y divide-slate-100 font-semibold"></tbody>
                             </table>
                         </div>
                     </div>
 
-                    <!-- ============================================== -->
-                    <!-- 4. ALL 252 REGIONS TABLE WITH FILTERS          -->
-                    <!-- ============================================== -->
+                    <!-- 252 Regions Table -->
                     <div class="bg-white rounded-3xl border border-slate-200 p-4 sm:p-5 shadow-sm space-y-3">
                         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3">
-                            <div>
-                                <h4 class="text-xs sm:text-sm font-black uppercase tracking-wider text-slate-900">All 252 Regions Status & Actions</h4>
-                                <p class="text-[10px] sm:text-xs text-slate-500">Manage individual regional submissions and lock states</p>
-                            </div>
+                            <div><h4 class="text-xs sm:text-sm font-black uppercase tracking-wider text-slate-900">All 252 Regions Status & Actions</h4><p class="text-[10px] sm:text-xs text-slate-500">Manage individual regional submissions and lock states</p></div>
                             <div class="flex flex-wrap items-center gap-2">
                                 <div class="inline-flex bg-slate-100 p-1 rounded-xl text-xs font-bold">
                                     <button onclick="setAdminRegionFilter('all')" id="rf-tab-all" class="px-2.5 py-1 rounded-lg bg-white text-slate-900 shadow-sm">All (252)</button>
@@ -967,15 +824,7 @@
                         <div class="overflow-x-auto max-h-[360px] overflow-y-auto custom-scrollbar">
                             <table class="w-full text-xs text-left border-collapse">
                                 <thead class="bg-slate-100 text-slate-600 uppercase text-[10px] sticky top-0 border-b border-slate-200">
-                                    <tr>
-                                        <th class="p-2.5">SAP Code</th>
-                                        <th class="p-2.5">Region</th>
-                                        <th class="p-2.5">Zone</th>
-                                        <th class="p-2.5">Regional Head</th>
-                                        <th class="p-2.5">Progress</th>
-                                        <th class="p-2.5">Lock State</th>
-                                        <th class="p-2.5 text-right">Actions</th>
-                                    </tr>
+                                    <tr><th class="p-2.5">SAP Code</th><th class="p-2.5">Region</th><th class="p-2.5">Zone</th><th class="p-2.5">Regional Head</th><th class="p-2.5">Progress</th><th class="p-2.5">Lock State</th><th class="p-2.5 text-right">Actions</th></tr>
                                 </thead>
                                 <tbody id="admin-regions-table-body" class="divide-y divide-slate-100 font-medium"></tbody>
                             </table>
@@ -1430,11 +1279,11 @@
 
         function getTerritoryStatus(d) {
             if (!d) return 'Not Started';
-            const c1Ok = d.c1_doc_name && d.c1_doc_rpl && d.c1_doc_rpl.length === 6 && d.c1_m1_sweater && d.c1_m1_size && d.c1_m2_sweater && d.c1_m2_size && d.c1_m3_sweater && d.c1_m3_size && d.c1_m4_sweater && d.c1_m4_size;
-            const c2Ok = d.c2_d1_name && d.c2_d1_rpl && d.c2_d1_rpl.length === 6 && d.c2_d1_sweater && d.c2_d1_size && 
-                         d.c2_d2_name && d.c2_d2_rpl && d.c2_d2_rpl.length === 6 && d.c2_d2_sweater && d.c2_d2_size && 
-                         d.c2_d3_name && d.c2_d3_rpl && d.c2_d3_rpl.length === 6 && d.c2_d3_sweater && d.c2_d3_size && 
-                         d.c2_d4_name && d.c2_d4_rpl && d.c2_d4_rpl.length === 6 && d.c2_d4_sweater && d.c2_d4_size;
+            const c1Ok = d.c1_doc_name && d.c1_doc_rpl && String(d.c1_doc_rpl).length === 6 && d.c1_m1_sweater && d.c1_m1_size && d.c1_m2_sweater && d.c1_m2_size && d.c1_m3_sweater && d.c1_m3_size && d.c1_m4_sweater && d.c1_m4_size;
+            const c2Ok = d.c2_d1_name && d.c2_d1_rpl && String(d.c2_d1_rpl).length === 6 && d.c2_d1_sweater && d.c2_d1_size && 
+                         d.c2_d2_name && d.c2_d2_rpl && String(d.c2_d2_rpl).length === 6 && d.c2_d2_sweater && d.c2_d2_size && 
+                         d.c2_d3_name && d.c2_d3_rpl && String(d.c2_d3_rpl).length === 6 && d.c2_d3_sweater && d.c2_d3_size && 
+                         d.c2_d4_name && d.c2_d4_rpl && String(d.c2_d4_rpl).length === 6 && d.c2_d4_sweater && d.c2_d4_size;
 
             if (c1Ok && c2Ok) return 'Complete';
             if (d.c1_doc_name || d.c1_doc_rpl || d.c2_d1_name || d.c2_d1_rpl || d.c2_d2_name || d.c2_d3_name || d.c2_d4_name || d.c1_m1_sweater || d.c2_d1_sweater) return 'In Progress';
@@ -1677,11 +1526,9 @@
                 const json = await res.json();
 
                 if (json && json.status === 'success' && json.store) {
-                    let hasNew = false;
                     for (let k in json.store) {
                         if (json.store[k] && Object.keys(json.store[k]).length > 0) {
                             store[k] = Object.assign(store[k] || {}, json.store[k]);
-                            hasNew = true;
                         }
                     }
                     localStorage.setItem('EXIUM_SWEATER_STORE', JSON.stringify(store));
@@ -1975,7 +1822,7 @@
             }
         }
 
-        function deleteSingleRegionData(regCode) {
+        async function deleteSingleRegionData(regCode) {
             const r = REGION_MAP[regCode];
             if (!confirm(`Are you sure you want to delete all entries for ${r.region_name} (${regCode})?`)) return;
 
@@ -1987,21 +1834,38 @@
             renderAdminKpisAndSummaries();
             renderAdminZoneProgress();
             renderAdminProductionMatrix();
-            renderAdminRegionsTable(document.getElementById('admin-region-search').value);
+            renderAdminRegionsTable(document.getElementById('admin-region-search')?.value || '');
             
             if (currentRegionCode === regCode) {
                 renderTerritoryTabs();
                 selectTerritoryTab(activeTerritoryIndex, false);
             }
-            alert(`🗑️ All data for ${r.region_name} has been cleared.`);
+
+            const url = (cloudApiUrl && cloudApiUrl.startsWith('http')) ? cloudApiUrl : DEFAULT_CLOUD_URL;
+            if (url) {
+                try {
+                    await fetch(url, {
+                        method: 'POST',
+                        mode: 'no-cors',
+                        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                        body: JSON.stringify({ action: "delete_region", sap_region_code: regCode })
+                    });
+                } catch(e) {
+                    console.warn("[Cloud Delete Region]:", e);
+                }
+            }
+
+            alert(`🗑️ All data for ${r.region_name} has been cleared from portal and Google Sheet.`);
         }
 
-        function deleteAllCampaignData() {
+        async function deleteAllCampaignData() {
             const pass = prompt("⚠️ MASTER RESET WARNING: This will delete ALL territory entries across all 252 regions!\n\nType 'DELETE ALL' to confirm:");
             if (pass !== 'DELETE ALL') {
                 alert("Master reset cancelled.");
                 return;
             }
+
+            showToast("⏳ Resetting all data in Google Sheet...");
 
             store = {};
             localStorage.removeItem('EXIUM_SWEATER_STORE');
@@ -2010,13 +1874,15 @@
             const url = (cloudApiUrl && cloudApiUrl.startsWith('http')) ? cloudApiUrl : DEFAULT_CLOUD_URL;
             if (url) {
                 try {
-                    fetch(url, {
+                    await fetch(url, {
                         method: 'POST',
                         mode: 'no-cors',
                         headers: { 'Content-Type': 'text/plain;charset=utf-8' },
                         body: JSON.stringify({ action: "reset_all" })
                     });
-                } catch(e) {}
+                } catch(e) {
+                    console.warn("[Cloud Reset All]:", e);
+                }
             }
 
             renderAdminKpisAndSummaries();
@@ -2027,7 +1893,8 @@
                 renderTerritoryTabs();
                 selectTerritoryTab(activeTerritoryIndex, false);
             }
-            alert("🗑️ All campaign data has been completely reset and deleted!");
+            showToast("✅ All campaign data reset!");
+            alert("🗑️ All campaign data has been completely reset and deleted from both portal and Google Sheet!");
         }
 
         function renderAdminProductionMatrix() {

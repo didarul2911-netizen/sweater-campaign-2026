@@ -93,6 +93,7 @@ function doPost(e) {
       updateTerritoryInSheets(ss, String(postData.sap_territory_code), postData.data);
       return ContentService.createTextOutput(JSON.stringify({ status: "success" })).setMimeType(ContentService.MimeType.JSON);
     }
+    
     if (action === "save_batch") {
       var batch = postData.batch || {};
       for (var tCode in batch) {
@@ -100,6 +101,17 @@ function doPost(e) {
       }
       return ContentService.createTextOutput(JSON.stringify({ status: "success", count: Object.keys(batch).length })).setMimeType(ContentService.MimeType.JSON);
     }
+
+    if (action === "delete_region") {
+      clearRegionSheetData(ss, String(postData.sap_region_code));
+      return ContentService.createTextOutput(JSON.stringify({ status: "success", message: "Region cleared" })).setMimeType(ContentService.MimeType.JSON);
+    }
+
+    if (action === "reset_all") {
+      clearAllSheetData(ss);
+      return ContentService.createTextOutput(JSON.stringify({ status: "success", message: "All sheet data reset" })).setMimeType(ContentService.MimeType.JSON);
+    }
+
     return ContentService.createTextOutput(JSON.stringify({ status: "error", message: "Unknown action" })).setMimeType(ContentService.MimeType.JSON);
   } catch (err) {
     return ContentService.createTextOutput(JSON.stringify({ status: "error", message: err.toString() })).setMimeType(ContentService.MimeType.JSON);
@@ -141,6 +153,65 @@ function updateTerritoryInSheets(ss, terrCode, d) {
           break;
         }
       }
+    }
+  }
+}
+
+function clearRegionSheetData(ss, regCode) {
+  if (!regCode) return;
+  var sheet1 = ss.getSheetByName("Gyne Core Doctor (Family)");
+  var sheet2 = ss.getSheetByName("Core Doctor Maximization");
+
+  if (sheet1) {
+    var lr1 = sheet1.getLastRow();
+    if (lr1 > 1) {
+      var rCodes1 = sheet1.getRange(2, 2, lr1 - 1, 1).getValues();
+      for (var i = 0; i < rCodes1.length; i++) {
+        if (String(rCodes1[i][0]).trim() === String(regCode).trim()) {
+          var v1 = ["", "", "", "", "", "", "", "", "", "", "Not Started", ""];
+          sheet1.getRange(i + 2, 7, 1, 12).setValues([v1]);
+        }
+      }
+    }
+  }
+
+  if (sheet2) {
+    var lr2 = sheet2.getLastRow();
+    if (lr2 > 1) {
+      var rCodes2 = sheet2.getRange(2, 2, lr2 - 1, 1).getValues();
+      for (var j = 0; j < rCodes2.length; j++) {
+        if (String(rCodes2[j][0]).trim() === String(regCode).trim()) {
+          var v2 = ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "Not Started", ""];
+          sheet2.getRange(j + 2, 7, 1, 18).setValues([v2]);
+        }
+      }
+    }
+  }
+}
+
+function clearAllSheetData(ss) {
+  var sheet1 = ss.getSheetByName("Gyne Core Doctor (Family)");
+  var sheet2 = ss.getSheetByName("Core Doctor Maximization");
+
+  if (sheet1) {
+    var lr1 = sheet1.getLastRow();
+    if (lr1 > 1) {
+      var emptyC1 = [];
+      for (var i = 0; i < lr1 - 1; i++) {
+        emptyC1.push(["", "", "", "", "", "", "", "", "", "", "Not Started", ""]);
+      }
+      sheet1.getRange(2, 7, lr1 - 1, 12).setValues(emptyC1);
+    }
+  }
+
+  if (sheet2) {
+    var lr2 = sheet2.getLastRow();
+    if (lr2 > 1) {
+      var emptyC2 = [];
+      for (var j = 0; j < lr2 - 1; j++) {
+        emptyC2.push(["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "Not Started", ""]);
+      }
+      sheet2.getRange(2, 7, lr2 - 1, 18).setValues(emptyC2);
     }
   }
 }
