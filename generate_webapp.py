@@ -687,7 +687,8 @@ html_template = """<!DOCTYPE html>
                 </div>
                 <button onclick="closeCatalogModal()" class="w-8 h-8 rounded-full bg-white border border-slate-300 text-slate-600 hover:bg-slate-100 flex items-center justify-center transition"><i class="fa-solid fa-xmark text-sm"></i></button>
             </div>
-            <div class="p-4 sm:p-6 overflow-y-auto custom-scrollbar space-y-6">
+                        <div class="p-4 sm:p-6 overflow-y-auto custom-scrollbar space-y-6">
+                <!-- 5 Sweater Image Cards -->
                 <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
                     <div onclick="openImageLightbox('01')" class="bg-slate-50 border border-slate-200 hover:border-orange-400 rounded-2xl p-2.5 space-y-2 cursor-pointer transition group shadow-sm">
                         <div class="aspect-[3/4] bg-white rounded-xl overflow-hidden border border-slate-200 relative"><img src="###B64_01###" onerror="this.src='Image/01 (Men).jpeg'" alt="01" class="w-full h-full object-cover"><span class="absolute top-1.5 left-1.5 bg-slate-900/90 text-white text-[10px] font-black px-2 py-0.5 rounded-md">01</span></div>
@@ -708,6 +709,163 @@ html_template = """<!DOCTYPE html>
                     <div onclick="openImageLightbox('05')" class="bg-slate-50 border border-slate-200 hover:border-orange-400 rounded-2xl p-2.5 space-y-2 cursor-pointer transition group shadow-sm col-span-2 sm:col-span-1">
                         <div class="aspect-[3/4] bg-white rounded-xl overflow-hidden border border-slate-200 relative"><img src="###B64_05###" onerror="this.src='Image/05 (Female).jpeg'" alt="05" class="w-full h-full object-cover"><span class="absolute top-1.5 left-1.5 bg-slate-900/90 text-white text-[10px] font-black px-2 py-0.5 rounded-md">05</span></div>
                         <div><span class="text-[9px] font-bold uppercase text-purple-700 bg-purple-50 px-1.5 py-0.5 rounded">Women's</span><h4 class="text-xs font-black text-slate-900 mt-1 leading-tight">Semi Long Cardigan</h4><p class="text-[10px] text-slate-500">Sizes: S - XXL</p></div>
+                    </div>
+                </div>
+
+                <!-- ============================================== -->
+                <!-- DETAILED SIZE & MEASUREMENT SPECIFICATIONS    -->
+                <!-- ============================================== -->
+                <div class="space-y-4 pt-2 border-t border-slate-200">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                        <div>
+                            <h4 class="text-sm sm:text-base font-black text-slate-900 flex items-center gap-2">
+                                <i class="fa-solid fa-ruler-combined text-orange-500"></i>
+                                <span>Sweater Size Measurement Chart (Inches)</span>
+                            </h4>
+                            <p class="text-[11px] text-slate-500">Standard apparel measurement specifications by Lubnan Trade Consortium Ltd. (Richman / Lubnan)</p>
+                        </div>
+                        <span class="text-[10px] font-bold bg-orange-100 text-orange-800 border border-orange-200 px-2.5 py-1 rounded-full self-start sm:self-auto">
+                            All Measurements in Inches (")
+                        </span>
+                    </div>
+
+                    <!-- 1. Men's Sleeveless V-Neck Sweaters -->
+                    <div class="bg-slate-50 rounded-2xl p-4 border border-slate-200 space-y-2.5">
+                        <div class="flex items-center justify-between">
+                            <h5 class="text-xs font-black text-slate-900 flex items-center gap-1.5">
+                                <span class="w-5 h-5 rounded-md bg-orange-500 text-white text-[10px] font-black flex items-center justify-center">M</span>
+                                <span>Men's Sleeveless V-Neck Sweaters (Designs: 01, 02, 03)</span>
+                            </h5>
+                            <span class="text-[10px] font-bold text-slate-500">Regular Comfort Fit</span>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-xs text-center border-collapse bg-white rounded-xl overflow-hidden border border-slate-200 shadow-sm">
+                                <thead class="bg-slate-900 text-white text-[11px] font-bold">
+                                    <tr>
+                                        <th class="p-2.5 text-left">Size</th>
+                                        <th class="p-2.5">Chest / Bust</th>
+                                        <th class="p-2.5">Body Length</th>
+                                        <th class="p-2.5">Shoulder</th>
+                                        <th class="p-2.5 text-left">Recommended Body Build</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-100 font-medium">
+                                    <tr class="hover:bg-slate-50">
+                                        <td class="p-2.5 text-left font-black text-orange-600">S</td>
+                                        <td class="p-2.5 font-bold text-slate-800">38"</td>
+                                        <td class="p-2.5">26"</td>
+                                        <td class="p-2.5">15"</td>
+                                        <td class="p-2.5 text-left text-slate-600">Slim / Lean Build</td>
+                                    </tr>
+                                    <tr class="hover:bg-slate-50">
+                                        <td class="p-2.5 text-left font-black text-orange-600">M</td>
+                                        <td class="p-2.5 font-bold text-slate-800">40"</td>
+                                        <td class="p-2.5">27"</td>
+                                        <td class="p-2.5">16"</td>
+                                        <td class="p-2.5 text-left text-slate-600">Medium Build (Standard)</td>
+                                    </tr>
+                                    <tr class="hover:bg-slate-50">
+                                        <td class="p-2.5 text-left font-black text-orange-600">L</td>
+                                        <td class="p-2.5 font-bold text-slate-800">42"</td>
+                                        <td class="p-2.5">28"</td>
+                                        <td class="p-2.5">17"</td>
+                                        <td class="p-2.5 text-left text-slate-600">Standard Adult Fit</td>
+                                    </tr>
+                                    <tr class="hover:bg-slate-50">
+                                        <td class="p-2.5 text-left font-black text-orange-600">XL</td>
+                                        <td class="p-2.5 font-bold text-slate-800">44"</td>
+                                        <td class="p-2.5">29"</td>
+                                        <td class="p-2.5">18"</td>
+                                        <td class="p-2.5 text-left text-slate-600">Plus / Comfort Fit</td>
+                                    </tr>
+                                    <tr class="hover:bg-slate-50">
+                                        <td class="p-2.5 text-left font-black text-orange-600">XXL</td>
+                                        <td class="p-2.5 font-bold text-slate-800">46"</td>
+                                        <td class="p-2.5">30"</td>
+                                        <td class="p-2.5">19"</td>
+                                        <td class="p-2.5 text-left text-slate-600">Extra Comfort / Loose Fit</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- 2. Women's Cardigans Grid -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        
+                        <!-- 04: Short Cardigan -->
+                        <div class="bg-purple-50/50 rounded-2xl p-4 border border-purple-200 space-y-2.5">
+                            <div class="flex items-center justify-between">
+                                <h5 class="text-xs font-black text-purple-950 flex items-center gap-1.5">
+                                    <span class="w-5 h-5 rounded-md bg-purple-600 text-white text-[10px] font-black flex items-center justify-center">04</span>
+                                    <span>Women's Short Cardigan (Grid Check)</span>
+                                </h5>
+                            </div>
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-xs text-center border-collapse bg-white rounded-xl overflow-hidden border border-purple-200 shadow-sm">
+                                    <thead class="bg-purple-900 text-white text-[11px] font-bold">
+                                        <tr>
+                                            <th class="p-2 text-left">Size</th>
+                                            <th class="p-2">Chest</th>
+                                            <th class="p-2">Length</th>
+                                            <th class="p-2">Sleeve</th>
+                                            <th class="p-2">Shoulder</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-purple-100 font-medium">
+                                        <tr class="hover:bg-purple-50/50"><td class="p-2 text-left font-black text-purple-700">XS</td><td class="p-2 font-bold">34"</td><td class="p-2">21"</td><td class="p-2">21.5"</td><td class="p-2">13.5"</td></tr>
+                                        <tr class="hover:bg-purple-50/50"><td class="p-2 text-left font-black text-purple-700">S</td><td class="p-2 font-bold">36"</td><td class="p-2">22"</td><td class="p-2">22"</td><td class="p-2">14"</td></tr>
+                                        <tr class="hover:bg-purple-50/50"><td class="p-2 text-left font-black text-purple-700">M</td><td class="p-2 font-bold">38"</td><td class="p-2">23"</td><td class="p-2">22.5"</td><td class="p-2">14.5"</td></tr>
+                                        <tr class="hover:bg-purple-50/50"><td class="p-2 text-left font-black text-purple-700">L</td><td class="p-2 font-bold">40"</td><td class="p-2">24"</td><td class="p-2">23"</td><td class="p-2">15"</td></tr>
+                                        <tr class="hover:bg-purple-50/50"><td class="p-2 text-left font-black text-purple-700">XL</td><td class="p-2 font-bold">42"</td><td class="p-2">25"</td><td class="p-2">23.5"</td><td class="p-2">15.5"</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- 05: Semi Long Cardigan -->
+                        <div class="bg-purple-50/50 rounded-2xl p-4 border border-purple-200 space-y-2.5">
+                            <div class="flex items-center justify-between">
+                                <h5 class="text-xs font-black text-purple-950 flex items-center gap-1.5">
+                                    <span class="w-5 h-5 rounded-md bg-purple-600 text-white text-[10px] font-black flex items-center justify-center">05</span>
+                                    <span>Women's Semi Long Cardigan (Solid Black)</span>
+                                </h5>
+                            </div>
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-xs text-center border-collapse bg-white rounded-xl overflow-hidden border border-purple-200 shadow-sm">
+                                    <thead class="bg-purple-900 text-white text-[11px] font-bold">
+                                        <tr>
+                                            <th class="p-2 text-left">Size</th>
+                                            <th class="p-2">Chest</th>
+                                            <th class="p-2">Length</th>
+                                            <th class="p-2">Sleeve</th>
+                                            <th class="p-2">Shoulder</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-purple-100 font-medium">
+                                        <tr class="hover:bg-purple-50/50"><td class="p-2 text-left font-black text-purple-700">S</td><td class="p-2 font-bold">36"</td><td class="p-2">30"</td><td class="p-2">22"</td><td class="p-2">14"</td></tr>
+                                        <tr class="hover:bg-purple-50/50"><td class="p-2 text-left font-black text-purple-700">M</td><td class="p-2 font-bold">38"</td><td class="p-2">31"</td><td class="p-2">22.5"</td><td class="p-2">14.5"</td></tr>
+                                        <tr class="hover:bg-purple-50/50"><td class="p-2 text-left font-black text-purple-700">L</td><td class="p-2 font-bold">40"</td><td class="p-2">32"</td><td class="p-2">23"</td><td class="p-2">15"</td></tr>
+                                        <tr class="hover:bg-purple-50/50"><td class="p-2 text-left font-black text-purple-700">XL</td><td class="p-2 font-bold">42"</td><td class="p-2">33"</td><td class="p-2">23.5"</td><td class="p-2">15.5"</td></tr>
+                                        <tr class="hover:bg-purple-50/50"><td class="p-2 text-left font-black text-purple-700">XXL</td><td class="p-2 font-bold">44"</td><td class="p-2">34"</td><td class="p-2">24"</td><td class="p-2">16"</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Measurement Guide Note -->
+                    <div class="bg-amber-50 border border-amber-200 rounded-2xl p-3.5 flex items-start gap-3 text-xs text-amber-900">
+                        <i class="fa-solid fa-circle-info text-amber-600 text-base mt-0.5 flex-shrink-0"></i>
+                        <div class="space-y-1">
+                            <p class="font-bold">How to Select the Perfect Size for Doctors:</p>
+                            <ul class="list-disc pl-4 space-y-0.5 text-[11px] text-amber-800">
+                                <li><strong>Chest / Bust:</strong> Measure around the fullest part of the chest. If in-between sizes, choose the larger size for comfortable layering.</li>
+                                <li><strong>Body Length:</strong> Measured from the highest point of the shoulder down to the bottom rib hem.</li>
+                                <li><strong>Fabric & Quality:</strong> Crafted with high-grade ultra-soft acrylic yarn by <strong>Lubnan Trade Consortium Ltd. (Richman / Lubnan)</strong> for long-lasting winter comfort.</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
