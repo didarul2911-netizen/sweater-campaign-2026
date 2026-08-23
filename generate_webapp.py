@@ -166,6 +166,15 @@ html_code = f'''<!DOCTYPE html>
         </div>
     </header>
 
+    <!-- Floating Toast Notification -->
+    <div id="toast-notification" class="fixed bottom-5 right-5 z-50 transform translate-y-10 opacity-0 pointer-events-none transition-all duration-300">
+        <div id="toast-body" class="bg-slate-900 text-white text-xs sm:text-sm font-bold px-4 py-3 rounded-2xl shadow-2xl border border-slate-700 flex items-center gap-2.5">
+            <i class="fa-solid fa-circle-check text-emerald-400 text-base"></i>
+            <span id="toast-msg">Territory saved successfully!</span>
+        </div>
+    </div>
+
+
     <!-- Main Content Area -->
     <main class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-3 sm:py-6 flex-1 w-full flex flex-col gap-4 sm:gap-6">
 
@@ -368,12 +377,25 @@ html_code = f'''<!DOCTYPE html>
                         </div>
 
                         <div class="p-4 sm:p-6 space-y-4">
-                            <!-- Doctor Name Input (Soft Mint Background) -->
-                            <div class="bg-teal-50/70 rounded-2xl p-3 sm:p-3.5 border border-teal-200">
-                                <label class="block text-xs font-bold text-teal-950 mb-1">
-                                    Doctor Name <span class="text-rose-500">*</span>
-                                </label>
-                                <input type="text" id="c1_doc_name" oninput="onDataChanged()" placeholder="Enter Gynecologist / Doctor Name..." class="w-full bg-white border border-teal-300 rounded-xl px-3.5 py-2 text-xs sm:text-sm text-slate-900 placeholder-slate-400 focus:ring-2 focus:ring-teal-500 focus:border-teal-500 focus:outline-none transition">
+                            <!-- Doctor Name & Doctor RPL ID Inputs (Soft Mint Background) -->
+                            <div class="bg-teal-50/70 rounded-2xl p-3 sm:p-4 border border-teal-200">
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                    <div>
+                                        <label class="block text-xs font-bold text-teal-950 mb-1">
+                                            Doctor Name <span class="text-rose-500">*</span>
+                                        </label>
+                                        <input type="text" id="c1_doc_name" oninput="onDataChanged()" placeholder="Enter Gynecologist / Doctor Name..." class="w-full bg-white border border-teal-300 rounded-xl px-3.5 py-2 text-xs sm:text-sm text-slate-900 placeholder-slate-400 focus:ring-2 focus:ring-teal-500 focus:border-teal-500 focus:outline-none transition">
+                                    </div>
+                                    <div>
+                                        <div class="flex items-center justify-between mb-1">
+                                            <label class="text-xs font-bold text-teal-950">
+                                                Doctor RPL ID (6 Digits) <span class="text-rose-500">*</span>
+                                            </label>
+                                            <span id="c1_doc_rpl_badge" class="text-[10px] font-bold text-slate-400">6 digits</span>
+                                        </div>
+                                        <input type="text" inputmode="numeric" maxlength="6" id="c1_doc_rpl" oninput="onRplInput(this, 'c1_doc_rpl_badge')" placeholder="e.g. 104523" class="w-full bg-white border border-teal-300 rounded-xl px-3.5 py-2 text-xs sm:text-sm text-slate-900 font-mono font-bold placeholder-slate-400 focus:ring-2 focus:ring-teal-500 focus:border-teal-500 focus:outline-none transition tracking-wider">
+                                    </div>
+                                </div>
                             </div>
 
                             <!-- 4 Sweaters Grid -->
@@ -381,10 +403,15 @@ html_code = f'''<!DOCTYPE html>
                                 
                                 <!-- Sweater 1 -->
                                 <div class="bg-slate-50 border border-slate-200 rounded-2xl p-3 space-y-2">
-                                    <span class="text-xs font-bold text-teal-900 flex items-center gap-1.5">
-                                        <span class="w-4 h-4 rounded-full bg-teal-600 text-white flex items-center justify-center text-[10px] font-black">1</span>
-                                        Sweater 1 (Family Member)
-                                    </span>
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-xs font-bold text-teal-900 flex items-center gap-1.5">
+                                            <span class="w-4 h-4 rounded-full bg-teal-600 text-white flex items-center justify-center text-[10px] font-black">1</span>
+                                            Sweater 1 (Family Member)
+                                        </span>
+                                        <span id="c1_m1_check_badge">
+                                            <span class="text-slate-400 text-[10px] font-medium"><i class="fa-regular fa-circle"></i> Pending</span>
+                                        </span>
+                                    </div>
                                     <div class="flex gap-2.5 sm:gap-3 items-center">
                                         <div id="c1_m1_img_preview" onclick="zoomSlotImage('c1_m1_sweater')" class="sweater-card-img w-16 h-20 sm:w-20 sm:h-24 rounded-xl bg-white border border-slate-300 overflow-hidden flex-shrink-0 flex items-center justify-center text-slate-400 cursor-pointer shadow-sm relative group">
                                             <i class="fa-solid fa-shirt text-lg text-slate-300"></i>
@@ -413,10 +440,15 @@ html_code = f'''<!DOCTYPE html>
 
                                 <!-- Sweater 2 -->
                                 <div class="bg-slate-50 border border-slate-200 rounded-2xl p-3 space-y-2">
-                                    <span class="text-xs font-bold text-teal-900 flex items-center gap-1.5">
-                                        <span class="w-4 h-4 rounded-full bg-teal-600 text-white flex items-center justify-center text-[10px] font-black">2</span>
-                                        Sweater 2 (Family Member)
-                                    </span>
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-xs font-bold text-teal-900 flex items-center gap-1.5">
+                                            <span class="w-4 h-4 rounded-full bg-teal-600 text-white flex items-center justify-center text-[10px] font-black">2</span>
+                                            Sweater 2 (Family Member)
+                                        </span>
+                                        <span id="c1_m2_check_badge">
+                                            <span class="text-slate-400 text-[10px] font-medium"><i class="fa-regular fa-circle"></i> Pending</span>
+                                        </span>
+                                    </div>
                                     <div class="flex gap-2.5 sm:gap-3 items-center">
                                         <div id="c1_m2_img_preview" onclick="zoomSlotImage('c1_m2_sweater')" class="sweater-card-img w-16 h-20 sm:w-20 sm:h-24 rounded-xl bg-white border border-slate-300 overflow-hidden flex-shrink-0 flex items-center justify-center text-slate-400 cursor-pointer shadow-sm relative group">
                                             <i class="fa-solid fa-shirt text-lg text-slate-300"></i>
@@ -445,10 +477,15 @@ html_code = f'''<!DOCTYPE html>
 
                                 <!-- Sweater 3 -->
                                 <div class="bg-slate-50 border border-slate-200 rounded-2xl p-3 space-y-2">
-                                    <span class="text-xs font-bold text-teal-900 flex items-center gap-1.5">
-                                        <span class="w-4 h-4 rounded-full bg-teal-600 text-white flex items-center justify-center text-[10px] font-black">3</span>
-                                        Sweater 3 (Family Member)
-                                    </span>
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-xs font-bold text-teal-900 flex items-center gap-1.5">
+                                            <span class="w-4 h-4 rounded-full bg-teal-600 text-white flex items-center justify-center text-[10px] font-black">3</span>
+                                            Sweater 3 (Family Member)
+                                        </span>
+                                        <span id="c1_m3_check_badge">
+                                            <span class="text-slate-400 text-[10px] font-medium"><i class="fa-regular fa-circle"></i> Pending</span>
+                                        </span>
+                                    </div>
                                     <div class="flex gap-2.5 sm:gap-3 items-center">
                                         <div id="c1_m3_img_preview" onclick="zoomSlotImage('c1_m3_sweater')" class="sweater-card-img w-16 h-20 sm:w-20 sm:h-24 rounded-xl bg-white border border-slate-300 overflow-hidden flex-shrink-0 flex items-center justify-center text-slate-400 cursor-pointer shadow-sm relative group">
                                             <i class="fa-solid fa-shirt text-lg text-slate-300"></i>
@@ -477,10 +514,15 @@ html_code = f'''<!DOCTYPE html>
 
                                 <!-- Sweater 4 -->
                                 <div class="bg-slate-50 border border-slate-200 rounded-2xl p-3 space-y-2">
-                                    <span class="text-xs font-bold text-teal-900 flex items-center gap-1.5">
-                                        <span class="w-4 h-4 rounded-full bg-teal-600 text-white flex items-center justify-center text-[10px] font-black">4</span>
-                                        Sweater 4 (Family Member)
-                                    </span>
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-xs font-bold text-teal-900 flex items-center gap-1.5">
+                                            <span class="w-4 h-4 rounded-full bg-teal-600 text-white flex items-center justify-center text-[10px] font-black">4</span>
+                                            Sweater 4 (Family Member)
+                                        </span>
+                                        <span id="c1_m4_check_badge">
+                                            <span class="text-slate-400 text-[10px] font-medium"><i class="fa-regular fa-circle"></i> Pending</span>
+                                        </span>
+                                    </div>
                                     <div class="flex gap-2.5 sm:gap-3 items-center">
                                         <div id="c1_m4_img_preview" onclick="zoomSlotImage('c1_m4_sweater')" class="sweater-card-img w-16 h-20 sm:w-20 sm:h-24 rounded-xl bg-white border border-slate-300 overflow-hidden flex-shrink-0 flex items-center justify-center text-slate-400 cursor-pointer shadow-sm relative group">
                                             <i class="fa-solid fa-shirt text-lg text-slate-300"></i>
@@ -541,12 +583,29 @@ html_code = f'''<!DOCTYPE html>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
                                 
                                 <!-- Doctor 1 -->
-                                <div class="bg-purple-50/50 border border-purple-200 rounded-2xl p-3 space-y-2">
-                                    <span class="text-xs font-bold text-purple-950 flex items-center gap-1.5">
-                                        <span class="w-4 h-4 rounded-full bg-purple-600 text-white flex items-center justify-center text-[10px] font-black">1</span>
-                                        Doctor 1 Name <span class="text-rose-500">*</span>
-                                    </span>
-                                    <input type="text" id="c2_d1_name" oninput="onDataChanged()" placeholder="Enter Doctor 1 Name..." class="w-full bg-white border border-purple-300 rounded-xl px-3 py-1.5 text-xs sm:text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-purple-500">
+                                <div class="bg-purple-50/50 border border-purple-200 rounded-2xl p-3.5 space-y-2.5">
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-xs font-bold text-purple-950 flex items-center gap-1.5">
+                                            <span class="w-4 h-4 rounded-full bg-purple-600 text-white flex items-center justify-center text-[10px] font-black">1</span>
+                                            Doctor 1
+                                        </span>
+                                        <span id="c2_d1_check_badge">
+                                            <span class="text-slate-400 text-[10px] font-medium"><i class="fa-regular fa-circle"></i> Pending</span>
+                                        </span>
+                                    </div>
+                                    <div class="space-y-2">
+                                        <div>
+                                            <label class="text-[10px] font-bold text-purple-950">Doctor 1 Name <span class="text-rose-500">*</span></label>
+                                            <input type="text" id="c2_d1_name" oninput="onDataChanged()" placeholder="Enter Doctor 1 Name..." class="w-full mt-0.5 bg-white border border-purple-300 rounded-xl px-3 py-1.5 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-purple-500">
+                                        </div>
+                                        <div>
+                                            <div class="flex items-center justify-between">
+                                                <label class="text-[10px] font-bold text-purple-950">Doctor 1 RPL ID <span class="text-rose-500">*</span></label>
+                                                <span id="c2_d1_rpl_badge" class="text-[9px] font-bold text-slate-400">6 digits</span>
+                                            </div>
+                                            <input type="text" inputmode="numeric" maxlength="6" id="c2_d1_rpl" oninput="onRplInput(this, 'c2_d1_rpl_badge')" placeholder="6-digit RPL ID..." class="w-full mt-0.5 bg-white border border-purple-300 rounded-xl px-3 py-1.5 text-xs text-slate-900 font-mono font-bold placeholder-slate-400 focus:outline-none focus:border-purple-500 tracking-wider">
+                                        </div>
+                                    </div>
                                     
                                     <div class="flex gap-2.5 sm:gap-3 items-center pt-1 border-t border-purple-200/80">
                                         <div id="c2_d1_img_preview" onclick="zoomSlotImage('c2_d1_sweater')" class="sweater-card-img w-16 h-20 sm:w-20 sm:h-24 rounded-xl bg-white border border-slate-300 overflow-hidden flex-shrink-0 flex items-center justify-center text-slate-400 cursor-pointer shadow-sm relative group">
@@ -575,12 +634,29 @@ html_code = f'''<!DOCTYPE html>
                                 </div>
 
                                 <!-- Doctor 2 -->
-                                <div class="bg-purple-50/50 border border-purple-200 rounded-2xl p-3 space-y-2">
-                                    <span class="text-xs font-bold text-purple-950 flex items-center gap-1.5">
-                                        <span class="w-4 h-4 rounded-full bg-purple-600 text-white flex items-center justify-center text-[10px] font-black">2</span>
-                                        Doctor 2 Name <span class="text-rose-500">*</span>
-                                    </span>
-                                    <input type="text" id="c2_d2_name" oninput="onDataChanged()" placeholder="Enter Doctor 2 Name..." class="w-full bg-white border border-purple-300 rounded-xl px-3 py-1.5 text-xs sm:text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-purple-500">
+                                <div class="bg-purple-50/50 border border-purple-200 rounded-2xl p-3.5 space-y-2.5">
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-xs font-bold text-purple-950 flex items-center gap-1.5">
+                                            <span class="w-4 h-4 rounded-full bg-purple-600 text-white flex items-center justify-center text-[10px] font-black">2</span>
+                                            Doctor 2
+                                        </span>
+                                        <span id="c2_d2_check_badge">
+                                            <span class="text-slate-400 text-[10px] font-medium"><i class="fa-regular fa-circle"></i> Pending</span>
+                                        </span>
+                                    </div>
+                                    <div class="space-y-2">
+                                        <div>
+                                            <label class="text-[10px] font-bold text-purple-950">Doctor 2 Name <span class="text-rose-500">*</span></label>
+                                            <input type="text" id="c2_d2_name" oninput="onDataChanged()" placeholder="Enter Doctor 2 Name..." class="w-full mt-0.5 bg-white border border-purple-300 rounded-xl px-3 py-1.5 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-purple-500">
+                                        </div>
+                                        <div>
+                                            <div class="flex items-center justify-between">
+                                                <label class="text-[10px] font-bold text-purple-950">Doctor 2 RPL ID <span class="text-rose-500">*</span></label>
+                                                <span id="c2_d2_rpl_badge" class="text-[9px] font-bold text-slate-400">6 digits</span>
+                                            </div>
+                                            <input type="text" inputmode="numeric" maxlength="6" id="c2_d2_rpl" oninput="onRplInput(this, 'c2_d2_rpl_badge')" placeholder="6-digit RPL ID..." class="w-full mt-0.5 bg-white border border-purple-300 rounded-xl px-3 py-1.5 text-xs text-slate-900 font-mono font-bold placeholder-slate-400 focus:outline-none focus:border-purple-500 tracking-wider">
+                                        </div>
+                                    </div>
                                     
                                     <div class="flex gap-2.5 sm:gap-3 items-center pt-1 border-t border-purple-200/80">
                                         <div id="c2_d2_img_preview" onclick="zoomSlotImage('c2_d2_sweater')" class="sweater-card-img w-16 h-20 sm:w-20 sm:h-24 rounded-xl bg-white border border-slate-300 overflow-hidden flex-shrink-0 flex items-center justify-center text-slate-400 cursor-pointer shadow-sm relative group">
@@ -609,12 +685,29 @@ html_code = f'''<!DOCTYPE html>
                                 </div>
 
                                 <!-- Doctor 3 -->
-                                <div class="bg-purple-50/50 border border-purple-200 rounded-2xl p-3 space-y-2">
-                                    <span class="text-xs font-bold text-purple-950 flex items-center gap-1.5">
-                                        <span class="w-4 h-4 rounded-full bg-purple-600 text-white flex items-center justify-center text-[10px] font-black">3</span>
-                                        Doctor 3 Name <span class="text-rose-500">*</span>
-                                    </span>
-                                    <input type="text" id="c2_d3_name" oninput="onDataChanged()" placeholder="Enter Doctor 3 Name..." class="w-full bg-white border border-purple-300 rounded-xl px-3 py-1.5 text-xs sm:text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-purple-500">
+                                <div class="bg-purple-50/50 border border-purple-200 rounded-2xl p-3.5 space-y-2.5">
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-xs font-bold text-purple-950 flex items-center gap-1.5">
+                                            <span class="w-4 h-4 rounded-full bg-purple-600 text-white flex items-center justify-center text-[10px] font-black">3</span>
+                                            Doctor 3
+                                        </span>
+                                        <span id="c2_d3_check_badge">
+                                            <span class="text-slate-400 text-[10px] font-medium"><i class="fa-regular fa-circle"></i> Pending</span>
+                                        </span>
+                                    </div>
+                                    <div class="space-y-2">
+                                        <div>
+                                            <label class="text-[10px] font-bold text-purple-950">Doctor 3 Name <span class="text-rose-500">*</span></label>
+                                            <input type="text" id="c2_d3_name" oninput="onDataChanged()" placeholder="Enter Doctor 3 Name..." class="w-full mt-0.5 bg-white border border-purple-300 rounded-xl px-3 py-1.5 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-purple-500">
+                                        </div>
+                                        <div>
+                                            <div class="flex items-center justify-between">
+                                                <label class="text-[10px] font-bold text-purple-950">Doctor 3 RPL ID <span class="text-rose-500">*</span></label>
+                                                <span id="c2_d3_rpl_badge" class="text-[9px] font-bold text-slate-400">6 digits</span>
+                                            </div>
+                                            <input type="text" inputmode="numeric" maxlength="6" id="c2_d3_rpl" oninput="onRplInput(this, 'c2_d3_rpl_badge')" placeholder="6-digit RPL ID..." class="w-full mt-0.5 bg-white border border-purple-300 rounded-xl px-3 py-1.5 text-xs text-slate-900 font-mono font-bold placeholder-slate-400 focus:outline-none focus:border-purple-500 tracking-wider">
+                                        </div>
+                                    </div>
                                     
                                     <div class="flex gap-2.5 sm:gap-3 items-center pt-1 border-t border-purple-200/80">
                                         <div id="c2_d3_img_preview" onclick="zoomSlotImage('c2_d3_sweater')" class="sweater-card-img w-16 h-20 sm:w-20 sm:h-24 rounded-xl bg-white border border-slate-300 overflow-hidden flex-shrink-0 flex items-center justify-center text-slate-400 cursor-pointer shadow-sm relative group">
@@ -643,12 +736,29 @@ html_code = f'''<!DOCTYPE html>
                                 </div>
 
                                 <!-- Doctor 4 -->
-                                <div class="bg-purple-50/50 border border-purple-200 rounded-2xl p-3 space-y-2">
-                                    <span class="text-xs font-bold text-purple-950 flex items-center gap-1.5">
-                                        <span class="w-4 h-4 rounded-full bg-purple-600 text-white flex items-center justify-center text-[10px] font-black">4</span>
-                                        Doctor 4 Name <span class="text-rose-500">*</span>
-                                    </span>
-                                    <input type="text" id="c2_d4_name" oninput="onDataChanged()" placeholder="Enter Doctor 4 Name..." class="w-full bg-white border border-purple-300 rounded-xl px-3 py-1.5 text-xs sm:text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-purple-500">
+                                <div class="bg-purple-50/50 border border-purple-200 rounded-2xl p-3.5 space-y-2.5">
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-xs font-bold text-purple-950 flex items-center gap-1.5">
+                                            <span class="w-4 h-4 rounded-full bg-purple-600 text-white flex items-center justify-center text-[10px] font-black">4</span>
+                                            Doctor 4
+                                        </span>
+                                        <span id="c2_d4_check_badge">
+                                            <span class="text-slate-400 text-[10px] font-medium"><i class="fa-regular fa-circle"></i> Pending</span>
+                                        </span>
+                                    </div>
+                                    <div class="space-y-2">
+                                        <div>
+                                            <label class="text-[10px] font-bold text-purple-950">Doctor 4 Name <span class="text-rose-500">*</span></label>
+                                            <input type="text" id="c2_d4_name" oninput="onDataChanged()" placeholder="Enter Doctor 4 Name..." class="w-full mt-0.5 bg-white border border-purple-300 rounded-xl px-3 py-1.5 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-purple-500">
+                                        </div>
+                                        <div>
+                                            <div class="flex items-center justify-between">
+                                                <label class="text-[10px] font-bold text-purple-950">Doctor 4 RPL ID <span class="text-rose-500">*</span></label>
+                                                <span id="c2_d4_rpl_badge" class="text-[9px] font-bold text-slate-400">6 digits</span>
+                                            </div>
+                                            <input type="text" inputmode="numeric" maxlength="6" id="c2_d4_rpl" oninput="onRplInput(this, 'c2_d4_rpl_badge')" placeholder="6-digit RPL ID..." class="w-full mt-0.5 bg-white border border-purple-300 rounded-xl px-3 py-1.5 text-xs text-slate-900 font-mono font-bold placeholder-slate-400 focus:outline-none focus:border-purple-500 tracking-wider">
+                                        </div>
+                                    </div>
                                     
                                     <div class="flex gap-2.5 sm:gap-3 items-center pt-1 border-t border-purple-200/80">
                                         <div id="c2_d4_img_preview" onclick="zoomSlotImage('c2_d4_sweater')" class="sweater-card-img w-16 h-20 sm:w-20 sm:h-24 rounded-xl bg-white border border-slate-300 overflow-hidden flex-shrink-0 flex items-center justify-center text-slate-400 cursor-pointer shadow-sm relative group">
@@ -1376,7 +1486,8 @@ html_code = f'''<!DOCTYPE html>
             activeTerritoryIndex = idx;
             const r = REGION_MAP[currentRegionCode];
             const t = r.territories[idx];
-            const d = store[t.sap_territory_code] || {{}};
+            const terrCode = String(t.sap_territory_code);
+            const d = store[terrCode] || {{}};
 
             localStorage.setItem('EXIUM_ACTIVE_SESSION', JSON.stringify({{
                 region_code: currentRegionCode,
@@ -1385,7 +1496,7 @@ html_code = f'''<!DOCTYPE html>
 
             document.getElementById('mobile-territory-select').value = idx;
             document.getElementById('current-territory-title').textContent = t.territory_name;
-            document.getElementById('current-territory-code').textContent = `SAP Code: ${{t.sap_territory_code}}`;
+            document.getElementById('current-territory-code').textContent = `SAP Code: ${{terrCode}}`;
 
             const status = getTerritoryStatus(d);
             const statusBadge = document.getElementById('current-territory-status');
@@ -1404,11 +1515,17 @@ html_code = f'''<!DOCTYPE html>
                 lockedNotice.classList.add('hidden');
             }}
 
-            // Populate C1
+            // Populate C1 Doctor Name & RPL ID
             const c1DocInput = document.getElementById('c1_doc_name');
             c1DocInput.value = d.c1_doc_name || '';
             c1DocInput.disabled = isLocked;
 
+            const c1DocRpl = document.getElementById('c1_doc_rpl');
+            c1DocRpl.value = d.c1_doc_rpl || '';
+            c1DocRpl.disabled = isLocked;
+            updateRplBadgeState(c1DocRpl, 'c1_doc_rpl_badge');
+
+            // Populate C1 Sweaters
             ['m1', 'm2', 'm3', 'm4'].forEach(m => {{
                 const sw = d[`c1_${{m}}_sweater`] || '';
                 const sz = d[`c1_${{m}}_size`] || '';
@@ -1420,13 +1537,19 @@ html_code = f'''<!DOCTYPE html>
                 updateSizeOptionsForSelect(`c1_${{m}}_sweater`, `c1_${{m}}_size`, sz);
                 szSel.disabled = isLocked;
                 updateSlotImagePreview(`c1_${{m}}_img_preview`, sw);
+                updateSweaterSlotIndicator(`c1_${{m}}`);
             }});
 
-            // Populate C2
+            // Populate C2 Doctors
             ['d1', 'd2', 'd3', 'd4'].forEach(d_item => {{
                 const dNameInput = document.getElementById(`c2_${{d_item}}_name`);
                 dNameInput.value = d[`c2_${{d_item}}_name`] || '';
                 dNameInput.disabled = isLocked;
+
+                const dRplInput = document.getElementById(`c2_${{d_item}}_rpl`);
+                dRplInput.value = d[`c2_${{d_item}}_rpl`] || '';
+                dRplInput.disabled = isLocked;
+                updateRplBadgeState(dRplInput, `c2_${{d_item}}_rpl_badge`);
 
                 const sw = d[`c2_${{d_item}}_sweater`] || '';
                 const sz = d[`c2_${{d_item}}_size`] || '';
@@ -1438,74 +1561,86 @@ html_code = f'''<!DOCTYPE html>
                 updateSizeOptionsForSelect(`c2_${{d_item}}_sweater`, `c2_${{d_item}}_size`, sz);
                 szSel.disabled = isLocked;
                 updateSlotImagePreview(`c2_${{d_item}}_img_preview`, sw);
+                updateSweaterSlotIndicator(`c2_${{d_item}}`);
             }});
 
-            renderTerritoryTabs();
+            // Highlight Tab
+            r.territories.forEach((_, tabIdx) => {{
+                const btn = document.getElementById(`terr-tab-btn-${{tabIdx}}`);
+                if (btn) {{
+                    const tabStatus = getTerritoryStatus(store[r.territories[tabIdx].sap_territory_code]);
+                    if (tabIdx === idx) {{
+                        btn.className = 'w-full text-left p-3 rounded-2xl text-xs font-bold transition flex items-center justify-between border bg-orange-500 text-white border-orange-500 shadow-md';
+                    }} else {{
+                        btn.className = 'w-full text-left p-3 rounded-2xl text-xs font-bold transition flex items-center justify-between border bg-slate-50 hover:bg-slate-100 text-slate-700 border-slate-200';
+                    }}
+                }}
+            }});
 
-            // Auto-scroll to top of active territory card
             if (shouldScroll) {{
-                window.scrollTo({{ top: 0, behavior: 'smooth' }});
+                const bannerEl = document.getElementById('active-territory-banner-card');
+                if (bannerEl) {{
+                    bannerEl.scrollIntoView({{ behavior: 'smooth', block: 'start' }});
+                }}
             }}
         }}
 
-        function onSweaterSelectChange(slotId, val) {{
-            updateSizeOptionsForSelect(`${{slotId}}_sweater`, `${{slotId}}_size`);
-            updateSlotImagePreview(`${{slotId}}_img_preview`, val);
+        // Live RPL Input Sanitize & Badge Updater
+        function onRplInput(inputEl, badgeId) {{
+            inputEl.value = inputEl.value.replace(/[^0-9]/g, '').slice(0, 6);
+            updateRplBadgeState(inputEl, badgeId);
             onDataChanged();
         }}
 
-        function updateSizeOptionsForSelect(sweaterSelectId, sizeSelectId, preselectedVal = '') {{
-            const swVal = document.getElementById(sweaterSelectId).value;
-            const sizeSelect = document.getElementById(sizeSelectId);
-            
-            let sizes = ['S', 'M', 'L', 'XL', 'XXL'];
-            if (swVal.includes('04')) {{
-                sizes = ['XS', 'S', 'M', 'L', 'XL'];
-            }}
+        function updateRplBadgeState(inputEl, badgeId) {{
+            const val = inputEl.value || '';
+            const badge = document.getElementById(badgeId);
+            if (!badge) return;
 
-            sizeSelect.innerHTML = '<option value="">-- Size --</option>';
-            sizes.forEach(sz => {{
-                const opt = document.createElement('option');
-                opt.value = sz;
-                opt.textContent = sz;
-                if (sz === preselectedVal) opt.selected = true;
-                sizeSelect.appendChild(opt);
-            }});
+            if (val.length === 0) {{
+                inputEl.classList.remove('border-rose-500', 'border-emerald-500', 'border-amber-400');
+                badge.textContent = "6 digits";
+                badge.className = "text-[9px] sm:text-[10px] font-bold text-slate-400";
+            }} else if (val.length < 6) {{
+                inputEl.classList.remove('border-emerald-500');
+                inputEl.classList.add('border-amber-400');
+                badge.textContent = `${{val.length}}/6 digits`;
+                badge.className = "text-[9px] sm:text-[10px] font-black text-amber-600";
+            }} else if (val.length === 6) {{
+                inputEl.classList.remove('border-amber-400', 'border-rose-500');
+                inputEl.classList.add('border-emerald-500');
+                badge.innerHTML = '<i class="fa-solid fa-check text-emerald-600"></i> Valid 6-Digit';
+                badge.className = "text-[9px] sm:text-[10px] font-black text-emerald-600";
+            }}
         }}
 
-        function updateSlotImagePreview(previewContainerId, swVal) {{
-            const container = document.getElementById(previewContainerId);
-            const item = getSweaterMeta(swVal);
-            if (item) {{
-                container.innerHTML = `
-                    <img src="${{item.img}}" onerror="this.src='${{item.fallback_img}}'" class="w-full h-full object-cover rounded-xl" style="image-rendering: -webkit-optimize-contrast;" alt="${{item.name}}">
-                    <div class="absolute inset-0 bg-slate-900/30 opacity-0 group-hover:opacity-100 flex items-center justify-center transition rounded-xl">
-                        <i class="fa-solid fa-magnifying-glass-plus text-white text-base"></i>
-                    </div>
-                `;
+        // Dynamic Green Check Indicator for Sweater Slots
+        function updateSweaterSlotIndicator(slotPrefix) {{
+            const sw = document.getElementById(`${{slotPrefix}}_sweater`)?.value || '';
+            const sz = document.getElementById(`${{slotPrefix}}_size`)?.value || '';
+            const badge = document.getElementById(`${{slotPrefix}}_check_badge`);
+            if (!badge) return;
+
+            if (sw && sz) {{
+                badge.innerHTML = `<span class="bg-emerald-100 text-emerald-800 border border-emerald-300 text-[10px] font-black px-2 py-0.5 rounded-full flex items-center gap-1 shadow-sm"><i class="fa-solid fa-circle-check text-emerald-600"></i> Complete</span>`;
+            }} else if (sw || sz) {{
+                badge.innerHTML = `<span class="bg-amber-100 text-amber-800 border border-amber-300 text-[10px] font-bold px-1.5 py-0.5 rounded-full flex items-center gap-1"><i class="fa-solid fa-clock text-amber-600"></i> Incomplete</span>`;
             }} else {{
-                container.innerHTML = '<i class="fa-solid fa-shirt text-lg text-slate-300"></i>';
+                badge.innerHTML = `<span class="text-slate-400 text-[10px] font-medium"><i class="fa-regular fa-circle"></i> Pending</span>`;
             }}
         }}
 
-        function zoomSlotImage(selectId) {{
-            const val = document.getElementById(selectId).value;
-            if (val) {{
-                openImageLightbox(val);
-            }} else {{
-                openCatalogModal();
-            }}
-        }}
-
+        // Real-Time Background Silent Auto-Save
         function onDataChanged() {{
-            if (isRegionLocked()) return;
+            if (isRegionLocked() || !currentRegionCode) return;
 
             const r = REGION_MAP[currentRegionCode];
             const t = r.territories[activeTerritoryIndex];
-            const terrCode = t.sap_territory_code;
+            const terrCode = String(t.sap_territory_code);
 
-            store[terrCode] = {{
+            const terrData = {{
                 c1_doc_name: document.getElementById('c1_doc_name').value.trim(),
+                c1_doc_rpl: document.getElementById('c1_doc_rpl').value.trim(),
                 c1_m1_sweater: document.getElementById('c1_m1_sweater').value,
                 c1_m1_size: document.getElementById('c1_m1_size').value,
                 c1_m2_sweater: document.getElementById('c1_m2_sweater').value,
@@ -1516,35 +1651,79 @@ html_code = f'''<!DOCTYPE html>
                 c1_m4_size: document.getElementById('c1_m4_size').value,
 
                 c2_d1_name: document.getElementById('c2_d1_name').value.trim(),
+                c2_d1_rpl: document.getElementById('c2_d1_rpl').value.trim(),
                 c2_d1_sweater: document.getElementById('c2_d1_sweater').value,
                 c2_d1_size: document.getElementById('c2_d1_size').value,
                 c2_d2_name: document.getElementById('c2_d2_name').value.trim(),
+                c2_d2_rpl: document.getElementById('c2_d2_rpl').value.trim(),
                 c2_d2_sweater: document.getElementById('c2_d2_sweater').value,
                 c2_d2_size: document.getElementById('c2_d2_size').value,
                 c2_d3_name: document.getElementById('c2_d3_name').value.trim(),
+                c2_d3_rpl: document.getElementById('c2_d3_rpl').value.trim(),
                 c2_d3_sweater: document.getElementById('c2_d3_sweater').value,
                 c2_d3_size: document.getElementById('c2_d3_size').value,
                 c2_d4_name: document.getElementById('c2_d4_name').value.trim(),
+                c2_d4_rpl: document.getElementById('c2_d4_rpl').value.trim(),
                 c2_d4_sweater: document.getElementById('c2_d4_sweater').value,
                 c2_d4_size: document.getElementById('c2_d4_size').value,
             }};
 
+            store[terrCode] = terrData;
             localStorage.setItem('EXIUM_SWEATER_STORE', JSON.stringify(store));
-            renderTerritoryTabs();
+
+            // Update slot indicators
+            ['c1_m1', 'c1_m2', 'c1_m3', 'c1_m4', 'c2_d1', 'c2_d2', 'c2_d3', 'c2_d4'].forEach(p => updateSweaterSlotIndicator(p));
+
+            // Update status badge
+            const status = getTerritoryStatus(terrData);
+            const statusBadge = document.getElementById('current-territory-status');
+            statusBadge.textContent = status;
+            statusBadge.className = `text-[9px] sm:text-[10px] font-bold px-2 py-0.2 rounded-full ${{
+                status === 'Complete' ? 'bg-emerald-500 text-slate-950 font-black' :
+                status === 'In Progress' ? 'bg-amber-400 text-slate-950 font-bold' :
+                'bg-white/10 text-slate-200 border border-white/20'
+            }}`;
+
+            // Update progress in sidebar
+            let completedCount = 0;
+            r.territories.forEach(ter => {{
+                if (getTerritoryStatus(store[String(ter.sap_territory_code)]) === 'Complete') completedCount++;
+            }});
+            document.getElementById('region-progress-badge').textContent = `${{completedCount}}/${{r.territories.length}} Done`;
         }}
 
+        // Explicit Save Button Click (Triggers instant feedback Toast)
         function saveCurrentTerritoryClick() {{
             onDataChanged();
-            alert('✅ Territory information saved successfully!');
+            const r = REGION_MAP[currentRegionCode];
+            const t = r ? r.territories[activeTerritoryIndex] : null;
+            const name = t ? t.territory_name : 'Territory';
+            showToast(`✅ ${{name}} saved successfully!`);
+        }}
+
+        function showToast(msg) {{
+            const toast = document.getElementById('toast-notification');
+            const msgEl = document.getElementById('toast-msg');
+            msgEl.textContent = msg;
+            toast.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-10');
+            toast.classList.add('opacity-100', 'translate-y-0');
+
+            setTimeout(() => {{
+                toast.classList.remove('opacity-100', 'translate-y-0');
+                toast.classList.add('opacity-0', 'pointer-events-none', 'translate-y-10');
+            }}, 2200);
         }}
 
         function getTerritoryStatus(d) {{
             if (!d) return 'Not Started';
-            const c1Ok = d.c1_doc_name && d.c1_m1_sweater && d.c1_m1_size && d.c1_m2_sweater && d.c1_m2_size && d.c1_m3_sweater && d.c1_m3_size && d.c1_m4_sweater && d.c1_m4_size;
-            const c2Ok = d.c2_d1_name && d.c2_d1_sweater && d.c2_d1_size && d.c2_d2_name && d.c2_d2_sweater && d.c2_d2_size && d.c2_d3_name && d.c2_d3_sweater && d.c2_d3_size && d.c2_d4_name && d.c2_d4_sweater && d.c2_d4_size;
+            const c1Ok = d.c1_doc_name && d.c1_doc_rpl && d.c1_doc_rpl.length === 6 && d.c1_m1_sweater && d.c1_m1_size && d.c1_m2_sweater && d.c1_m2_size && d.c1_m3_sweater && d.c1_m3_size && d.c1_m4_sweater && d.c1_m4_size;
+            const c2Ok = d.c2_d1_name && d.c2_d1_rpl && d.c2_d1_rpl.length === 6 && d.c2_d1_sweater && d.c2_d1_size && 
+                         d.c2_d2_name && d.c2_d2_rpl && d.c2_d2_rpl.length === 6 && d.c2_d2_sweater && d.c2_d2_size && 
+                         d.c2_d3_name && d.c2_d3_rpl && d.c2_d3_rpl.length === 6 && d.c2_d3_sweater && d.c2_d3_size && 
+                         d.c2_d4_name && d.c2_d4_rpl && d.c2_d4_rpl.length === 6 && d.c2_d4_sweater && d.c2_d4_size;
 
             if (c1Ok && c2Ok) return 'Complete';
-            if (d.c1_doc_name || d.c2_d1_name || d.c2_d2_name || d.c2_d3_name || d.c2_d4_name) return 'In Progress';
+            if (d.c1_doc_name || d.c1_doc_rpl || d.c2_d1_name || d.c2_d1_rpl || d.c2_d2_name || d.c2_d3_name || d.c2_d4_name || d.c1_m1_sweater || d.c2_d1_sweater) return 'In Progress';
             return 'Not Started';
         }}
 
@@ -1557,30 +1736,70 @@ html_code = f'''<!DOCTYPE html>
             }}
         }}
 
-        function saveCurrentRegionData(showAlert = true) {{
+        function onSweaterSelectChange(slotPrefix, sweaterVal) {{
+            updateSizeOptionsForSelect(`${{slotPrefix}}_sweater`, `${{slotPrefix}}_size`, '');
+            updateSlotImagePreview(`${{slotPrefix}}_img_preview`, sweaterVal);
             onDataChanged();
-            localStorage.setItem('EXIUM_SWEATER_STORE', JSON.stringify(store));
-            if (showAlert) {{
-                alert('✅ Information successfully saved!');
+        }}
+
+        function updateSizeOptionsForSelect(swSelectId, szSelectId, currentVal) {{
+            const swVal = document.getElementById(swSelectId).value;
+            const szSel = document.getElementById(szSelectId);
+            szSel.innerHTML = '<option value="">-- Size --</option>';
+
+            if (!swVal) return;
+
+            let allowedSizes = ["S", "M", "L", "XL", "XXL"];
+            if (swVal.includes("04")) {{
+                allowedSizes = ["XS", "S", "M", "L", "XL"];
+            }}
+
+            allowedSizes.forEach(s => {{
+                const opt = document.createElement('option');
+                opt.value = s;
+                opt.textContent = s;
+                if (s === currentVal) opt.selected = true;
+                szSel.appendChild(opt);
+            }});
+        }}
+
+        function updateSlotImagePreview(previewContainerId, sweaterVal) {{
+            const el = document.getElementById(previewContainerId);
+            if (!el) return;
+
+            const code = sweaterVal ? sweaterVal.substring(0, 2) : '';
+            const item = SWEATER_DETAILS[code];
+
+            if (item) {{
+                el.innerHTML = `
+                    <img src="${{item.img}}" onerror="this.src='${{item.fallback_img}}'" alt="Sweater" class="w-full h-full object-cover">
+                    <span class="absolute top-1 left-1 bg-slate-950/80 text-white text-[9px] font-black px-1.5 py-0.5 rounded shadow">${{code}}</span>
+                    <span class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center text-white text-xs transition duration-200"><i class="fa-solid fa-magnifying-glass-plus"></i></span>
+                `;
+            }} else {{
+                el.innerHTML = '<i class="fa-solid fa-shirt text-lg text-slate-300"></i>';
             }}
         }}
 
-        // Full-Resolution Lightbox Zoom Modal (100% Reliable)
-        function openImageLightbox(key) {{
-            const item = getSweaterMeta(key);
-            if (!item) return;
+        function zoomSlotImage(selectId) {{
+            const swVal = document.getElementById(selectId).value;
+            const code = swVal ? swVal.substring(0, 2) : '01';
+            openImageLightbox(code);
+        }}
 
+        // Lightbox Modal
+        function openImageLightbox(key) {{
+            const item = SWEATER_DETAILS[key] || SWEATER_DETAILS["01"];
             const modal = document.getElementById('image-lightbox-modal');
             const imgEl = document.getElementById('lightbox-img');
             imgEl.src = item.img;
             imgEl.onerror = function() {{ this.src = item.fallback_img; }};
             
-            document.getElementById('lightbox-code-badge').textContent = "Code: " + item.code;
+            document.getElementById('lightbox-code-badge').textContent = item.code;
             document.getElementById('lightbox-gender').textContent = item.gender;
             document.getElementById('lightbox-title').textContent = item.name;
             document.getElementById('lightbox-color').textContent = item.color;
             document.getElementById('lightbox-sizes').textContent = item.sizes;
-            document.getElementById('lightbox-measurements').innerText = item.measurements;
 
             modal.classList.remove('hidden');
         }}
@@ -1590,240 +1809,220 @@ html_code = f'''<!DOCTYPE html>
         }}
 
         // Catalogue Modal
-        function openCatalogModal() {{ document.getElementById('catalog-modal').classList.remove('hidden'); }}
-        function closeCatalogModal() {{ document.getElementById('catalog-modal').classList.add('hidden'); }}
+        function openCatalogModal() {{
+            document.getElementById('catalog-modal').classList.remove('hidden');
+        }}
 
-        // Admin Modal
+        function closeCatalogModal() {{
+            document.getElementById('catalog-modal').classList.add('hidden');
+        }}
+
+        // Lock & Access Rules
+        function isRegionLocked() {{
+            if (!isGlobalAccessOpen) return true;
+            if (currentRegionCode && regionLocks[currentRegionCode]) return true;
+            return false;
+        }}
+
+        function checkGlobalLockBanner() {{
+            const b = document.getElementById('global-lock-banner');
+            if (!isGlobalAccessOpen) {{
+                b.classList.remove('hidden');
+            }} else {{
+                b.classList.add('hidden');
+            }}
+        }}
+
+        function togglePasswordVisibility(inputId, btn) {{
+            const inp = document.getElementById(inputId);
+            const icon = btn.querySelector('i');
+            if (inp.type === 'password') {{
+                inp.type = 'text';
+                icon.className = 'fa-regular fa-eye-slash';
+            }} else {{
+                inp.type = 'password';
+                icon.className = 'fa-regular fa-eye';
+            }}
+        }}
+
+        // Admin Management
         function openAdminModal() {{
             document.getElementById('admin-modal').classList.remove('hidden');
             if (isAdminLoggedIn) {{
-                renderAdminDashboard();
+                showAdminDashboard();
             }} else {{
-                document.getElementById('admin-login-box').classList.remove('hidden');
-                document.getElementById('admin-dashboard-content').classList.add('hidden');
+                document.getElementById('admin-auth-view').classList.remove('hidden');
+                document.getElementById('admin-dashboard-view').classList.add('hidden');
                 document.getElementById('admin-pass-input').value = '';
-                document.getElementById('admin-pass-input').focus();
+                document.getElementById('admin-auth-err').classList.add('hidden');
             }}
         }}
+
         function closeAdminModal() {{
-            isAdminLoggedIn = false;
             document.getElementById('admin-modal').classList.add('hidden');
         }}
 
-        // Admin Login
-        function loginAdmin() {{
-            const pass = document.getElementById('admin-pass-input').value.trim();
-            if (pass === 'Exium MUPS' || pass.toLowerCase() === 'exium mups' || pass === 'admin2026') {{
+        function verifyAdminPassword() {{
+            const p = document.getElementById('admin-pass-input').value.trim();
+            if (p === 'Exium MUPS') {{
                 isAdminLoggedIn = true;
-                document.getElementById('admin-login-box').classList.add('hidden');
-                document.getElementById('admin-dashboard-content').classList.remove('hidden');
-                renderAdminDashboard();
+                showAdminDashboard();
             }} else {{
-                alert('Invalid Admin Password!');
+                document.getElementById('admin-auth-err').classList.remove('hidden');
             }}
         }}
 
-        function toggleGlobalAccess() {{
+        function logoutAdmin() {{
+            isAdminLoggedIn = false;
+            document.getElementById('admin-auth-view').classList.remove('hidden');
+            document.getElementById('admin-dashboard-view').classList.add('hidden');
+        }}
+
+        function showAdminDashboard() {{
+            document.getElementById('admin-auth-view').classList.add('hidden');
+            document.getElementById('admin-dashboard-view').classList.remove('hidden');
+
+            const accessBtn = document.getElementById('toggle-global-access-btn');
+            if (isGlobalAccessOpen) {{
+                accessBtn.className = 'px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-xl flex items-center gap-1.5 shadow-sm';
+                accessBtn.innerHTML = '<i class="fa-solid fa-lock-open"></i> <span>Open (Submissions Active)</span>';
+            }} else {{
+                accessBtn.className = 'px-3 py-1.5 bg-rose-600 hover:bg-rose-500 text-white text-xs font-bold rounded-xl flex items-center gap-1.5 shadow-sm';
+                accessBtn.innerHTML = '<i class="fa-solid fa-lock"></i> <span>Locked (Read-Only)</span>';
+            }}
+
+            renderAdminProductionMatrix();
+            renderAdminRegionsTable();
+        }}
+
+        function toggleGlobalSubmissionsAccess() {{
             isGlobalAccessOpen = !isGlobalAccessOpen;
             localStorage.setItem('EXIUM_GLOBAL_ACCESS', JSON.stringify(isGlobalAccessOpen));
-            
-            const badge = document.getElementById('admin-global-access-badge');
-            const btn = document.getElementById('admin-global-toggle-btn');
-
-            if (isGlobalAccessOpen) {{
-                badge.textContent = 'OPEN';
-                badge.className = 'px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 border border-emerald-200';
-                btn.className = 'px-3 sm:px-4 py-2 bg-rose-600 hover:bg-rose-500 text-white font-bold rounded-xl text-xs transition flex items-center gap-1.5 shadow-sm active:scale-95';
-                btn.innerHTML = '<i class="fa-solid fa-lock"></i><span>Lock Submissions</span>';
-            }} else {{
-                badge.textContent = 'LOCKED';
-                badge.className = 'px-2.5 py-0.5 rounded-full text-xs font-bold bg-rose-100 text-rose-800 border border-rose-200';
-                btn.className = 'px-3 sm:px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl text-xs transition flex items-center gap-1.5 shadow-sm active:scale-95';
-                btn.innerHTML = '<i class="fa-solid fa-lock-open"></i><span>Re-Open Submissions</span>';
-            }}
-
             checkGlobalLockBanner();
-            alert(isGlobalAccessOpen ? 'Submissions are now OPEN for all regions.' : 'Submissions are now LOCKED globally.');
+            showAdminDashboard();
+            if (currentRegionCode) selectTerritoryTab(activeTerritoryIndex, false);
         }}
 
-        function toggleSpecificRegionLock(code) {{
-            regionLocks[code] = !regionLocks[code];
-            localStorage.setItem('EXIUM_REGION_LOCKS', JSON.stringify(regionLocks));
-            renderAdminRegionTable();
-        }}
-
-        // Admin Delete Single Region Data
-        function promptDeleteRegionData(code) {{
-            pendingDeleteRegionCode = code;
-            const r = REGION_MAP[code];
-            document.getElementById('delete-confirm-message').innerHTML = `Are you sure you want to delete all saved submission data for:<br><strong class="text-slate-900">${{r.region_name}} (${{r.sap_region_code}})</strong>?<br><span class="text-[11px] text-rose-600 font-semibold">This action cannot be undone.</span>`;
-            document.getElementById('delete-confirm-btn').onclick = executeDeleteRegionData;
-            document.getElementById('delete-confirm-modal').classList.remove('hidden');
-        }}
-
-        function executeDeleteRegionData() {{
-            if (!pendingDeleteRegionCode) return;
-            const r = REGION_MAP[pendingDeleteRegionCode];
-            r.territories.forEach(t => {{
-                delete store[t.sap_territory_code];
-            }});
-            localStorage.setItem('EXIUM_SWEATER_STORE', JSON.stringify(store));
-            closeDeleteConfirmModal();
-            renderAdminDashboard();
-            alert(`✅ All data for region ${{r.region_name}} has been cleared.`);
-        }}
-
-        // Admin Delete ALL Submissions Data
-        function promptDeleteAllData() {{
-            document.getElementById('delete-confirm-message').innerHTML = `<strong class="text-rose-600 text-sm">⚠️ DANGER: DELETE ALL DATA</strong><br><br>Are you sure you want to delete <strong class="text-slate-900">ALL submission data</strong> across all 252 regions and 1,856 territories?<br><span class="text-[11px] text-rose-600 font-semibold">All entered doctor names, sweater selections, and sizes will be permanently wiped out!</span>`;
-            document.getElementById('delete-confirm-btn').onclick = executeDeleteAllData;
-            document.getElementById('delete-confirm-modal').classList.remove('hidden');
-        }}
-
-        function executeDeleteAllData() {{
-            store = {{}};
-            localStorage.setItem('EXIUM_SWEATER_STORE', JSON.stringify(store));
-            closeDeleteConfirmModal();
-            renderAdminDashboard();
-            alert('✅ All campaign submission data has been completely wiped out.');
-        }}
-
-        function closeDeleteConfirmModal() {{
-            pendingDeleteRegionCode = null;
-            document.getElementById('delete-confirm-modal').classList.add('hidden');
-        }}
-
-        function renderAdminDashboard() {{
-            let completedTerritories = 0;
-            let inProgressTerritories = 0;
-            let totalSweatersCount = 0;
-
+        function renderAdminProductionMatrix() {{
             const counts = {{
-                "01 - Men's V-Neck (Grey)": {{ XS: 0, S: 0, M: 0, L: 0, XL: 0, XXL: 0, total: 0 }},
-                "02 - Men's V-Neck (Navy Blue)": {{ XS: 0, S: 0, M: 0, L: 0, XL: 0, XXL: 0, total: 0 }},
-                "03 - Men's V-Neck (Cream Check)": {{ XS: 0, S: 0, M: 0, L: 0, XL: 0, XXL: 0, total: 0 }},
-                "04 - Women's Short Cardigan (Check)": {{ XS: 0, S: 0, M: 0, L: 0, XL: 0, XXL: 0, total: 0 }},
-                "05 - Women's Semi Long Cardigan (Black)": {{ XS: 0, S: 0, M: 0, L: 0, XL: 0, XXL: 0, total: 0 }}
+                "01": {{ "XS": 0, "S": 0, "M": 0, "L": 0, "XL": 0, "XXL": 0, total: 0 }},
+                "02": {{ "XS": 0, "S": 0, "M": 0, "L": 0, "XL": 0, "XXL": 0, total: 0 }},
+                "03": {{ "XS": 0, "S": 0, "M": 0, "L": 0, "XL": 0, "XXL": 0, total: 0 }},
+                "04": {{ "XS": 0, "S": 0, "M": 0, "L": 0, "XL": 0, "XXL": 0, total: 0 }},
+                "05": {{ "XS": 0, "S": 0, "M": 0, "L": 0, "XL": 0, "XXL": 0, total: 0 }}
             }};
 
-            ALL_TERRITORIES.forEach(t => {{
-                const d = store[t['SAP Territory Code']];
-                if (d) {{
-                    const st = getTerritoryStatus(d);
-                    if (st === 'Complete') completedTerritories++;
-                    else if (st === 'In Progress') inProgressTerritories++;
-
-                    ['m1', 'm2', 'm3', 'm4'].forEach(m => {{
-                        const sw = d[`c1_${{m}}_sweater`];
-                        const sz = d[`c1_${{m}}_size`];
-                        if (sw && sz && counts[sw]) {{
-                            counts[sw][sz] = (counts[sw][sz] || 0) + 1;
-                            counts[sw].total++;
-                            totalSweatersCount++;
+            // Accumulate from store
+            Object.values(store).forEach(d => {{
+                // C1
+                ['m1', 'm2', 'm3', 'm4'].forEach(m => {{
+                    const sw = d[`c1_${{m}}_sweater`];
+                    const sz = d[`c1_${{m}}_size`];
+                    if (sw && sz) {{
+                        const code = sw.substring(0, 2);
+                        if (counts[code] && counts[code][sz] !== undefined) {{
+                            counts[code][sz]++;
+                            counts[code].total++;
                         }}
-                    }});
-
-                    ['d1', 'd2', 'd3', 'd4'].forEach(d_item => {{
-                        const sw = d[`c2_${{d_item}}_sweater`];
-                        const sz = d[`c2_${{d_item}}_size`];
-                        if (sw && sz && counts[sw]) {{
-                            counts[sw][sz] = (counts[sw][sz] || 0) + 1;
-                            counts[sw].total++;
-                            totalSweatersCount++;
+                    }}
+                }});
+                // C2
+                ['d1', 'd2', 'd3', 'd4'].forEach(di => {{
+                    const sw = d[`c2_${{di}}_sweater`];
+                    const sz = d[`c2_${{di}}_size`];
+                    if (sw && sz) {{
+                        const code = sw.substring(0, 2);
+                        if (counts[code] && counts[code][sz] !== undefined) {{
+                            counts[code][sz]++;
+                            counts[code].total++;
                         }}
-                    }});
-                }}
+                    }}
+                }});
             }});
 
-            const pct = Math.round((completedTerritories / ALL_TERRITORIES.length) * 100);
-            document.getElementById('admin-kpi-completed').textContent = completedTerritories;
-            document.getElementById('admin-kpi-completed-pct').textContent = `${{pct}}% of total`;
-            document.getElementById('admin-kpi-inprogress').textContent = inProgressTerritories;
-            document.getElementById('admin-kpi-sweaters').textContent = `${{totalSweatersCount.toLocaleString()}} / 14,848`;
-
-            let matrixHtml = `
-                <table class="w-full text-xs text-center border-collapse border border-slate-200 rounded-xl overflow-hidden shadow-sm min-w-[500px]">
-                    <thead>
-                        <tr class="bg-slate-900 text-white">
-                            <th class="py-2 px-3 text-left">Sweater Design</th>
-                            <th>XS</th><th>S</th><th>M</th><th>L</th><th>XL</th><th>XXL</th>
-                            <th class="bg-orange-600 text-white font-bold">Total Pieces</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-slate-200 bg-white text-slate-700">
-            `;
-
-            let szTotals = {{ XS: 0, S: 0, M: 0, L: 0, XL: 0, XXL: 0 }};
-            Object.keys(counts).forEach(k => {{
-                const row = counts[k];
-                Object.keys(szTotals).forEach(sz => szTotals[sz] += row[sz]);
-                matrixHtml += `
-                    <tr class="hover:bg-slate-50">
-                        <td class="py-1.5 px-3 text-left font-semibold text-slate-900">${{k}}</td>
-                        <td>${{row.XS || '-'}}</td><td>${{row.S || '-'}}</td><td>${{row.M || '-'}}</td>
-                        <td>${{row.L || '-'}}</td><td>${{row.XL || '-'}}</td><td>${{row.XXL || '-'}}</td>
-                        <td class="font-bold text-orange-600 bg-orange-50 font-mono">${{row.total}}</td>
-                    </tr>
-                `;
-            }});
-
-            matrixHtml += `
-                    </tbody>
-                    <tfoot>
-                        <tr class="bg-slate-900 text-white font-bold">
-                            <td class="py-2 px-3 text-left">GRAND TOTAL</td>
-                            <td>${{szTotals.XS}}</td><td>${{szTotals.S}}</td><td>${{szTotals.M}}</td>
-                            <td>${{szTotals.L}}</td><td>${{szTotals.XL}}</td><td>${{szTotals.XXL}}</td>
-                            <td class="bg-emerald-600 text-white text-sm font-mono">${{totalSweatersCount.toLocaleString()}}</td>
-                        </tr>
-                    </tfoot>
-                </table>
-            `;
-
-            document.getElementById('admin-procurement-matrix-container').innerHTML = matrixHtml;
-            renderAdminRegionTable();
-        }}
-
-        function renderAdminRegionTable() {{
-            const tbody = document.getElementById('admin-region-tbody');
-            const q = (document.getElementById('admin-region-search').value || '').toLowerCase().trim();
+            const tbody = document.getElementById('admin-matrix-body');
             tbody.innerHTML = '';
 
-            Object.values(REGION_MAP).forEach(r => {{
-                if (q && !r.region_name.toLowerCase().includes(q) && !r.regional_head.toLowerCase().includes(q) && !r.sap_region_code.includes(q)) {{
-                    return;
-                }}
+            let grandTotal = 0;
+            const sizeTotals = {{ "XS": 0, "S": 0, "M": 0, "L": 0, "XL": 0, "XXL": 0 }};
 
-                let compCount = 0;
-                r.territories.forEach(t => {{
-                    if (getTerritoryStatus(store[t.sap_territory_code]) === 'Complete') compCount++;
-                }});
-
-                const isLocked = !isGlobalAccessOpen || !!regionLocks[r.sap_region_code];
+            ["01", "02", "03", "04", "05"].forEach(code => {{
+                const item = SWEATER_DETAILS[code];
+                const c = counts[code];
+                grandTotal += c.total;
+                Object.keys(sizeTotals).forEach(s => sizeTotals[s] += c[s]);
 
                 const tr = document.createElement('tr');
                 tr.className = 'hover:bg-slate-50';
                 tr.innerHTML = `
-                    <td class="py-2 px-3 font-mono text-slate-600">${{r.sap_region_code}}</td>
-                    <td class="py-2 px-3 font-semibold text-slate-900">${{r.region_name}}</td>
-                    <td class="py-2 px-3 text-orange-700 font-medium">${{r.regional_head}}</td>
-                    <td class="py-2 px-2 text-center">
-                        <span class="px-2 py-0.5 rounded-full text-[10px] ${{
-                            compCount === r.territories.length ? 'bg-emerald-100 text-emerald-800 font-bold' :
-                            compCount > 0 ? 'bg-amber-100 text-amber-800' : 'bg-slate-100 text-slate-600'
-                        }}">${{compCount}}/${{r.territories.length}}</span>
+                    <td class="p-2.5 text-left font-bold text-slate-900">${{code}} - ${{item.name}} (${{item.gender}})</td>
+                    <td class="p-2.5">${{c.XS || '-'}}</td>
+                    <td class="p-2.5">${{c.S}}</td>
+                    <td class="p-2.5">${{c.M}}</td>
+                    <td class="p-2.5">${{c.L}}</td>
+                    <td class="p-2.5">${{c.XL}}</td>
+                    <td class="p-2.5">${{c.XXL || '-'}}</td>
+                    <td class="p-2.5 font-black text-orange-600 bg-orange-50">${{c.total}}</td>
+                `;
+                tbody.appendChild(tr);
+            }});
+
+            // Summary row
+            const trTotal = document.createElement('tr');
+            trTotal.className = 'bg-slate-100 font-black text-slate-900 border-t-2 border-slate-300';
+            trTotal.innerHTML = `
+                <td class="p-2.5 text-left uppercase text-slate-700">Total Count</td>
+                <td class="p-2.5">${{sizeTotals.XS}}</td>
+                <td class="p-2.5">${{sizeTotals.S}}</td>
+                <td class="p-2.5">${{sizeTotals.M}}</td>
+                <td class="p-2.5">${{sizeTotals.L}}</td>
+                <td class="p-2.5">${{sizeTotals.XL}}</td>
+                <td class="p-2.5">${{sizeTotals.XXL}}</td>
+                <td class="p-2.5 text-emerald-600 bg-emerald-100 text-sm">${{grandTotal}}</td>
+            `;
+            tbody.appendChild(trTotal);
+        }}
+
+        function renderAdminRegionsTable(query = '') {{
+            const tbody = document.getElementById('admin-regions-table-body');
+            tbody.innerHTML = '';
+
+            const q = query.toLowerCase();
+            const regions = Object.values(REGION_MAP).filter(r => {{
+                if (!q) return true;
+                return r.region_name.toLowerCase().includes(q) ||
+                       r.regional_head.toLowerCase().includes(q) ||
+                       r.zone.toLowerCase().includes(q) ||
+                       r.sap_region_code.includes(q);
+            }});
+
+            regions.forEach(r => {{
+                let completed = 0;
+                r.territories.forEach(t => {{
+                    if (getTerritoryStatus(store[String(t.sap_territory_code)]) === 'Complete') completed++;
+                }});
+
+                const isLocked = Boolean(regionLocks[r.sap_region_code]);
+                const tr = document.createElement('tr');
+                tr.className = 'hover:bg-slate-50';
+                tr.innerHTML = `
+                    <td class="p-2.5 font-mono text-slate-500">${{r.sap_region_code}}</td>
+                    <td class="p-2.5 font-bold text-slate-900">${{r.region_name}}</td>
+                    <td class="p-2.5 text-slate-600">${{r.zone}}</td>
+                    <td class="p-2.5 text-slate-700">${{r.regional_head}}</td>
+                    <td class="p-2.5">
+                        <span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${{completed === r.territories.length ? 'bg-emerald-100 text-emerald-800' : (completed > 0 ? 'bg-amber-100 text-amber-800' : 'bg-slate-100 text-slate-600')}}">
+                            ${{completed}}/${{r.territories.length}} Done
+                        </span>
                     </td>
-                    <td class="py-2 px-3 text-right space-x-1 whitespace-nowrap">
-                        <button onclick="toggleSpecificRegionLock('${{r.sap_region_code}}')" title="Lock/Unlock Region" class="px-2 py-1 rounded text-[10px] font-bold ${{
-                            isLocked ? 'bg-rose-100 text-rose-800 border border-rose-200' : 'bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200'
-                        }}">
-                            ${{isLocked ? '<i class="fa-solid fa-lock"></i>' : '<i class="fa-solid fa-lock-open"></i>'}}
+                    <td class="p-2.5">
+                        <button onclick="toggleSingleRegionLock('${{r.sap_region_code}}')" class="px-2.5 py-1 rounded-lg text-[10px] font-black ${{isLocked ? 'bg-rose-100 text-rose-700 hover:bg-rose-200' : 'bg-emerald-100 text-emerald-700 hover:bg-emerald-200'}} transition">
+                            <i class="fa-solid ${{isLocked ? 'fa-lock' : 'fa-lock-open'}}"></i> ${{isLocked ? 'Locked' : 'Unlocked'}}
                         </button>
-                        <button onclick="promptDeleteRegionData('${{r.sap_region_code}}')" title="Delete Region Data" class="px-2 py-1 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 rounded text-[10px] font-bold">
-                            <i class="fa-solid fa-trash-can"></i>
-                        </button>
-                        <button onclick="adminDirectUnlock('${{r.sap_region_code}}')" title="Open Workspace" class="px-2.5 py-1 bg-slate-900 hover:bg-slate-800 text-white rounded text-[10px] font-bold">
-                            Open
+                    </td>
+                    <td class="p-2.5 text-right space-x-1">
+                        <button onclick="promptDeleteRegionData('${{r.sap_region_code}}')" class="px-2.5 py-1 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 rounded-lg text-[10px] font-bold transition">
+                            <i class="fa-solid fa-trash-can"></i> Delete
                         </button>
                     </td>
                 `;
@@ -1831,23 +2030,79 @@ html_code = f'''<!DOCTYPE html>
             }});
         }}
 
-        function adminDirectUnlock(regionCode) {{
-            closeAdminModal();
-            unlockRegion(regionCode, false);
+        function filterAdminRegions(val) {{
+            renderAdminRegionsTable(val);
         }}
 
-        // Master Excel Export
+        function toggleSingleRegionLock(regCode) {{
+            regionLocks[regCode] = !regionLocks[regCode];
+            localStorage.setItem('EXIUM_REGION_LOCKS', JSON.stringify(regionLocks));
+            renderAdminRegionsTable(document.getElementById('admin-region-search').value);
+            if (currentRegionCode === regCode) {{
+                selectTerritoryTab(activeTerritoryIndex, false);
+            }}
+        }}
+
+        function promptDeleteRegionData(regCode) {{
+            const r = REGION_MAP[regCode];
+            pendingDeleteRegionCode = regCode;
+            document.getElementById('delete-confirm-text').innerHTML = `Are you sure you want to delete all entered information for <strong>${{r.region_name}} (${{r.sap_region_code}})</strong>? This cannot be undone.`;
+            document.getElementById('delete-confirm-modal').classList.remove('hidden');
+        }}
+
+        function closeDeleteConfirmModal() {{
+            pendingDeleteRegionCode = null;
+            document.getElementById('delete-confirm-modal').classList.add('hidden');
+        }}
+
+        function executeDeleteRegionData() {{
+            if (!pendingDeleteRegionCode || !REGION_MAP[pendingDeleteRegionCode]) return;
+
+            const r = REGION_MAP[pendingDeleteRegionCode];
+            r.territories.forEach(t => {{
+                delete store[String(t.sap_territory_code)];
+            }});
+
+            localStorage.setItem('EXIUM_SWEATER_STORE', JSON.stringify(store));
+            closeDeleteConfirmModal();
+            renderAdminProductionMatrix();
+            renderAdminRegionsTable(document.getElementById('admin-region-search').value);
+            
+            if (currentRegionCode === pendingDeleteRegionCode) {{
+                renderTerritoryTabs();
+                selectTerritoryTab(activeTerritoryIndex, false);
+            }}
+            alert(`🗑️ All data for ${{r.region_name}} has been deleted.`);
+        }}
+
+        // ===================================================================
+        // 100% RELIABLE EXCEL EXPORT (REGION & MASTER WITH RPL ID)
+        // ===================================================================
+        function exportCurrentRegionExcel() {{
+            if (!currentRegionCode || !REGION_MAP[currentRegionCode]) return;
+            const r = REGION_MAP[currentRegionCode];
+            const terrList = ALL_TERRITORIES.filter(t => String(t['SAP Region Code']) === String(currentRegionCode));
+            const safeName = r.region_name.replace(/[^a-zA-Z0-9]/g, '_');
+            generateAndDownloadExcel(terrList, `Exium_Sweater_${{safeName}}_Region_Export.xlsx`);
+        }}
+
         function exportMasterExcelFromAdmin() {{
-            exportMasterExcelFile("Exium_MUPS_Sweater_Campaign_2026_Master_Export.xlsx");
+            generateAndDownloadExcel(ALL_TERRITORIES, "Exium_MUPS_Sweater_Campaign_2026_Master_Export.xlsx");
         }}
 
-        function exportMasterExcelFile(filename) {{
+        function generateAndDownloadExcel(territoryList, filename) {{
+            // Make sure current active form is saved before generating
+            onDataChanged();
+            
+            // Re-read latest store from localStorage to ensure 100% sync
+            const currentStore = JSON.parse(localStorage.getItem('EXIUM_SWEATER_STORE') || '{{}}');
+
             const c1Rows = [];
             const c2Rows = [];
 
-            ALL_TERRITORIES.forEach(t => {{
-                const terrCode = t['SAP Territory Code'];
-                const d = store[terrCode] || {{}};
+            territoryList.forEach(t => {{
+                const terrCode = String(t['SAP Territory Code']);
+                const d = currentStore[terrCode] || {{}};
 
                 c1Rows.push({{
                     "Zone": t.Zone,
@@ -1857,6 +2112,7 @@ html_code = f'''<!DOCTYPE html>
                     "SAP Territory Code": t['SAP Territory Code'],
                     "Territory": t.Territory,
                     "Doctor Name": d.c1_doc_name || '',
+                    "Doctor RPL ID": d.c1_doc_rpl || '',
                     "Sweater 1": d.c1_m1_sweater || '',
                     "Size 1": d.c1_m1_size || '',
                     "Sweater 2": d.c1_m2_sweater || '',
@@ -1865,7 +2121,7 @@ html_code = f'''<!DOCTYPE html>
                     "Size 3": d.c1_m3_size || '',
                     "Sweater 4": d.c1_m4_sweater || '',
                     "Size 4": d.c1_m4_size || '',
-                    "Status": (d.c1_doc_name && d.c1_m1_sweater && d.c1_m1_size && d.c1_m2_sweater && d.c1_m2_size && d.c1_m3_sweater && d.c1_m3_size && d.c1_m4_sweater && d.c1_m4_size) ? "Complete" : (d.c1_doc_name ? "In Progress" : "Not Started")
+                    "Status": (d.c1_doc_name && d.c1_doc_rpl && d.c1_doc_rpl.length === 6 && d.c1_m1_sweater && d.c1_m1_size && d.c1_m2_sweater && d.c1_m2_size && d.c1_m3_sweater && d.c1_m3_size && d.c1_m4_sweater && d.c1_m4_size) ? "Complete" : (d.c1_doc_name || d.c1_doc_rpl || d.c1_m1_sweater ? "In Progress" : "Not Started")
                 }});
 
                 c2Rows.push({{
@@ -1876,18 +2132,22 @@ html_code = f'''<!DOCTYPE html>
                     "SAP Territory Code": t['SAP Territory Code'],
                     "Territory": t.Territory,
                     "Doctor 1 Name": d.c2_d1_name || '',
+                    "Doctor 1 RPL ID": d.c2_d1_rpl || '',
                     "Sweater 1": d.c2_d1_sweater || '',
                     "Size 1": d.c2_d1_size || '',
                     "Doctor 2 Name": d.c2_d2_name || '',
+                    "Doctor 2 RPL ID": d.c2_d2_rpl || '',
                     "Sweater 2": d.c2_d2_sweater || '',
                     "Size 2": d.c2_d2_size || '',
                     "Doctor 3 Name": d.c2_d3_name || '',
+                    "Doctor 3 RPL ID": d.c2_d3_rpl || '',
                     "Sweater 3": d.c2_d3_sweater || '',
                     "Size 3": d.c2_d3_size || '',
                     "Doctor 4 Name": d.c2_d4_name || '',
+                    "Doctor 4 RPL ID": d.c2_d4_rpl || '',
                     "Sweater 4": d.c2_d4_sweater || '',
                     "Size 4": d.c2_d4_size || '',
-                    "Status": (d.c2_d1_name && d.c2_d1_sweater && d.c2_d1_size && d.c2_d2_name && d.c2_d2_sweater && d.c2_d2_size && d.c2_d3_name && d.c2_d3_sweater && d.c2_d3_size && d.c2_d4_name && d.c2_d4_sweater && d.c2_d4_size) ? "Complete" : (d.c2_d1_name ? "In Progress" : "Not Started")
+                    "Status": (d.c2_d1_name && d.c2_d1_rpl && d.c2_d1_rpl.length === 6 && d.c2_d1_sweater && d.c2_d1_size && d.c2_d2_name && d.c2_d2_rpl && d.c2_d2_rpl.length === 6 && d.c2_d2_sweater && d.c2_d2_size && d.c2_d3_name && d.c2_d3_rpl && d.c2_d3_rpl.length === 6 && d.c2_d3_sweater && d.c2_d3_size && d.c2_d4_name && d.c2_d4_rpl && d.c2_d4_rpl.length === 6 && d.c2_d4_sweater && d.c2_d4_size) ? "Complete" : (d.c2_d1_name || d.c2_d1_rpl || d.c2_d1_sweater ? "In Progress" : "Not Started")
                 }});
             }});
 
@@ -1899,6 +2159,8 @@ html_code = f'''<!DOCTYPE html>
             XLSX.utils.book_append_sheet(wb, ws2, "Core Doctor Maximization");
 
             XLSX.writeFile(wb, filename);
+            showToast(`📥 Excel file downloaded with all saved data!`);
+        }}
             alert(`📥 Excel file "${{filename}}" downloaded with all current saved inputs!`);
         }}
     </script>
@@ -1909,4 +2171,7 @@ html_code = f'''<!DOCTYPE html>
 with open('Sweater_Campaign_Portal.html', 'w', encoding='utf-8') as f:
     f.write(html_code)
 
-print('Updated Sweater_Campaign_Portal.html with 1-line mobile logo+title, row 2 Catalogue button, and Sticky/Frozen Active Territory Bar generated successfully!')
+with open('index.html', 'w', encoding='utf-8') as f:
+    f.write(html_code)
+
+print('Updated Sweater_Campaign_Portal.html & index.html successfully with RPL ID & live check indicators!')

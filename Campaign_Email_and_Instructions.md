@@ -12,7 +12,7 @@ Assalamu Alaikum / Greetings,
 
 We are pleased to announce our **4Q'26 Doctor Sweater Campaign**. Under this campaign, we are presenting premium-quality sweaters (manufactured by Richman / Lubnan Trade Consortium Ltd.) across all **1,856 Territories**.
 
-To ensure simplicity, speed, and 100% accurate sizing, we only require the **Doctor's Name**, **Selected Sweater Code**, and **Size**. (No relation or contact numbers required).
+To ensure simplicity, speed, and 100% accurate sizing, we only require the **Doctor's Name**, **Doctor RPL ID (6-digit code)**, **Selected Sweater Code**, and **Size**. (No relation or contact numbers required).
 
 ---
 
@@ -22,8 +22,8 @@ Every single Territory is allocated exactly **8 Sweaters** under two distinct sc
 
 | Campaign Scheme | Allocation / Scope | Required Information | Total Sweaters |
 | :--- | :--- | :--- | :---: |
-| **1. Gyne Core Doctor Development (Family Package)** | **1 Doctor** per Territory | 1 Doctor Name + **4 Sweaters & Sizes** | **4 Sweaters** |
-| **2. Core Doctor Maximization** | **4 Doctors** per Territory | **4 Doctors' Names** + **1 Sweater & Size each** | **4 Sweaters** |
+| **1. Gyne Core Doctor Development (Family Package)** | **1 Doctor** per Territory | 1 Doctor Name + **Doctor RPL ID (6 Digits)** + **4 Sweaters & Sizes** | **4 Sweaters** |
+| **2. Core Doctor Maximization** | **4 Doctors** per Territory | **4 Doctors' Names** + **4 Doctor RPL IDs (6 Digits)** + **1 Sweater & Size each** | **4 Sweaters** |
 | **Total Allocation Per Territory** | **5 Doctors Total** | — | **8 Sweaters** |
 
 > ⚠️ Across all 1,856 territories, total procurement is **14,848 Sweaters**.
