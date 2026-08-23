@@ -1427,6 +1427,7 @@ html_template = """<!DOCTYPE html>
             });
 
             document.getElementById('region-progress-badge').textContent = `${completedCount}/${r.territories.length} Done`;
+            triggerAutoSync();
         }
 
         function selectTerritoryTab(idx, shouldScroll = true) {
@@ -1621,6 +1622,7 @@ html_template = """<!DOCTYPE html>
                 if (getTerritoryStatus(store[String(ter.sap_territory_code)]) === 'Complete') completedCount++;
             });
             document.getElementById('region-progress-badge').textContent = `${completedCount}/${r.territories.length} Done`;
+            triggerAutoSync();
         }
 
         function saveCurrentTerritoryClick() {
@@ -1830,14 +1832,30 @@ html_template = """<!DOCTYPE html>
             el.classList.remove('hidden');
         }
 
+        let autoSyncTimeout = null;
+
+        function triggerAutoSync() {
+            if (autoSyncTimeout) clearTimeout(autoSyncTimeout);
+            autoSyncTimeout = setTimeout(() => {
+                if (currentRegionCode && REGION_MAP[currentRegionCode]) {
+                    const r = REGION_MAP[currentRegionCode];
+                    const t = r.territories[activeTerritoryIndex];
+                    if (t) {
+                        const terrCode = String(t.sap_territory_code);
+                        syncTerritoryToCloud(terrCode, store[terrCode]);
+                    }
+                }
+            }, 1200);
+        }
+
         async function syncTerritoryToCloud(terrCode, terrData) {
-            const url = cloudApiUrl || DEFAULT_CLOUD_URL;
-            if (!url || !terrData) return;
+            const url = (cloudApiUrl && cloudApiUrl.startsWith('http')) ? cloudApiUrl : DEFAULT_CLOUD_URL;
+            if (!url || !terrData || !terrCode) return;
 
             try {
                 const payload = {
                     action: "save_territory",
-                    sap_territory_code: terrCode,
+                    sap_territory_code: String(terrCode).trim(),
                     data: terrData
                 };
 
@@ -1847,7 +1865,7 @@ html_template = """<!DOCTYPE html>
                     headers: { 'Content-Type': 'text/plain;charset=utf-8' },
                     body: JSON.stringify(payload)
                 });
-                console.log(`[Cloud Sync] Synced territory ${terrCode} to Google Drive.`);
+                console.log(`[Cloud Sync] Synced territory ${terrCode} to Google Sheet successfully.`);
             } catch (err) {
                 console.warn("[Cloud Sync] Note:", err);
             }
