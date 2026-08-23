@@ -10,12 +10,12 @@
  * 3. Go to: Extensions -> Apps Script.
  * 4. Delete everything in the code editor, paste ALL of this code, and click Save (Ctrl+S).
  * 5. In the toolbar, select "setupSheets" function and click "Run".
- *    (This will immediately create and format all 1,856 territory rows in Sheet 1 and Sheet 2!)
+ *    (This will automatically expand the rows and format all 1,856 territories in Sheet 1 & Sheet 2!)
  * 6. Click "Deploy" (top right) -> "New deployment".
  * 7. Select type: "Web app" (click gear icon).
  *    - Description: "Exium Sweater Sync API"
  *    - Execute as: "Me" (your email)
- *    - Who has access: "Anyone"
+ *    - Who has access: "Anyone" (allows field force browsers to send data)
  * 8. Click "Deploy", authorize permissions, and COPY the "Web App URL" (ends with /exec).
  * 9. Open the Sweater Portal -> Click "Admin" -> "Google Drive / Cloud API" -> Paste URL & click Save!
  * =========================================================================
@@ -42,6 +42,13 @@ function setupSheets() {
     "Sweater 1", "Size 1", "Sweater 2", "Size 2", 
     "Sweater 3", "Size 3", "Sweater 4", "Size 4", "Status", "Last Updated"
   ];
+  
+  var totalRowsNeeded = MASTER_TERRITORIES.length + 1; // 1857 rows
+  var currentMax1 = sheet1.getMaxRows();
+  if (currentMax1 < totalRowsNeeded) {
+    sheet1.insertRowsAfter(currentMax1, totalRowsNeeded - currentMax1);
+  }
+
   sheet1.getRange(1, 1, 1, h1.length).setValues([h1])
     .setFontWeight("bold")
     .setBackground("#0f766e")
@@ -76,6 +83,12 @@ function setupSheets() {
     "Doctor 3 Name", "Doctor 3 RPL ID", "Sweater 3", "Size 3", 
     "Doctor 4 Name", "Doctor 4 RPL ID", "Sweater 4", "Size 4", "Status", "Last Updated"
   ];
+  
+  var currentMax2 = sheet2.getMaxRows();
+  if (currentMax2 < totalRowsNeeded) {
+    sheet2.insertRowsAfter(currentMax2, totalRowsNeeded - currentMax2);
+  }
+
   sheet2.getRange(1, 1, 1, h2.length).setValues([h2])
     .setFontWeight("bold")
     .setBackground("#581c87")
@@ -105,7 +118,15 @@ function setupSheets() {
   sheet3.setFrozenRows(1);
   sheet3.hideSheet();
 
-  Logger.log("✅ Successfully initialized all 1,856 territories across Sheet 1 and Sheet 2!");
+  // Remove default blank "Sheet1" if present
+  var defaultSheet = ss.getSheetByName("Sheet1");
+  if (defaultSheet && ss.getSheets().length > 1) {
+    try {
+      ss.deleteSheet(defaultSheet);
+    } catch(e) {}
+  }
+
+  Logger.log("✅ Successfully created and formatted all 1,856 territories across Sheet 1 and Sheet 2!");
 }
 
 function doGet(e) {
@@ -272,7 +293,6 @@ function updateSheet1Row(sheet, terrCode, d, nowStr) {
   var isComplete = Boolean(d.c1_doc_name && d.c1_doc_rpl && d.c1_doc_rpl.length === 6 && d.c1_m1_sweater && d.c1_m1_size && d.c1_m2_sweater && d.c1_m2_size && d.c1_m3_sweater && d.c1_m3_size && d.c1_m4_sweater && d.c1_m4_size);
   var status = isComplete ? "Complete" : ((d.c1_doc_name || d.c1_doc_rpl || d.c1_m1_sweater) ? "In Progress" : "Not Started");
 
-  // Columns 7 to 18 (Doctor Name to Last Updated)
   var vals = [
     d.c1_doc_name || "", d.c1_doc_rpl || "",
     d.c1_m1_sweater || "", d.c1_m1_size || "",
@@ -306,7 +326,6 @@ function updateSheet2Row(sheet, terrCode, d, nowStr) {
                            d.c2_d4_name && d.c2_d4_rpl && d.c2_d4_rpl.length === 6 && d.c2_d4_sweater && d.c2_d4_size);
   var status = isComplete ? "Complete" : ((d.c2_d1_name || d.c2_d1_rpl || d.c2_d1_sweater) ? "In Progress" : "Not Started");
 
-  // Columns 7 to 24
   var vals = [
     d.c2_d1_name || "", d.c2_d1_rpl || "", d.c2_d1_sweater || "", d.c2_d1_size || "",
     d.c2_d2_name || "", d.c2_d2_rpl || "", d.c2_d2_sweater || "", d.c2_d2_size || "",
