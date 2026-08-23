@@ -1,0 +1,83 @@
+================================================================================
+EXIUM 4Q'26 DOCTOR SWEATER CAMPAIGN - OFFICIAL EMAIL DRAFT & GUIDELINES
+================================================================================
+
+SUBJECT: [Action Required] Exium 4Q'26 Doctor Sweater Campaign – Information Collection & Size Selection Guideline
+
+Dear Regional Heads, Area Managers & Field Colleagues,
+
+Assalamu Alaikum / Greetings,
+
+We are pleased to announce our 4Q'26 Winter Campaign for Doctors: Exclusive Sweater Gifting Program. Under this campaign, premium-quality sweaters (manufactured by Richman / Lubnan Trade Consortium Ltd.) will be presented to our doctors across all 1,856 Territories.
+
+To ensure 100% accurate sizing and eliminate any possibility of mismatch, please follow the guidelines and format below:
+
+--------------------------------------------------------------------------------
+1. CAMPAIGN ALLOCATION & STRUCTURE
+--------------------------------------------------------------------------------
+Every single Territory is allocated exactly 8 Sweaters across 5 Doctors:
+
+1. CAMPAIGN 1: 1 Doctor / Territory (Family Package)
+   - Scope: 4 Sweaters for 4 Family Members (Doctor + Spouse / Children / Parents)
+   - Total: 4 Sweaters
+
+2. CAMPAIGN 2: 4 Doctors / Territory (Individual Package)
+   - Scope: 1 Sweater per Doctor (1 Person Only)
+   - Total: 4 Sweaters
+
+TOTAL PER TERRITORY = 8 Sweaters (5 Doctors)
+TOTAL PROCUREMENT (1,856 Territories) = 14,848 Sweaters
+
+--------------------------------------------------------------------------------
+2. SWEATER CODES & OPTIONS (5 EXCLUSIVE DESIGNS)
+--------------------------------------------------------------------------------
+Code 01: Men's Sleeveless V-Neck (Solid Ash / Grey Textured) -> Sizes: S, M, L, XL, XXL
+Code 02: Men's Sleeveless V-Neck (Solid Navy Blue Textured)  -> Sizes: S, M, L, XL, XXL
+Code 03: Men's Sleeveless V-Neck (Cream / Off-White Check)   -> Sizes: S, M, L, XL, XXL
+Code 04: Women's Short Cardigan (White & Navy Grid Check)    -> Sizes: XS, S, M, L, XL
+Code 05: Women's Semi Long Cardigan (Black with Border Trim) -> Sizes: S, M, L, XL, XXL
+
+--------------------------------------------------------------------------------
+3. SIZE MEASUREMENT GUIDE (IN CENTIMETERS - CM)
+--------------------------------------------------------------------------------
+A. MEN'S SWEATER (STYLES 01, 02, 03)
+- Body Length: S (65 cm) | M (67 cm) | L (69 cm) | XL (71 cm) | XXL (73 cm)
+- 1/2 Chest  : S (48 cm) | M (50 cm) | L (52 cm) | XL (54 cm) | XXL (56 cm)
+
+B. WOMEN'S SHORT CARDIGAN (STYLE 04)
+- Body Length: XS (60 cm) | S (62 cm) | M (64 cm) | L (66 cm) | XL (68 cm)
+- 1/2 Chest  : XS (44 cm) | S (46 cm) | M (48 cm) | L (50 cm) | XL (52 cm)
+- Sleeve     : XS (57 cm) | S (58 cm) | M (59 cm) | L (60 cm) | XL (61 cm)
+
+C. WOMEN'S SEMI LONG CARDIGAN (STYLE 05)
+- Body Length: S (64 cm) | M (66 cm) | L (68 cm) | XL (70 cm) | XXL (72 cm)
+- 1/2 Chest  : S (51 cm) | M (53 cm) | L (55 cm) | XL (57 cm) | XXL (59 cm)
+- Sleeve     : S (52 cm) | M (53 cm) | L (54 cm) | XL (55 cm) | XXL (56 cm)
+
+--------------------------------------------------------------------------------
+4. HOW REGIONAL HEADS WILL PROVIDE INFORMATION
+--------------------------------------------------------------------------------
+OPTION A: GOOGLE SHEET (ONLINE LINK)
+1. Open the shared Google Sheet: [INSERT GOOGLE SHEET LINK]
+2. Filter the sheet by your name under the "Regional Head" column (Column D).
+3. Fill up Campaign 1 (Cols G-U) and Campaign 2 (Cols V-AO) using the Dropdowns.
+4. Ensure the "Status" column (Col AP) turns "Complete".
+
+OPTION B: INTERACTIVE WEB APP PORTAL
+1. Open "Sweater_Campaign_Portal.html" in your browser.
+2. Select your Regional Head name from the dropdown.
+3. Complete the entries for each territory with visual photos and size guides.
+4. Export the completed Excel file and email back.
+
+--------------------------------------------------------------------------------
+5. CRITICAL RULES TO PREVENT MISMATCH
+--------------------------------------------------------------------------------
+1. Always select from dropdown lists; do not type custom size codes.
+2. Note: Style 04 (Short Cardigan) starts at XS and ends at XL (No XXL).
+3. Note: Styles 01, 02, 03, 05 start at S and end at XXL (No XS).
+4. Campaign 1 must have all 4 family members filled out.
+
+SUBMISSION DEADLINE: [INSERT DATE, e.g., 30-September-2026]
+
+Marketing & Sales Operations
+Exium Pharmaceuticals
