@@ -1077,6 +1077,59 @@ html_template = """<!DOCTYPE html>
             { id: 'c2_d4_rpl', badgeId: 'c2_d4_rpl_badge', errorId: 'c2_d4_rpl_error', nameId: 'c2_d4_name', campaign: 'Campaign 2 (Core Doctor Maximization)', role: 'Doctor 4' }
         ];
 
+        let GLOBAL_RPL_MAP = JSON.parse(localStorage.getItem('EXIUM_GLOBAL_RPL_REGISTRY') || '{}');
+
+        function rebuildGlobalRplMapFromStore() {
+            GLOBAL_RPL_MAP = {};
+            for (const tCode in store) {
+                const d = store[tCode];
+                if (!d) continue;
+                const tInfo = TERRITORY_INFO_MAP[String(tCode).trim()] || {};
+
+                // Campaign 1
+                const c1Rpl = String(d.c1_doc_rpl || '').trim();
+                if (c1Rpl && c1Rpl.length === 6) {
+                    GLOBAL_RPL_MAP[c1Rpl] = {
+                        rpl: c1Rpl,
+                        terrCode: String(tCode).trim(),
+                        territory: tInfo.Territory || `Territory ${tCode}`,
+                        region: tInfo.Region || tInfo['SAP Region Code'] || '',
+                        zone: tInfo.Zone || '',
+                        docName: d.c1_doc_name || 'Doctor',
+                        campaign: 'Campaign 1 (Gyne Core Doctor - Family Package)',
+                        slot: 'Doctor'
+                    };
+                }
+
+                // Campaign 2
+                const c2Slots = [
+                    { key: 'c2_d1_rpl', nameKey: 'c2_d1_name', label: 'Doctor 1' },
+                    { key: 'c2_d2_rpl', nameKey: 'c2_d2_name', label: 'Doctor 2' },
+                    { key: 'c2_d3_rpl', nameKey: 'c2_d3_name', label: 'Doctor 3' },
+                    { key: 'c2_d4_rpl', nameKey: 'c2_d4_name', label: 'Doctor 4' }
+                ];
+
+                for (const s of c2Slots) {
+                    const c2Rpl = String(d[s.key] || '').trim();
+                    if (c2Rpl && c2Rpl.length === 6) {
+                        GLOBAL_RPL_MAP[c2Rpl] = {
+                            rpl: c2Rpl,
+                            terrCode: String(tCode).trim(),
+                            territory: tInfo.Territory || `Territory ${tCode}`,
+                            region: tInfo.Region || tInfo['SAP Region Code'] || '',
+                            zone: tInfo.Zone || '',
+                            docName: d[s.nameKey] || s.label,
+                            campaign: `Campaign 2 (Core Doctor Maximization) [${s.label}]`,
+                            slot: s.label
+                        };
+                    }
+                }
+            }
+            try {
+                localStorage.setItem('EXIUM_GLOBAL_RPL_REGISTRY', JSON.stringify(GLOBAL_RPL_MAP));
+            } catch (e) {}
+        }
+
         function findRplDuplicateLocation(rplVal, currentFieldId) {
             if (!rplVal || rplVal.length !== 6) return null;
             if (!currentRegionCode || !REGION_MAP[currentRegionCode]) return null;
@@ -1085,7 +1138,7 @@ html_template = """<!DOCTYPE html>
             const currentTerr = r.territories[activeTerritoryIndex];
             const currentTerrCode = String(currentTerr.sap_territory_code).trim();
 
-            // 1. Check OTHER 4 fields in CURRENT active territory form
+            // 1. Check OTHER 4 fields in CURRENT active territory open form
             for (const cfg of RPL_FIELD_CONFIGS) {
                 if (cfg.id !== currentFieldId) {
                     const otherVal = document.getElementById(cfg.id)?.value?.trim();
@@ -1106,15 +1159,31 @@ html_template = """<!DOCTYPE html>
                 }
             }
 
-            // 2. Check across ALL other territories in store (Entire Bangladesh)
+            // 2. Check Global in-memory & cached registry
+            if (GLOBAL_RPL_MAP && GLOBAL_RPL_MAP[rplVal]) {
+                const dupEntry = GLOBAL_RPL_MAP[rplVal];
+                if (String(dupEntry.terrCode).trim() !== currentTerrCode) {
+                    return {
+                        type: 'global',
+                        rpl: rplVal,
+                        territory: dupEntry.territory,
+                        terrCode: dupEntry.terrCode,
+                        region: dupEntry.region,
+                        zone: dupEntry.zone,
+                        doctorName: dupEntry.docName,
+                        campaign: dupEntry.campaign,
+                        locationText: `${dupEntry.territory} (${dupEntry.terrCode}), Region: ${dupEntry.region}, Zone: ${dupEntry.zone}`
+                    };
+                }
+            }
+
+            // 3. Fallback direct store scan
             for (const tCode in store) {
                 if (String(tCode).trim() === currentTerrCode) continue;
-
                 const d = store[tCode];
                 if (!d) continue;
-                const tInfo = TERRITORY_INFO_MAP[tCode] || {};
+                const tInfo = TERRITORY_INFO_MAP[String(tCode).trim()] || {};
 
-                // Check Campaign 1
                 if (d.c1_doc_rpl && String(d.c1_doc_rpl).trim() === rplVal) {
                     return {
                         type: 'global',
@@ -1123,22 +1192,14 @@ html_template = """<!DOCTYPE html>
                         terrCode: tCode,
                         region: tInfo.Region || tInfo['SAP Region Code'] || '',
                         zone: tInfo.Zone || '',
-                        doctorName: d.c1_doc_name || 'Unnamed Doctor',
+                        doctorName: d.c1_doc_name || 'Doctor',
                         campaign: 'Campaign 1 (Gyne Core Doctor - Family Package)',
-                        locationText: `${tInfo.Territory || tCode}, Region: ${tInfo.Region || 'N/A'}, Zone: ${tInfo.Zone || 'N/A'}`
+                        locationText: `${tInfo.Territory || tCode}, Region: ${tInfo.Region || 'N/A'}`
                     };
                 }
 
-                // Check Campaign 2 slots (d1, d2, d3, d4)
-                const c2Slots = [
-                    { key: 'c2_d1_rpl', nameKey: 'c2_d1_name', label: 'Doctor 1' },
-                    { key: 'c2_d2_rpl', nameKey: 'c2_d2_name', label: 'Doctor 2' },
-                    { key: 'c2_d3_rpl', nameKey: 'c2_d3_name', label: 'Doctor 3' },
-                    { key: 'c2_d4_rpl', nameKey: 'c2_d4_name', label: 'Doctor 4' }
-                ];
-
-                for (const slot of c2Slots) {
-                    if (d[slot.key] && String(d[slot.key]).trim() === rplVal) {
+                for (let sIdx = 1; sIdx <= 4; sIdx++) {
+                    if (d[`c2_d${sIdx}_rpl`] && String(d[`c2_d${sIdx}_rpl`]).trim() === rplVal) {
                         return {
                             type: 'global',
                             rpl: rplVal,
@@ -1146,9 +1207,9 @@ html_template = """<!DOCTYPE html>
                             terrCode: tCode,
                             region: tInfo.Region || tInfo['SAP Region Code'] || '',
                             zone: tInfo.Zone || '',
-                            doctorName: d[slot.nameKey] || 'Unnamed Doctor',
-                            campaign: `Campaign 2 (Core Doctor Maximization) [${slot.label}]`,
-                            locationText: `${tInfo.Territory || tCode}, Region: ${tInfo.Region || 'N/A'}, Zone: ${tInfo.Zone || 'N/A'}`
+                            doctorName: d[`c2_d${sIdx}_name`] || `Doctor ${sIdx}`,
+                            campaign: `Campaign 2 (Doctor ${sIdx})`,
+                            locationText: `${tInfo.Territory || tCode}, Region: ${tInfo.Region || 'N/A'}`
                         };
                     }
                 }
@@ -1184,7 +1245,7 @@ html_template = """<!DOCTYPE html>
                     errorContainer.innerHTML = '';
                     errorContainer.classList.add('hidden');
                 }
-                return true;
+                return false;
             }
 
             // Exactly 6 digits -> Check for duplicates!
@@ -1196,7 +1257,7 @@ html_template = """<!DOCTYPE html>
 
                 if (errorContainer) {
                     errorContainer.innerHTML = `
-                        <div class="p-3 bg-rose-50/95 border border-rose-300 rounded-2xl text-xs text-rose-950 shadow-md space-y-1.5">
+                        <div class="p-3 bg-rose-50/95 border border-rose-300 rounded-2xl text-xs text-rose-950 shadow-md space-y-1.5 animate-bounce-once">
                             <div class="flex items-center gap-1.5 text-rose-700 font-black">
                                 <i class="fa-solid fa-triangle-exclamation text-sm text-rose-600"></i>
                                 <span>Doctor RPL ID "${val}" is already assigned!</span>
@@ -1255,6 +1316,10 @@ html_template = """<!DOCTYPE html>
                 btn.className = "px-3.5 sm:px-4 py-2 bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-black rounded-xl flex items-center gap-1.5 shadow-lg shadow-emerald-500/20 transition active:scale-95";
                 btn.innerHTML = '<i class="fa-solid fa-floppy-disk text-xs"></i> <span>Save</span>';
             }
+        } else {
+                btn.className = "px-3.5 sm:px-4 py-2 bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-black rounded-xl flex items-center gap-1.5 shadow-lg shadow-emerald-500/20 transition active:scale-95";
+                btn.innerHTML = '<i class="fa-solid fa-floppy-disk text-xs"></i> <span>Save</span>';
+            }
         }
         const ZONES = ###ZONES###;
         const DEFAULT_CLOUD_URL = "###DEFAULT_CLOUD_URL###";
@@ -1279,9 +1344,15 @@ html_template = """<!DOCTYPE html>
         let autoSyncTimeout = null;
 
         window.addEventListener('DOMContentLoaded', () => {
+            rebuildGlobalRplMapFromStore();
             populateZoneDropdown();
             checkGlobalLockBanner();
             pullCloudData(false);
+
+            // Silent background cloud polling every 15s to keep nationwide RPL registry 100% fresh
+            setInterval(() => {
+                pullCloudData(false);
+            }, 15000);
 
             const savedSession = JSON.parse(localStorage.getItem('EXIUM_ACTIVE_SESSION') || 'null');
             if (savedSession && savedSession.region_code && REGION_MAP[savedSession.region_code]) {
@@ -2023,6 +2094,8 @@ html_template = """<!DOCTYPE html>
                     }
                 }
                 localStorage.setItem('EXIUM_SWEATER_STORE', JSON.stringify(store));
+                rebuildGlobalRplMapFromStore();
+                validateAllRplFieldsInCurrentTerritory();
                 if (isAdminLoggedIn) {
                     renderAdminKpisAndSummaries();
                     renderAdminZoneProgress();
