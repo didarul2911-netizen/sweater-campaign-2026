@@ -1070,7 +1070,7 @@ html_template = """<!DOCTYPE html>
         });
 
         const RPL_FIELD_CONFIGS = [
-            { id: 'c1_doc_rpl', badgeId: 'c1_doc_rpl_badge', errorId: 'c1_doc_rpl_error', nameId: 'c1_doc_name', campaign: 'Campaign 1 (Gyne Core Doctor)', role: 'Doctor' },
+            { id: 'c1_doc_rpl', badgeId: 'c1_doc_rpl_badge', errorId: 'c1_doc_rpl_error', nameId: 'c1_doc_name', campaign: 'Campaign 1 (Gyne Core Doctor - Family Package)', role: 'Doctor' },
             { id: 'c2_d1_rpl', badgeId: 'c2_d1_rpl_badge', errorId: 'c2_d1_rpl_error', nameId: 'c2_d1_name', campaign: 'Campaign 2 (Core Doctor Maximization)', role: 'Doctor 1' },
             { id: 'c2_d2_rpl', badgeId: 'c2_d2_rpl_badge', errorId: 'c2_d2_rpl_error', nameId: 'c2_d2_name', campaign: 'Campaign 2 (Core Doctor Maximization)', role: 'Doctor 2' },
             { id: 'c2_d3_rpl', badgeId: 'c2_d3_rpl_badge', errorId: 'c2_d3_rpl_error', nameId: 'c2_d3_name', campaign: 'Campaign 2 (Core Doctor Maximization)', role: 'Doctor 3' },
@@ -1191,12 +1191,12 @@ html_template = """<!DOCTYPE html>
             const dup = findRplDuplicateLocation(val, fieldId);
 
             if (dup) {
-                badge.innerHTML = `<span class="bg-rose-100 text-rose-800 border border-rose-300 text-[9px] sm:text-[10px] font-black px-2 py-0.5 rounded-full flex items-center gap-1 shadow-sm"><i class="fa-solid fa-triangle-exclamation text-rose-600"></i> DUPLICATE RPL ID</span>`;
+                badge.innerHTML = `<span class="bg-rose-100 text-rose-800 border border-rose-300 text-[9px] sm:text-[10px] font-black px-2 py-0.5 rounded-full flex items-center gap-1 shadow-sm"><i class="fa-solid fa-ban text-rose-600"></i> DUPLICATE RPL ID</span>`;
                 inputEl.classList.add('border-rose-500', 'ring-2', 'ring-rose-200', 'bg-rose-50/40', 'text-rose-950');
 
                 if (errorContainer) {
                     errorContainer.innerHTML = `
-                        <div class="p-3 bg-rose-50/95 border border-rose-300 rounded-2xl text-xs text-rose-950 shadow-md space-y-1.5 animate-bounce-once">
+                        <div class="p-3 bg-rose-50/95 border border-rose-300 rounded-2xl text-xs text-rose-950 shadow-md space-y-1.5">
                             <div class="flex items-center gap-1.5 text-rose-700 font-black">
                                 <i class="fa-solid fa-triangle-exclamation text-sm text-rose-600"></i>
                                 <span>Doctor RPL ID "${val}" is already assigned!</span>
@@ -1256,11 +1256,327 @@ html_template = """<!DOCTYPE html>
                 btn.innerHTML = '<i class="fa-solid fa-floppy-disk text-xs"></i> <span>Save</span>';
             }
         }
+        const ZONES = ###ZONES###;
+        const DEFAULT_CLOUD_URL = "###DEFAULT_CLOUD_URL###";
+
+        const SWEATER_DETAILS = {
+            "01": { code: "01", name: "Men's Sleeveless V-Neck Sweater", color: "Solid Ash / Grey Textured", gender: "Men's", sizes: "S, M, L, XL, XXL", img: "###B64_01###", fallback_img: "Image/01 (Men).jpeg" },
+            "02": { code: "02", name: "Men's Sleeveless V-Neck Sweater", color: "Solid Navy Blue Textured", gender: "Men's", sizes: "S, M, L, XL, XXL", img: "###B64_02###", fallback_img: "Image/02 (Men).jpeg" },
+            "03": { code: "03", name: "Men's Sleeveless V-Neck Sweater", color: "Off-White / Cream Checkered", gender: "Men's", sizes: "S, M, L, XL, XXL", img: "###B64_03###", fallback_img: "Image/03 (Men).jpeg" },
+            "04": { code: "04", name: "Women's Short Cardigan", color: "White & Navy Grid Check", gender: "Women's", sizes: "XS, S, M, L, XL", img: "###B64_04###", fallback_img: "Image/04 (Female).jpeg" },
+            "05": { code: "05", name: "Women's Semi Long Cardigan", color: "Solid Black with Border Trim", gender: "Women's", sizes: "S, M, L, XL, XXL", img: "###B64_05###", fallback_img: "Image/05 (Female).jpeg" }
+        };
+
+        let store = JSON.parse(localStorage.getItem('EXIUM_SWEATER_STORE') || '{}');
+        let regionLocks = JSON.parse(localStorage.getItem('EXIUM_REGION_LOCKS') || '{}');
+        let isGlobalAccessOpen = JSON.parse(localStorage.getItem('EXIUM_GLOBAL_ACCESS') || 'true');
+        let cloudApiUrl = localStorage.getItem('EXIUM_CLOUD_URL') || DEFAULT_CLOUD_URL;
+
+        let currentRegionCode = null;
+        let activeTerritoryIndex = 0;
+        let isAdminLoggedIn = false;
+        let currentAdminRegionFilter = 'all';
+        let autoSyncTimeout = null;
+
+        window.addEventListener('DOMContentLoaded', () => {
+            populateZoneDropdown();
+            checkGlobalLockBanner();
+            pullCloudData(false);
+
+            const savedSession = JSON.parse(localStorage.getItem('EXIUM_ACTIVE_SESSION') || 'null');
+            if (savedSession && savedSession.region_code && REGION_MAP[savedSession.region_code]) {
+                unlockRegion(savedSession.region_code, true);
+                if (typeof savedSession.territory_idx === 'number') {
+                    selectTerritoryTab(savedSession.territory_idx, false);
+                }
+            }
+        });
+
+        function populateZoneDropdown() {
+            const sel = document.getElementById('select-zone');
+            if (!sel) return;
+            if (sel.options.length <= 1) {
+                sel.innerHTML = '<option value="">-- Choose Your Zone (35 Zones) --</option>';
+                ZONES.forEach(z => {
+                    const opt = document.createElement('option');
+                    opt.value = z;
+                    opt.textContent = z;
+                    sel.appendChild(opt);
+                });
+            }
+        }
+
+        function onZoneChanged() {
+            const zone = document.getElementById('select-zone').value;
+            const regSel = document.getElementById('select-region');
+            const rhCard = document.getElementById('rh-info-card');
+            const passCard = document.getElementById('password-section');
+            const unlockBtn = document.getElementById('unlock-btn-container');
+
+            if (rhCard) rhCard.classList.add('hidden');
+            if (passCard) passCard.classList.add('hidden');
+            if (unlockBtn) unlockBtn.classList.add('hidden');
+
+            if (!zone) {
+                regSel.innerHTML = '<option value="">-- Select Zone First --</option>';
+                regSel.disabled = true;
+                return;
+            }
+
+            const matchingRegions = Object.values(REGION_MAP).filter(r => r.zone === zone);
+            matchingRegions.sort((a, b) => a.region_name.localeCompare(b.region_name));
+
+            regSel.innerHTML = '<option value="">-- Choose Region (' + matchingRegions.length + ' Regions) --</option>';
+            matchingRegions.forEach(r => {
+                const opt = document.createElement('option');
+                opt.value = r.sap_region_code;
+                opt.textContent = `${r.region_name} (${r.sap_region_code})`;
+                regSel.appendChild(opt);
+            });
+            regSel.disabled = false;
+        }
+
+        function onRegionChanged() {
+            const regCode = document.getElementById('select-region').value;
+            const rhCard = document.getElementById('rh-info-card');
+            const passCard = document.getElementById('password-section');
+            const unlockBtn = document.getElementById('unlock-btn-container');
+            const passInput = document.getElementById('region-password');
+
+            if (passInput) passInput.value = '';
+
+            if (!regCode || !REGION_MAP[regCode]) {
+                if (rhCard) rhCard.classList.add('hidden');
+                if (passCard) passCard.classList.add('hidden');
+                if (unlockBtn) unlockBtn.classList.add('hidden');
+                return;
+            }
+
+            const r = REGION_MAP[regCode];
+            document.getElementById('rh-name-display').querySelector('span').textContent = r.regional_head;
+            document.getElementById('rh-territory-count').innerHTML = `Total Territories: <strong>${r.territories.length}</strong>`;
+
+            if (rhCard) rhCard.classList.remove('hidden');
+            if (passCard) passCard.classList.remove('hidden');
+            if (unlockBtn) unlockBtn.classList.remove('hidden');
+            if (passInput) passInput.focus();
+        }
+
+        function handlePasswordKey(e) {
+            if (e.key === 'Enter') unlockRegion();
+        }
+
+        function unlockRegion(bypassCode = null, isRestoringSession = false) {
+            const code = bypassCode || document.getElementById('select-region').value;
+            const passInput = document.getElementById('region-password');
+            const pass = passInput ? passInput.value.trim() : '';
+
+            if (!bypassCode && pass !== code && pass !== 'Exium MUPS') {
+                alert('Invalid Password! Please enter the correct password.');
+                return;
+            }
+
+            if (!REGION_MAP[code]) return;
+
+            currentRegionCode = code;
+            const r = REGION_MAP[code];
+
+            localStorage.setItem('EXIUM_ACTIVE_SESSION', JSON.stringify({
+                region_code: code,
+                territory_idx: isRestoringSession ? activeTerritoryIndex : 0
+            }));
+
+            document.getElementById('selection-view').classList.add('hidden');
+            document.getElementById('workspace-view').classList.remove('hidden');
+
+            document.getElementById('banner-zone').textContent = r.zone;
+            document.getElementById('banner-region').textContent = `SAP: ${r.sap_region_code}`;
+            document.getElementById('banner-rh').textContent = `Region: ${r.region_name} (${r.regional_head})`;
+
+            renderTerritoryTabs();
+            if (!isRestoringSession) {
+                selectTerritoryTab(0, true);
+            }
+        }
+
+        function exitRegionWorkspace() {
+            onDataChanged();
+            localStorage.removeItem('EXIUM_ACTIVE_SESSION');
+            currentRegionCode = null;
+            document.getElementById('workspace-view').classList.add('hidden');
+            document.getElementById('selection-view').classList.remove('hidden');
+            const passInput = document.getElementById('region-password');
+            if (passInput) passInput.value = '';
+        }
+
+        function renderTerritoryTabs() {
+            const r = REGION_MAP[currentRegionCode];
+            const deskList = document.getElementById('desktop-territory-list');
+            const mobSelect = document.getElementById('mobile-territory-select');
+
+            deskList.innerHTML = '';
+            mobSelect.innerHTML = '';
+
+            let completedCount = 0;
+
+            r.territories.forEach((t, idx) => {
+                const d = store[String(t.sap_territory_code)] || {};
+                const status = getTerritoryStatus(d);
+                if (status === 'Complete') completedCount++;
+
+                const mobOpt = document.createElement('option');
+                mobOpt.value = idx;
+                mobOpt.textContent = `${t.territory_name} (${status})`;
+                mobSelect.appendChild(mobOpt);
+
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.onclick = () => selectTerritoryTab(idx);
+                btn.id = `terr-tab-btn-${idx}`;
+                btn.className = `w-full text-left p-3 rounded-2xl text-xs font-bold transition flex items-center justify-between border ${
+                    idx === activeTerritoryIndex 
+                    ? 'bg-orange-500 text-white border-orange-500 shadow-md' 
+                    : 'bg-slate-50 hover:bg-slate-100 text-slate-700 border-slate-200'
+                }`;
+
+                btn.innerHTML = `
+                    <div class="truncate pr-1 min-w-0">
+                        <div class="truncate font-black text-xs">${t.territory_name}</div>
+                        <div class="text-[10px] ${idx === activeTerritoryIndex ? 'text-orange-100' : 'text-slate-400'} font-mono">SAP: ${t.sap_territory_code}</div>
+                    </div>
+                    <span class="text-[9px] font-black px-1.5 py-0.5 rounded-full flex-shrink-0 ${
+                        status === 'Complete' ? (idx === activeTerritoryIndex ? 'bg-white text-slate-950' : 'bg-emerald-100 text-emerald-800 border border-emerald-300') :
+                        status === 'In Progress' ? (idx === activeTerritoryIndex ? 'bg-white text-slate-950' : 'bg-amber-100 text-amber-800 border border-amber-300') :
+                        (idx === activeTerritoryIndex ? 'bg-orange-600 text-white' : 'bg-slate-200 text-slate-600')
+                    }">${status === 'Complete' ? '✓ Complete' : status}</span>
+                `;
+                deskList.appendChild(btn);
+            });
+
+            document.getElementById('region-progress-badge').textContent = `${completedCount}/${r.territories.length} Done`;
+        }
+
+        function selectTerritoryTab(idx, shouldScroll = true) {
+            activeTerritoryIndex = idx;
+            const r = REGION_MAP[currentRegionCode];
+            const t = r.territories[idx];
+            const terrCode = String(t.sap_territory_code);
+            const d = store[terrCode] || {};
+
+            localStorage.setItem('EXIUM_ACTIVE_SESSION', JSON.stringify({
+                region_code: currentRegionCode,
+                territory_idx: idx
+            }));
+
+            document.getElementById('mobile-territory-select').value = idx;
+            document.getElementById('current-territory-title').textContent = t.territory_name;
+            document.getElementById('current-territory-code').textContent = `SAP Code: ${terrCode}`;
+
+            const status = getTerritoryStatus(d);
+            const statusBadge = document.getElementById('current-territory-status');
+            statusBadge.textContent = status;
+            statusBadge.className = `text-[9px] sm:text-[10px] font-bold px-2 py-0.2 rounded-full ${
+                status === 'Complete' ? 'bg-emerald-500 text-slate-950 font-black' :
+                status === 'In Progress' ? 'bg-amber-400 text-slate-950 font-bold' :
+                'bg-white/10 text-slate-200 border border-white/20'
+            }`;
+
+            const isLocked = isRegionLocked();
+            const lockedNotice = document.getElementById('territory-locked-notice');
+            if (isLocked) {
+                lockedNotice.classList.remove('hidden');
+            } else {
+                lockedNotice.classList.add('hidden');
+            }
+
+            const c1DocInput = document.getElementById('c1_doc_name');
+            c1DocInput.value = d.c1_doc_name || '';
+            c1DocInput.disabled = isLocked;
+
+            const c1DocRpl = document.getElementById('c1_doc_rpl');
+            c1DocRpl.value = d.c1_doc_rpl || '';
+            c1DocRpl.disabled = isLocked;
+            updateRplBadgeState(c1DocRpl, 'c1_doc_rpl_badge');
+
+            ['m1', 'm2', 'm3', 'm4'].forEach(m => {
+                const sw = d[`c1_${m}_sweater`] || '';
+                const sz = d[`c1_${m}_size`] || '';
+                const swSel = document.getElementById(`c1_${m}_sweater`);
+                const szSel = document.getElementById(`c1_${m}_size`);
+                
+                swSel.value = sw;
+                swSel.disabled = isLocked;
+                updateSizeOptionsForSelect(`c1_${m}_sweater`, `c1_${m}_size`, sz);
+                szSel.disabled = isLocked;
+                updateSlotImagePreview(`c1_${m}_img_preview`, sw);
+                updateSweaterSlotIndicator(`c1_${m}`);
+            });
+
+            ['d1', 'd2', 'd3', 'd4'].forEach(d_item => {
+                const dNameInput = document.getElementById(`c2_${d_item}_name`);
+                dNameInput.value = d[`c2_${d_item}_name`] || '';
+                dNameInput.disabled = isLocked;
+
+                const dRplInput = document.getElementById(`c2_${d_item}_rpl`);
+                dRplInput.value = d[`c2_${d_item}_rpl`] || '';
+                dRplInput.disabled = isLocked;
+                updateRplBadgeState(dRplInput, `c2_${d_item}_rpl_badge`);
+
+                const sw = d[`c2_${d_item}_sweater`] || '';
+                const sz = d[`c2_${d_item}_size`] || '';
+                const swSel = document.getElementById(`c2_${d_item}_sweater`);
+                const szSel = document.getElementById(`c2_${d_item}_size`);
+
+                swSel.value = sw;
+                swSel.disabled = isLocked;
+                updateSizeOptionsForSelect(`c2_${d_item}_sweater`, `c2_${d_item}_size`, sz);
+                szSel.disabled = isLocked;
+                updateSlotImagePreview(`c2_${d_item}_img_preview`, sw);
+                updateSweaterSlotIndicator(`c2_${d_item}`);
+            });
+
+            validateAllRplFieldsInCurrentTerritory();
+
+            r.territories.forEach((_, tabIdx) => {
+                const btn = document.getElementById(`terr-tab-btn-${tabIdx}`);
+                if (btn) {
+                    if (tabIdx === idx) {
+                        btn.className = 'w-full text-left p-3 rounded-2xl text-xs font-bold transition flex items-center justify-between border bg-orange-500 text-white border-orange-500 shadow-md';
+                    } else {
+                        btn.className = 'w-full text-left p-3 rounded-2xl text-xs font-bold transition flex items-center justify-between border bg-slate-50 hover:bg-slate-100 text-slate-700 border-slate-200';
+                    }
+                }
+            });
+
+            if (shouldScroll) {
+                const bannerEl = document.getElementById('active-territory-banner-card');
+                if (bannerEl) {
+                    bannerEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            }
+        }
 
         function onRplInput(inputEl, badgeId) {
             inputEl.value = inputEl.value.replace(/[^0-9]/g, '').slice(0, 6);
             validateAllRplFieldsInCurrentTerritory();
             onDataChanged();
+        }
+
+        function updateRplBadgeState(inputEl, badgeId) {
+            const val = inputEl.value || '';
+            const badge = document.getElementById(badgeId);
+            if (!badge) return;
+
+            if (val.length === 0) {
+                badge.textContent = "6 digits";
+                badge.className = "text-[9px] sm:text-[10px] font-bold text-slate-400";
+            } else if (val.length < 6) {
+                badge.textContent = `${val.length}/6 digits`;
+                badge.className = "text-[9px] sm:text-[10px] font-black text-amber-600";
+            } else if (val.length === 6) {
+                badge.innerHTML = '<i class="fa-solid fa-check text-emerald-600"></i> Valid 6-Digit';
+                badge.className = "text-[9px] sm:text-[10px] font-black text-emerald-600";
+            }
         }
 
         function updateSweaterSlotIndicator(slotPrefix) {
