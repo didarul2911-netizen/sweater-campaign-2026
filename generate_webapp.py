@@ -336,7 +336,7 @@ html_template = """<!DOCTYPE html>
                                             <label class="text-xs font-bold text-teal-950">Doctor RPL ID (6 Digits) <span class="text-rose-500">*</span></label>
                                             <span id="c1_doc_rpl_badge" class="text-[10px] font-bold text-slate-400">6 digits</span>
                                         </div>
-                                        <input type="text" inputmode="numeric" maxlength="6" id="c1_doc_rpl" oninput="onRplInput(this, 'c1_doc_rpl_badge')" placeholder="e.g. 104523" class="w-full bg-white border border-teal-300 rounded-xl px-3.5 py-2 text-xs sm:text-sm text-slate-900 font-mono font-bold placeholder-slate-400 focus:ring-2 focus:ring-teal-500 focus:border-teal-500 focus:outline-none transition tracking-wider">
+                                        <input type="text" inputmode="numeric" maxlength="6" id="c1_doc_rpl" oninput="onRplInput(this, 'c1_doc_rpl_badge')" onchange="onRplInput(this, 'c1_doc_rpl_badge')" onpaste="setTimeout(() => onRplInput(this, 'c1_doc_rpl_badge'), 50)" onblur="onRplInput(this, 'c1_doc_rpl_badge')" placeholder="e.g. 104523" class="w-full bg-white border border-teal-300 rounded-xl px-3.5 py-2 text-xs sm:text-sm text-slate-900 font-mono font-bold placeholder-slate-400 focus:ring-2 focus:ring-teal-500 focus:border-teal-500 focus:outline-none transition tracking-wider">
                                         <div id="c1_doc_rpl_dup_msg" class="hidden"></div>
                                     </div>
                                 </div>
@@ -485,7 +485,7 @@ html_template = """<!DOCTYPE html>
                                         </div>
                                         <div>
                                             <div class="flex items-center justify-between"><label class="text-[10px] font-bold text-purple-950">Doctor 1 RPL ID <span class="text-rose-500">*</span></label><span id="c2_d1_rpl_badge" class="text-[9px] font-bold text-slate-400">6 digits</span></div>
-                                            <input type="text" inputmode="numeric" maxlength="6" id="c2_d1_rpl" oninput="onRplInput(this, 'c2_d1_rpl_badge')" placeholder="6-digit RPL ID..." class="w-full mt-0.5 bg-white border border-purple-300 rounded-xl px-3 py-1.5 text-xs text-slate-900 font-mono font-bold placeholder-slate-400 focus:outline-none focus:border-purple-500 tracking-wider">
+                                            <input type="text" inputmode="numeric" maxlength="6" id="c2_d1_rpl" oninput="onRplInput(this, 'c2_d1_rpl_badge')" onchange="onRplInput(this, 'c2_d1_rpl_badge')" onpaste="setTimeout(() => onRplInput(this, 'c2_d1_rpl_badge'), 50)" onblur="onRplInput(this, 'c2_d1_rpl_badge')" placeholder="6-digit RPL ID..." class="w-full mt-0.5 bg-white border border-purple-300 rounded-xl px-3 py-1.5 text-xs text-slate-900 font-mono font-bold placeholder-slate-400 focus:outline-none focus:border-purple-500 tracking-wider">
                                             <div id="c2_d1_rpl_dup_msg" class="hidden"></div>
                                         </div>
                                     </div>
@@ -523,7 +523,7 @@ html_template = """<!DOCTYPE html>
                                         </div>
                                         <div>
                                             <div class="flex items-center justify-between"><label class="text-[10px] font-bold text-purple-950">Doctor 2 RPL ID <span class="text-rose-500">*</span></label><span id="c2_d2_rpl_badge" class="text-[9px] font-bold text-slate-400">6 digits</span></div>
-                                            <input type="text" inputmode="numeric" maxlength="6" id="c2_d2_rpl" oninput="onRplInput(this, 'c2_d2_rpl_badge')" placeholder="6-digit RPL ID..." class="w-full mt-0.5 bg-white border border-purple-300 rounded-xl px-3 py-1.5 text-xs text-slate-900 font-mono font-bold placeholder-slate-400 focus:outline-none focus:border-purple-500 tracking-wider">
+                                            <input type="text" inputmode="numeric" maxlength="6" id="c2_d2_rpl" oninput="onRplInput(this, 'c2_d2_rpl_badge')" onchange="onRplInput(this, 'c2_d2_rpl_badge')" onpaste="setTimeout(() => onRplInput(this, 'c2_d2_rpl_badge'), 50)" onblur="onRplInput(this, 'c2_d2_rpl_badge')" placeholder="6-digit RPL ID..." class="w-full mt-0.5 bg-white border border-purple-300 rounded-xl px-3 py-1.5 text-xs text-slate-900 font-mono font-bold placeholder-slate-400 focus:outline-none focus:border-purple-500 tracking-wider">
                                             <div id="c2_d2_rpl_dup_msg" class="hidden"></div>
                                         </div>
                                     </div>
@@ -561,7 +561,7 @@ html_template = """<!DOCTYPE html>
                                         </div>
                                         <div>
                                             <div class="flex items-center justify-between"><label class="text-[10px] font-bold text-purple-950">Doctor 3 RPL ID <span class="text-rose-500">*</span></label><span id="c2_d3_rpl_badge" class="text-[9px] font-bold text-slate-400">6 digits</span></div>
-                                            <input type="text" inputmode="numeric" maxlength="6" id="c2_d3_rpl" oninput="onRplInput(this, 'c2_d3_rpl_badge')" placeholder="6-digit RPL ID..." class="w-full mt-0.5 bg-white border border-purple-300 rounded-xl px-3 py-1.5 text-xs text-slate-900 font-mono font-bold placeholder-slate-400 focus:outline-none focus:border-purple-500 tracking-wider">
+                                            <input type="text" inputmode="numeric" maxlength="6" id="c2_d3_rpl" oninput="onRplInput(this, 'c2_d3_rpl_badge')" onchange="onRplInput(this, 'c2_d3_rpl_badge')" onpaste="setTimeout(() => onRplInput(this, 'c2_d3_rpl_badge'), 50)" onblur="onRplInput(this, 'c2_d3_rpl_badge')" placeholder="6-digit RPL ID..." class="w-full mt-0.5 bg-white border border-purple-300 rounded-xl px-3 py-1.5 text-xs text-slate-900 font-mono font-bold placeholder-slate-400 focus:outline-none focus:border-purple-500 tracking-wider">
                                             <div id="c2_d3_rpl_dup_msg" class="hidden"></div>
                                         </div>
                                     </div>
@@ -599,7 +599,7 @@ html_template = """<!DOCTYPE html>
                                         </div>
                                         <div>
                                             <div class="flex items-center justify-between"><label class="text-[10px] font-bold text-purple-950">Doctor 4 RPL ID <span class="text-rose-500">*</span></label><span id="c2_d4_rpl_badge" class="text-[9px] font-bold text-slate-400">6 digits</span></div>
-                                            <input type="text" inputmode="numeric" maxlength="6" id="c2_d4_rpl" oninput="onRplInput(this, 'c2_d4_rpl_badge')" placeholder="6-digit RPL ID..." class="w-full mt-0.5 bg-white border border-purple-300 rounded-xl px-3 py-1.5 text-xs text-slate-900 font-mono font-bold placeholder-slate-400 focus:outline-none focus:border-purple-500 tracking-wider">
+                                            <input type="text" inputmode="numeric" maxlength="6" id="c2_d4_rpl" oninput="onRplInput(this, 'c2_d4_rpl_badge')" onchange="onRplInput(this, 'c2_d4_rpl_badge')" onpaste="setTimeout(() => onRplInput(this, 'c2_d4_rpl_badge'), 50)" onblur="onRplInput(this, 'c2_d4_rpl_badge')" placeholder="6-digit RPL ID..." class="w-full mt-0.5 bg-white border border-purple-300 rounded-xl px-3 py-1.5 text-xs text-slate-900 font-mono font-bold placeholder-slate-400 focus:outline-none focus:border-purple-500 tracking-wider">
                                             <div id="c2_d4_rpl_dup_msg" class="hidden"></div>
                                         </div>
                                     </div>
@@ -1085,9 +1085,10 @@ html_template = """<!DOCTYPE html>
         let currentAdminRegionFilter = 'all';
         let autoSyncTimeout = null;
 
-        window.addEventListener('DOMContentLoaded', () => {
+        window.addEventListener('DOMContentLoaded', async () => {
             populateZoneDropdown();
             checkGlobalLockBanner();
+            pullCloudData(false);
 
             const savedSession = JSON.parse(localStorage.getItem('EXIUM_ACTIVE_SESSION') || 'null');
             if (savedSession && savedSession.region_code && REGION_MAP[savedSession.region_code]) {
@@ -1185,6 +1186,7 @@ html_template = """<!DOCTYPE html>
             if (!REGION_MAP[code]) return;
 
             currentRegionCode = code;
+            pullCloudData(false);
             const r = REGION_MAP[code];
 
             localStorage.setItem('EXIUM_ACTIVE_SESSION', JSON.stringify({
@@ -1368,63 +1370,71 @@ html_template = """<!DOCTYPE html>
 
         // DOCTOR RPL DUPLICATE DETECTOR
         function findDoctorRplDuplicate(rplVal, currentFieldId) {
-            if (!rplVal || rplVal.length !== 6) return null;
-            rplVal = String(rplVal).trim();
+            if (!rplVal) return null;
+            rplVal = String(rplVal).replace(/[^0-9]/g, '').trim();
+            if (rplVal.length !== 6) return null;
 
             if (!currentRegionCode) return null;
             const r = REGION_MAP[currentRegionCode];
             const currentTerritory = r.territories[activeTerritoryIndex];
             const currentTerrCode = String(currentTerritory.sap_territory_code).trim();
 
-            // 1. Check other input fields on the active territory form in the DOM
+            // 1. Check other input fields on the active territory form in DOM
             const activeFields = [
-                { id: 'c1_doc_rpl', nameId: 'c1_doc_name', label: 'Campaign 1 (Gyne Core Doctor)' },
-                { id: 'c2_d1_rpl', nameId: 'c2_d1_name', label: 'Campaign 2 (Doctor 1)' },
-                { id: 'c2_d2_rpl', nameId: 'c2_d2_name', label: 'Campaign 2 (Doctor 2)' },
-                { id: 'c2_d3_rpl', nameId: 'c2_d3_name', label: 'Campaign 2 (Doctor 3)' },
-                { id: 'c2_d4_rpl', nameId: 'c2_d4_name', label: 'Campaign 2 (Doctor 4)' }
+                { id: 'c1_doc_rpl', nameId: 'c1_doc_name', label: 'Campaign 1: Gyne Core Doctor' },
+                { id: 'c2_d1_rpl', nameId: 'c2_d1_name', label: 'Campaign 2: Doctor 1' },
+                { id: 'c2_d2_rpl', nameId: 'c2_d2_name', label: 'Campaign 2: Doctor 2' },
+                { id: 'c2_d3_rpl', nameId: 'c2_d3_name', label: 'Campaign 2: Doctor 3' },
+                { id: 'c2_d4_rpl', nameId: 'c2_d4_name', label: 'Campaign 2: Doctor 4' }
             ];
 
             for (const f of activeFields) {
                 if (f.id === currentFieldId) continue;
                 const el = document.getElementById(f.id);
-                if (el && el.value.trim() === rplVal) {
-                    const docNameEl = document.getElementById(f.nameId);
-                    const docName = docNameEl ? docNameEl.value.trim() : '';
-                    return {
-                        isDuplicate: true,
-                        sameTerritory: true,
-                        territoryCode: currentTerrCode,
-                        territoryName: currentTerritory.territory_name,
-                        regionName: r.region_name,
-                        regionalHead: r.regional_head,
-                        zone: currentTerritory.zone,
-                        campaignLabel: f.label,
-                        doctorName: docName || '(Name not entered)'
-                    };
+                if (el) {
+                    const elVal = String(el.value || '').replace(/[^0-9]/g, '').trim();
+                    if (elVal === rplVal) {
+                        const docNameEl = document.getElementById(f.nameId);
+                        const docName = docNameEl ? docNameEl.value.trim() : '';
+                        return {
+                            isDuplicate: true,
+                            sameTerritory: true,
+                            territoryCode: currentTerrCode,
+                            territoryName: currentTerritory.territory_name,
+                            regionName: r.region_name,
+                            regionalHead: r.regional_head,
+                            zone: currentTerritory.zone,
+                            campaignLabel: f.label,
+                            doctorName: docName || '(Doctor name not entered yet)'
+                        };
+                    }
                 }
             }
 
-            // 2. Check all territories stored in store across the entire database
-            for (const terrCode in store) {
-                const d = store[terrCode];
+            // 2. Check store across all territories in the entire campaign
+            const currentStore = Object.assign({}, store, JSON.parse(localStorage.getItem('EXIUM_SWEATER_STORE') || '{}'));
+
+            for (const terrCode in currentStore) {
+                const d = currentStore[terrCode];
                 if (!d) continue;
 
                 const isCurrentTerr = (String(terrCode).trim() === currentTerrCode);
 
                 const storedSlots = [
-                    { rplKey: 'c1_doc_rpl', nameKey: 'c1_doc_name', label: 'Campaign 1 (Gyne Core Doctor)', fieldId: 'c1_doc_rpl' },
-                    { rplKey: 'c2_d1_rpl', nameKey: 'c2_d1_name', label: 'Campaign 2 (Doctor 1)', fieldId: 'c2_d1_rpl' },
-                    { rplKey: 'c2_d2_rpl', nameKey: 'c2_d2_name', label: 'Campaign 2 (Doctor 2)', fieldId: 'c2_d2_rpl' },
-                    { rplKey: 'c2_d3_rpl', nameKey: 'c2_d3_name', label: 'Campaign 2 (Doctor 3)', fieldId: 'c2_d3_rpl' },
-                    { rplKey: 'c2_d4_rpl', nameKey: 'c2_d4_name', label: 'Campaign 2 (Doctor 4)', fieldId: 'c2_d4_rpl' }
+                    { rplKey: 'c1_doc_rpl', nameKey: 'c1_doc_name', label: 'Campaign 1: Gyne Core Doctor', fieldId: 'c1_doc_rpl' },
+                    { rplKey: 'c2_d1_rpl', nameKey: 'c2_d1_name', label: 'Campaign 2: Doctor 1', fieldId: 'c2_d1_rpl' },
+                    { rplKey: 'c2_d2_rpl', nameKey: 'c2_d2_name', label: 'Campaign 2: Doctor 2', fieldId: 'c2_d2_rpl' },
+                    { rplKey: 'c2_d3_rpl', nameKey: 'c2_d3_name', label: 'Campaign 2: Doctor 3', fieldId: 'c2_d3_rpl' },
+                    { rplKey: 'c2_d4_rpl', nameKey: 'c2_d4_name', label: 'Campaign 2: Doctor 4', fieldId: 'c2_d4_rpl' }
                 ];
 
                 for (const slot of storedSlots) {
+                    // Skip current field of current territory
                     if (isCurrentTerr && slot.fieldId === currentFieldId) continue;
-                    if (isCurrentTerr) continue; // Current territory checked from DOM above
+                    // Current territory other slots were already checked in active DOM above
+                    if (isCurrentTerr) continue;
 
-                    const slotRpl = String(d[slot.rplKey] || '').trim();
+                    const slotRpl = String(d[slot.rplKey] || '').replace(/[^0-9]/g, '').trim();
                     if (slotRpl === rplVal) {
                         const terrMeta = ALL_TERRITORIES_MAP[String(terrCode).trim()] || {};
                         const docName = String(d[slot.nameKey] || '').trim();
@@ -1433,12 +1443,12 @@ html_template = """<!DOCTYPE html>
                             isDuplicate: true,
                             sameTerritory: false,
                             territoryCode: terrCode,
-                            territoryName: terrMeta.Territory || terrCode,
+                            territoryName: terrMeta.Territory || `Territory ${terrCode}`,
                             regionName: terrMeta.Region || '',
                             regionalHead: terrMeta['Regional Head'] || '',
                             zone: terrMeta.Zone || '',
                             campaignLabel: slot.label,
-                            doctorName: docName || '(Doctor name not entered)'
+                            doctorName: docName || '(Doctor name not entered yet)'
                         };
                     }
                 }
@@ -1453,7 +1463,7 @@ html_template = """<!DOCTYPE html>
             const msgEl = document.getElementById(fieldId + '_dup_msg');
             if (!inputEl) return true;
 
-            const val = inputEl.value.trim();
+            const val = String(inputEl.value || '').replace(/[^0-9]/g, '').trim();
             if (val.length === 0) {
                 if (badgeEl) {
                     badgeEl.textContent = "6 digits";
