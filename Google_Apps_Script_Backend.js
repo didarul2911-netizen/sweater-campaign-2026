@@ -1,7 +1,7 @@
 /**
  * =========================================================================
  * EXIUM MUPS - SWEATER CAMPAIGN 2026 (4Q'26)
- * GOOGLE APPS SCRIPT BACKEND (PERFECT MASTER 2-ROW HEADER LAYOUT)
+ * GOOGLE APPS SCRIPT BACKEND (WITH JSONP + DIRECT CORS SUPPORT)
  * =========================================================================
  */
 
@@ -31,16 +31,13 @@ function getOrCreateSheets(ss) {
   return { sheet1: sheet1, sheet2: sheet2 };
 }
 
-// 1. RESTORE HEADERS (ROW 1 & ROW 2)
 function restoreHeaders() {
   var ss = SpreadsheetApp.getActiveSpreadsheet();
   var pair = getOrCreateSheets(ss);
   var sheet1 = pair.sheet1;
   var sheet2 = pair.sheet2;
 
-  // --- SHEET 1: Gyne Core Doctor (Family) ---
   if (sheet1) {
-    // Row 1 Group Banners
     sheet1.getRange("A1:F1").merge().setValue("TERRITORY INFORMATION (EXIUM FIELD FORCE LIST)")
       .setBackground("#1E293B").setFontColor("#FFFFFF").setFontWeight("bold").setHorizontalAlignment("center").setVerticalAlignment("middle");
     sheet1.getRange("G1:P1").merge().setValue("CAMPAIGN 1: GYNE CORE DOCTOR DEVELOPMENT (FAMILY PACKAGE - 4 SWEATERS / TERRITORY)")
@@ -48,7 +45,6 @@ function restoreHeaders() {
     sheet1.getRange("Q1").setValue("STATUS")
       .setBackground("#047857").setFontColor("#FFFFFF").setFontWeight("bold").setHorizontalAlignment("center").setVerticalAlignment("middle");
 
-    // Row 2 Sub-Headers
     var h1 = [
       "Zone", "SAP Region Code", "Region", "Regional Head", "SAP Territory Code", "Territory",
       "Doctor Name", "Doctor RPL ID",
@@ -62,9 +58,7 @@ function restoreHeaders() {
     sheet1.setRowHeights(1, 2, 28);
   }
 
-  // --- SHEET 2: Core Doctor Maximization ---
   if (sheet2) {
-    // Row 1 Group Banners
     sheet2.getRange("A1:F1").merge().setValue("TERRITORY INFORMATION (EXIUM FIELD FORCE LIST)")
       .setBackground("#1E293B").setFontColor("#FFFFFF").setFontWeight("bold").setHorizontalAlignment("center").setVerticalAlignment("middle");
     sheet2.getRange("G1:V1").merge().setValue("CAMPAIGN 2: CORE DOCTOR MAXIMIZATION (1 SWEATER / DOCTOR - 4 DOCTORS / TERRITORY)")
@@ -72,7 +66,6 @@ function restoreHeaders() {
     sheet2.getRange("W1").setValue("STATUS")
       .setBackground("#047857").setFontColor("#FFFFFF").setFontWeight("bold").setHorizontalAlignment("center").setVerticalAlignment("middle");
 
-    // Row 2 Sub-Headers
     var h2 = [
       "Zone", "SAP Region Code", "Region", "Regional Head", "SAP Territory Code", "Territory",
       "Doctor 1 Name", "Doctor 1 RPL ID", "Sweater 1", "Size 1",
@@ -89,7 +82,6 @@ function restoreHeaders() {
   }
 }
 
-// 2. COMPLETE SETUP OF ALL 1,856 TERRITORIES & HEADERS
 function setupSheets() {
   var ss = SpreadsheetApp.getActiveSpreadsheet();
   var pair = getOrCreateSheets(ss);
@@ -131,25 +123,21 @@ function setupSheets() {
 
 function doGet(e) {
   var action = (e && e.parameter && e.parameter.action) ? e.parameter.action : "get_all";
+  var callback = (e && e.parameter && e.parameter.callback) ? e.parameter.callback : "";
   
   if (action === "ping" || action === "test") {
-    return ContentService
-      .createTextOutput(JSON.stringify({ status: "success", message: "Google Sheet Connected!" }))
-      .setMimeType(ContentService.MimeType.JSON);
+    var res = { status: "success", message: "Google Sheet Connected!" };
+    return sendResponse(res, callback);
   }
 
   if (action === "restore_headers") {
     restoreHeaders();
-    return ContentService
-      .createTextOutput(JSON.stringify({ status: "success", message: "Headers restored successfully!" }))
-      .setMimeType(ContentService.MimeType.JSON);
+    return sendResponse({ status: "success", message: "Headers restored successfully!" }, callback);
   }
 
   if (action === "setup_sheets") {
     setupSheets();
-    return ContentService
-      .createTextOutput(JSON.stringify({ status: "success", message: "Sheets setup completed with 1856 territories!" }))
-      .setMimeType(ContentService.MimeType.JSON);
+    return sendResponse({ status: "success", message: "Sheets setup completed with 1856 territories!" }, callback);
   }
 
   try {
@@ -158,6 +146,7 @@ function doGet(e) {
     var sheet1 = pair.sheet1;
     var sheet2 = pair.sheet2;
     var store = {};
+    var populatedCount = 0;
 
     if (sheet1) {
       var lr1 = sheet1.getLastRow();
@@ -167,16 +156,27 @@ function doGet(e) {
           var code = String(v1[i][4]).trim();
           if (code) {
             if (!store[code]) store[code] = {};
-            store[code].c1_doc_name = String(v1[i][6] || "").trim();
-            store[code].c1_doc_rpl = String(v1[i][7] || "").trim();
-            store[code].c1_m1_sweater = String(v1[i][8] || "").trim();
-            store[code].c1_m1_size = String(v1[i][9] || "").trim();
-            store[code].c1_m2_sweater = String(v1[i][10] || "").trim();
-            store[code].c1_m2_size = String(v1[i][11] || "").trim();
-            store[code].c1_m3_sweater = String(v1[i][12] || "").trim();
-            store[code].c1_m3_size = String(v1[i][13] || "").trim();
-            store[code].c1_m4_sweater = String(v1[i][14] || "").trim();
-            store[code].c1_m4_size = String(v1[i][15] || "").trim();
+            var doc_name = String(v1[i][6] || "").trim();
+            var doc_rpl = String(v1[i][7] || "").trim();
+            var m1_sw = String(v1[i][8] || "").trim();
+            var m1_sz = String(v1[i][9] || "").trim();
+            var m2_sw = String(v1[i][10] || "").trim();
+            var m2_sz = String(v1[i][11] || "").trim();
+            var m3_sw = String(v1[i][12] || "").trim();
+            var m3_sz = String(v1[i][13] || "").trim();
+            var m4_sw = String(v1[i][14] || "").trim();
+            var m4_sz = String(v1[i][15] || "").trim();
+
+            store[code].c1_doc_name = doc_name;
+            store[code].c1_doc_rpl = doc_rpl;
+            store[code].c1_m1_sweater = m1_sw;
+            store[code].c1_m1_size = m1_sz;
+            store[code].c1_m2_sweater = m2_sw;
+            store[code].c1_m2_size = m2_sz;
+            store[code].c1_m3_sweater = m3_sw;
+            store[code].c1_m3_size = m3_sz;
+            store[code].c1_m4_sweater = m4_sw;
+            store[code].c1_m4_size = m4_sz;
           }
         }
       }
@@ -190,35 +190,73 @@ function doGet(e) {
           var code2 = String(v2[j][4]).trim();
           if (code2) {
             if (!store[code2]) store[code2] = {};
-            store[code2].c2_d1_name = String(v2[j][6] || "").trim();
-            store[code2].c2_d1_rpl = String(v2[j][7] || "").trim();
-            store[code2].c2_d1_sweater = String(v2[j][8] || "").trim();
-            store[code2].c2_d1_size = String(v2[j][9] || "").trim();
-            store[code2].c2_d2_name = String(v2[j][10] || "").trim();
-            store[code2].c2_d2_rpl = String(v2[j][11] || "").trim();
-            store[code2].c2_d2_sweater = String(v2[j][12] || "").trim();
-            store[code2].c2_d2_size = String(v2[j][13] || "").trim();
-            store[code2].c2_d3_name = String(v2[j][14] || "").trim();
-            store[code2].c2_d3_rpl = String(v2[j][15] || "").trim();
-            store[code2].c2_d3_sweater = String(v2[j][16] || "").trim();
-            store[code2].c2_d3_size = String(v2[j][17] || "").trim();
-            store[code2].c2_d4_name = String(v2[j][18] || "").trim();
-            store[code2].c2_d4_rpl = String(v2[j][19] || "").trim();
-            store[code2].c2_d4_sweater = String(v2[j][20] || "").trim();
-            store[code2].c2_d4_size = String(v2[j][21] || "").trim();
+            var d1_name = String(v2[j][6] || "").trim();
+            var d1_rpl = String(v2[j][7] || "").trim();
+            var d1_sw = String(v2[j][8] || "").trim();
+            var d1_sz = String(v2[j][9] || "").trim();
+            var d2_name = String(v2[j][10] || "").trim();
+            var d2_rpl = String(v2[j][11] || "").trim();
+            var d2_sw = String(v2[j][12] || "").trim();
+            var d2_sz = String(v2[j][13] || "").trim();
+            var d3_name = String(v2[j][14] || "").trim();
+            var d3_rpl = String(v2[j][15] || "").trim();
+            var d3_sw = String(v2[j][16] || "").trim();
+            var d3_sz = String(v2[j][17] || "").trim();
+            var d4_name = String(v2[j][18] || "").trim();
+            var d4_rpl = String(v2[j][19] || "").trim();
+            var d4_sw = String(v2[j][20] || "").trim();
+            var d4_sz = String(v2[j][21] || "").trim();
+
+            store[code2].c2_d1_name = d1_name;
+            store[code2].c2_d1_rpl = d1_rpl;
+            store[code2].c2_d1_sweater = d1_sw;
+            store[code2].c2_d1_size = d1_sz;
+            store[code2].c2_d2_name = d2_name;
+            store[code2].c2_d2_rpl = d2_rpl;
+            store[code2].c2_d2_sweater = d2_sw;
+            store[code2].c2_d2_size = d2_sz;
+            store[code2].c2_d3_name = d3_name;
+            store[code2].c2_d3_rpl = d3_rpl;
+            store[code2].c2_d3_sweater = d3_sw;
+            store[code2].c2_d3_size = d3_sz;
+            store[code2].c2_d4_name = d4_name;
+            store[code2].c2_d4_rpl = d4_rpl;
+            store[code2].c2_d4_sweater = d4_sw;
+            store[code2].c2_d4_size = d4_sz;
           }
         }
       }
     }
 
-    return ContentService
-      .createTextOutput(JSON.stringify({ status: "success", store: store, total_territories: Object.keys(store).length }))
-      .setMimeType(ContentService.MimeType.JSON);
+    for (var k in store) {
+      var item = store[k];
+      if (item.c1_doc_name || item.c1_doc_rpl || item.c1_m1_sweater || item.c2_d1_name || item.c2_d1_rpl || item.c2_d1_sweater) {
+        populatedCount++;
+      }
+    }
+
+    return sendResponse({
+      status: "success",
+      store: store,
+      total_territories: Object.keys(store).length,
+      populated_territories: populatedCount
+    }, callback);
+
   } catch (err) {
-    return ContentService
-      .createTextOutput(JSON.stringify({ status: "error", message: err.toString() }))
-      .setMimeType(ContentService.MimeType.JSON);
+    return sendResponse({ status: "error", message: err.toString() }, callback);
   }
+}
+
+function sendResponse(obj, callback) {
+  var jsonStr = JSON.stringify(obj);
+  if (callback && callback.trim()) {
+    return ContentService
+      .createTextOutput(callback.trim() + "(" + jsonStr + ");")
+      .setMimeType(ContentService.MimeType.JAVASCRIPT);
+  }
+  return ContentService
+    .createTextOutput(jsonStr)
+    .setMimeType(ContentService.MimeType.JSON);
 }
 
 function doPost(e) {

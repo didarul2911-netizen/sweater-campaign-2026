@@ -1733,6 +1733,737 @@ html_template = """<!DOCTYPE html>
             }
         }
 
+        function fetchCloudDataJsonp(url) {
+            return new Promise((resolve, reject) => {
+                const cbName = 'gas_cb_' + Date.now() + '_' + Math.floor(Math.random() * 10000);
+                const script = document.createElement('script');
+                const sep = url.includes('?') ? '&' : '?';
+                script.src = `${url}${sep}action=get_all&callback=${cbName}&_t=${Date.now()}`;
+                
+                let isResolved = false;
+                window[cbName] = function(data) {
+                    isResolved = true;
+                    delete window[cbName];
+                    if (script.parentNode) script.parentNode.removeChild(script);
+                    resolve(data);
+                };
+                script.onerror = function(err) {
+                    if (!isResolved) {
+                        delete window[cbName];
+                        if (script.parentNode) script.parentNode.removeChild(script);
+                        reject(err);
+                    }
+                };
+                document.head.appendChild(script);
+
+                setTimeout(() => {
+                    if (!isResolved) {
+                        delete window[cbName];
+                        if (script.parentNode) script.parentNode.removeChild(script);
+                        reject(new Error("Timeout pulling from Google Sheet"));
+                    }
+                }, 15000);
+            });
+        }
+
+        async function pullCloudData(showFeedback = false) {
+            const url = (cloudApiUrl && cloudApiUrl.startsWith('http')) ? cloudApiUrl : DEFAULT_CLOUD_URL;
+            if (!url) return null;
+
+            if (showFeedback) showToast("🔄 Fetching latest live data from Google Sheet...");
+
+            let json = null;
+
+            // 1. Try direct fetch
+            try {
+                const sep = url.includes('?') ? '&' : '?';
+                const res = await fetch(`${url}${sep}action=get_all&_t=${Date.now()}`);
+                if (res.ok) {
+                    json = await res.json();
+                }
+            } catch (fetchErr) {
+                console.warn("[Cloud Fetch Failed, Trying JSONP fallback]:", fetchErr);
+            }
+
+            // 2. Fallback to JSONP
+            if (!json || json.status !== 'success' || !json.store) {
+                try {
+                    json = await fetchCloudDataJsonp(url);
+                } catch (jsonpErr) {
+                    console.warn("[JSONP Pull Failed]:", jsonpErr);
+                }
+            }
+
+            if (json && json.status === 'success' && json.store) {
+                let populatedCount = 0;
+                for (let k in json.store) {
+                    const item = json.store[k];
+                    if (item && typeof item === 'object') {
+                        store[k] = Object.assign(store[k] || {}, item);
+                        if (item.c1_doc_name || item.c1_doc_rpl || item.c1_m1_sweater || item.c2_d1_name || item.c2_d1_rpl || item.c2_d1_sweater) {
+                            populatedCount++;
+                        }
+                    }
+                }
+                localStorage.setItem('EXIUM_SWEATER_STORE', JSON.stringify(store));
+                if (isAdminLoggedIn) {
+                    renderAdminKpisAndSummaries();
+                    renderAdminZoneProgress();
+                    renderAdminProductionMatrix();
+                    renderAdminRegionsTable(document.getElementById('admin-region-search')?.value || '');
+                }
+                if (showFeedback) {
+                    showToast(`✅ Synced with Google Sheet! (${populatedCount} active entries updated)`);
+                }
+                return { success: true, count: populatedCount };
+            } else {
+                if (showFeedback) {
+                    showToast("⚠️ Could not pull cloud data. Please verify your connection.");
+                }
+                return { success: false, count: 0 };
+            }
+        }
+
+        function populateZoneDropdown() {
+            const sel = document.getElementById('select-zone');
+            if (!sel) return;
+            if (sel.options.length <= 1) {
+                sel.innerHTML = '<option value="">-- Choose Your Zone (35 Zones) --</option>';
+                ZONES.forEach(z => {
+                    const opt = document.createElement('option');
+                    opt.value = z;
+                    opt.textContent = z;
+                    sel.appendChild(opt);
+                });
+            }
+        }
+
+        function onZoneChanged() {
+            const zone = document.getElementById('select-zone').value;
+            const regSel = document.getElementById('select-region');
+            const rhCard = document.getElementById('rh-info-card');
+            const passCard = document.getElementById('password-section');
+            const unlockBtn = document.getElementById('unlock-btn-container');
+
+            if (rhCard) rhCard.classList.add('hidden');
+            if (passCard) passCard.classList.add('hidden');
+            if (unlockBtn) unlockBtn.classList.add('hidden');
+
+            if (!zone) {
+                regSel.innerHTML = '<option value="">-- Select Zone First --</option>';
+                regSel.disabled = true;
+                return;
+            }
+
+            const matchingRegions = Object.values(REGION_MAP).filter(r => r.zone === zone);
+            matchingRegions.sort((a, b) => a.region_name.localeCompare(b.region_name));
+
+            regSel.innerHTML = '<option value="">-- Choose Region (' + matchingRegions.length + ' Regions) --</option>';
+            matchingRegions.forEach(r => {
+                const opt = document.createElement('option');
+                opt.value = r.sap_region_code;
+                opt.textContent = `${r.region_name} (${r.sap_region_code})`;
+                regSel.appendChild(opt);
+            });
+            regSel.disabled = false;
+        }
+
+        function onRegionChanged() {
+            const regCode = document.getElementById('select-region').value;
+            const rhCard = document.getElementById('rh-info-card');
+            const passCard = document.getElementById('password-section');
+            const unlockBtn = document.getElementById('unlock-btn-container');
+            const passInput = document.getElementById('region-password');
+
+            if (passInput) passInput.value = '';
+
+            if (!regCode || !REGION_MAP[regCode]) {
+                if (rhCard) rhCard.classList.add('hidden');
+                if (passCard) passCard.classList.add('hidden');
+                if (unlockBtn) unlockBtn.classList.add('hidden');
+                return;
+            }
+
+            const r = REGION_MAP[regCode];
+            document.getElementById('rh-name-display').querySelector('span').textContent = r.regional_head;
+            document.getElementById('rh-territory-count').innerHTML = `Total Territories: <strong>${r.territories.length}</strong>`;
+
+            if (rhCard) rhCard.classList.remove('hidden');
+            if (passCard) passCard.classList.remove('hidden');
+            if (unlockBtn) unlockBtn.classList.remove('hidden');
+            if (passInput) passInput.focus();
+        }
+
+        function handlePasswordKey(e) {
+            if (e.key === 'Enter') unlockRegion();
+        }
+
+        function unlockRegion(bypassCode = null, isRestoringSession = false) {
+            const code = bypassCode || document.getElementById('select-region').value;
+            const passInput = document.getElementById('region-password');
+            const pass = passInput ? passInput.value.trim() : '';
+
+            if (!bypassCode && pass !== code && pass !== 'Exium MUPS') {
+                alert('Invalid Password! Please enter the correct password.');
+                return;
+            }
+
+            if (!REGION_MAP[code]) return;
+
+            currentRegionCode = code;
+            const r = REGION_MAP[code];
+
+            localStorage.setItem('EXIUM_ACTIVE_SESSION', JSON.stringify({
+                region_code: code,
+                territory_idx: isRestoringSession ? activeTerritoryIndex : 0
+            }));
+
+            document.getElementById('selection-view').classList.add('hidden');
+            document.getElementById('workspace-view').classList.remove('hidden');
+
+            document.getElementById('banner-zone').textContent = r.zone;
+            document.getElementById('banner-region').textContent = `SAP: ${r.sap_region_code}`;
+            document.getElementById('banner-rh').textContent = `Region: ${r.region_name} (${r.regional_head})`;
+
+            renderTerritoryTabs();
+            if (!isRestoringSession) {
+                selectTerritoryTab(0, true);
+            }
+        }
+
+        function exitRegionWorkspace() {
+            onDataChanged();
+            localStorage.removeItem('EXIUM_ACTIVE_SESSION');
+            currentRegionCode = null;
+            document.getElementById('workspace-view').classList.add('hidden');
+            document.getElementById('selection-view').classList.remove('hidden');
+            const passInput = document.getElementById('region-password');
+            if (passInput) passInput.value = '';
+        }
+
+        function renderTerritoryTabs() {
+            const r = REGION_MAP[currentRegionCode];
+            const deskList = document.getElementById('desktop-territory-list');
+            const mobSelect = document.getElementById('mobile-territory-select');
+
+            deskList.innerHTML = '';
+            mobSelect.innerHTML = '';
+
+            let completedCount = 0;
+
+            r.territories.forEach((t, idx) => {
+                const d = store[String(t.sap_territory_code)] || {};
+                const status = getTerritoryStatus(d);
+                if (status === 'Complete') completedCount++;
+
+                const mobOpt = document.createElement('option');
+                mobOpt.value = idx;
+                mobOpt.textContent = `${t.territory_name} (${status})`;
+                mobSelect.appendChild(mobOpt);
+
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.onclick = () => selectTerritoryTab(idx);
+                btn.id = `terr-tab-btn-${idx}`;
+                btn.className = `w-full text-left p-3 rounded-2xl text-xs font-bold transition flex items-center justify-between border ${
+                    idx === activeTerritoryIndex 
+                    ? 'bg-orange-500 text-white border-orange-500 shadow-md' 
+                    : 'bg-slate-50 hover:bg-slate-100 text-slate-700 border-slate-200'
+                }`;
+
+                btn.innerHTML = `
+                    <div class="truncate pr-1 min-w-0">
+                        <div class="truncate font-black text-xs">${t.territory_name}</div>
+                        <div class="text-[10px] ${idx === activeTerritoryIndex ? 'text-orange-100' : 'text-slate-400'} font-mono">SAP: ${t.sap_territory_code}</div>
+                    </div>
+                    <span class="text-[9px] font-black px-1.5 py-0.5 rounded-full flex-shrink-0 ${
+                        status === 'Complete' ? (idx === activeTerritoryIndex ? 'bg-white text-slate-950' : 'bg-emerald-100 text-emerald-800 border border-emerald-300') :
+                        status === 'In Progress' ? (idx === activeTerritoryIndex ? 'bg-white text-slate-950' : 'bg-amber-100 text-amber-800 border border-amber-300') :
+                        (idx === activeTerritoryIndex ? 'bg-orange-600 text-white' : 'bg-slate-200 text-slate-600')
+                    }">${status === 'Complete' ? '✓ Complete' : status}</span>
+                `;
+                deskList.appendChild(btn);
+            });
+
+            document.getElementById('region-progress-badge').textContent = `${completedCount}/${r.territories.length} Done`;
+        }
+
+        function selectTerritoryTab(idx, shouldScroll = true) {
+            activeTerritoryIndex = idx;
+            const r = REGION_MAP[currentRegionCode];
+            const t = r.territories[idx];
+            const terrCode = String(t.sap_territory_code);
+            const d = store[terrCode] || {};
+
+            localStorage.setItem('EXIUM_ACTIVE_SESSION', JSON.stringify({
+                region_code: currentRegionCode,
+                territory_idx: idx
+            }));
+
+            document.getElementById('mobile-territory-select').value = idx;
+            document.getElementById('current-territory-title').textContent = t.territory_name;
+            document.getElementById('current-territory-code').textContent = `SAP Code: ${terrCode}`;
+
+            const status = getTerritoryStatus(d);
+            const statusBadge = document.getElementById('current-territory-status');
+            statusBadge.textContent = status;
+            statusBadge.className = `text-[9px] sm:text-[10px] font-bold px-2 py-0.2 rounded-full ${
+                status === 'Complete' ? 'bg-emerald-500 text-slate-950 font-black' :
+                status === 'In Progress' ? 'bg-amber-400 text-slate-950 font-bold' :
+                'bg-white/10 text-slate-200 border border-white/20'
+            }`;
+
+            const isLocked = isRegionLocked();
+            const lockedNotice = document.getElementById('territory-locked-notice');
+            if (isLocked) {
+                lockedNotice.classList.remove('hidden');
+            } else {
+                lockedNotice.classList.add('hidden');
+            }
+
+            const c1DocInput = document.getElementById('c1_doc_name');
+            c1DocInput.value = d.c1_doc_name || '';
+            c1DocInput.disabled = isLocked;
+
+            const c1DocRpl = document.getElementById('c1_doc_rpl');
+            c1DocRpl.value = d.c1_doc_rpl || '';
+            c1DocRpl.disabled = isLocked;
+            updateRplBadgeState(c1DocRpl, 'c1_doc_rpl_badge');
+
+            ['m1', 'm2', 'm3', 'm4'].forEach(m => {
+                const sw = d[`c1_${m}_sweater`] || '';
+                const sz = d[`c1_${m}_size`] || '';
+                const swSel = document.getElementById(`c1_${m}_sweater`);
+                const szSel = document.getElementById(`c1_${m}_size`);
+                
+                swSel.value = sw;
+                swSel.disabled = isLocked;
+                updateSizeOptionsForSelect(`c1_${m}_sweater`, `c1_${m}_size`, sz);
+                szSel.disabled = isLocked;
+                updateSlotImagePreview(`c1_${m}_img_preview`, sw);
+                updateSweaterSlotIndicator(`c1_${m}`);
+            });
+
+            ['d1', 'd2', 'd3', 'd4'].forEach(d_item => {
+                const dNameInput = document.getElementById(`c2_${d_item}_name`);
+                dNameInput.value = d[`c2_${d_item}_name`] || '';
+                dNameInput.disabled = isLocked;
+
+                const dRplInput = document.getElementById(`c2_${d_item}_rpl`);
+                dRplInput.value = d[`c2_${d_item}_rpl`] || '';
+                dRplInput.disabled = isLocked;
+                updateRplBadgeState(dRplInput, `c2_${d_item}_rpl_badge`);
+
+                const sw = d[`c2_${d_item}_sweater`] || '';
+                const sz = d[`c2_${d_item}_size`] || '';
+                const swSel = document.getElementById(`c2_${d_item}_sweater`);
+                const szSel = document.getElementById(`c2_${d_item}_size`);
+
+                swSel.value = sw;
+                swSel.disabled = isLocked;
+                updateSizeOptionsForSelect(`c2_${d_item}_sweater`, `c2_${d_item}_size`, sz);
+                szSel.disabled = isLocked;
+                updateSlotImagePreview(`c2_${d_item}_img_preview`, sw);
+                updateSweaterSlotIndicator(`c2_${d_item}`);
+            });
+
+            r.territories.forEach((_, tabIdx) => {
+                const btn = document.getElementById(`terr-tab-btn-${tabIdx}`);
+                if (btn) {
+                    if (tabIdx === idx) {
+                        btn.className = 'w-full text-left p-3 rounded-2xl text-xs font-bold transition flex items-center justify-between border bg-orange-500 text-white border-orange-500 shadow-md';
+                    } else {
+                        btn.className = 'w-full text-left p-3 rounded-2xl text-xs font-bold transition flex items-center justify-between border bg-slate-50 hover:bg-slate-100 text-slate-700 border-slate-200';
+                    }
+                }
+            });
+
+            if (shouldScroll) {
+                const bannerEl = document.getElementById('active-territory-banner-card');
+                if (bannerEl) {
+                    bannerEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            }
+        }
+
+        function onRplInput(inputEl, badgeId) {
+            inputEl.value = inputEl.value.replace(/[^0-9]/g, '').slice(0, 6);
+            updateRplBadgeState(inputEl, badgeId);
+            onDataChanged();
+        }
+
+        function updateRplBadgeState(inputEl, badgeId) {
+            const val = inputEl.value || '';
+            const badge = document.getElementById(badgeId);
+            if (!badge) return;
+
+            if (val.length === 0) {
+                badge.textContent = "6 digits";
+                badge.className = "text-[9px] sm:text-[10px] font-bold text-slate-400";
+            } else if (val.length < 6) {
+                badge.textContent = `${val.length}/6 digits`;
+                badge.className = "text-[9px] sm:text-[10px] font-black text-amber-600";
+            } else if (val.length === 6) {
+                badge.innerHTML = '<i class="fa-solid fa-check text-emerald-600"></i> Valid 6-Digit';
+                badge.className = "text-[9px] sm:text-[10px] font-black text-emerald-600";
+            }
+        }
+
+        function updateSweaterSlotIndicator(slotPrefix) {
+            const sw = document.getElementById(`${slotPrefix}_sweater`)?.value || '';
+            const sz = document.getElementById(`${slotPrefix}_size`)?.value || '';
+            const badge = document.getElementById(`${slotPrefix}_check_badge`);
+            if (!badge) return;
+
+            if (sw && sz) {
+                badge.innerHTML = `<span class="bg-emerald-100 text-emerald-800 border border-emerald-300 text-[10px] font-black px-2 py-0.5 rounded-full flex items-center gap-1 shadow-sm"><i class="fa-solid fa-circle-check text-emerald-600"></i> Complete</span>`;
+            } else if (sw || sz) {
+                badge.innerHTML = `<span class="bg-amber-100 text-amber-800 border border-amber-300 text-[10px] font-bold px-1.5 py-0.5 rounded-full flex items-center gap-1"><i class="fa-solid fa-clock text-amber-600"></i> Incomplete</span>`;
+            } else {
+                badge.innerHTML = `<span class="text-slate-400 text-[10px] font-medium"><i class="fa-regular fa-circle"></i> Pending</span>`;
+            }
+        }
+
+        function triggerAutoSync() {
+            if (autoSyncTimeout) clearTimeout(autoSyncTimeout);
+            autoSyncTimeout = setTimeout(() => {
+                if (currentRegionCode && REGION_MAP[currentRegionCode]) {
+                    const r = REGION_MAP[currentRegionCode];
+                    const t = r.territories[activeTerritoryIndex];
+                    if (t) {
+                        const terrCode = String(t.sap_territory_code);
+                        syncTerritoryToCloud(terrCode, store[terrCode]);
+                    }
+                }
+            }, 1200);
+        }
+
+        function onDataChanged() {
+            if (isRegionLocked() || !currentRegionCode) return;
+
+            const r = REGION_MAP[currentRegionCode];
+            const t = r.territories[activeTerritoryIndex];
+            const terrCode = String(t.sap_territory_code);
+
+            const terrData = {
+                c1_doc_name: document.getElementById('c1_doc_name').value.trim(),
+                c1_doc_rpl: document.getElementById('c1_doc_rpl').value.trim(),
+                c1_m1_sweater: document.getElementById('c1_m1_sweater').value,
+                c1_m1_size: document.getElementById('c1_m1_size').value,
+                c1_m2_sweater: document.getElementById('c1_m2_sweater').value,
+                c1_m2_size: document.getElementById('c1_m2_size').value,
+                c1_m3_sweater: document.getElementById('c1_m3_sweater').value,
+                c1_m3_size: document.getElementById('c1_m3_size').value,
+                c1_m4_sweater: document.getElementById('c1_m4_sweater').value,
+                c1_m4_size: document.getElementById('c1_m4_size').value,
+
+                c2_d1_name: document.getElementById('c2_d1_name').value.trim(),
+                c2_d1_rpl: document.getElementById('c2_d1_rpl').value.trim(),
+                c2_d1_sweater: document.getElementById('c2_d1_sweater').value,
+                c2_d1_size: document.getElementById('c2_d1_size').value,
+                c2_d2_name: document.getElementById('c2_d2_name').value.trim(),
+                c2_d2_rpl: document.getElementById('c2_d2_rpl').value.trim(),
+                c2_d2_sweater: document.getElementById('c2_d2_sweater').value,
+                c2_d2_size: document.getElementById('c2_d2_size').value,
+                c2_d3_name: document.getElementById('c2_d3_name').value.trim(),
+                c2_d3_rpl: document.getElementById('c2_d3_rpl').value.trim(),
+                c2_d3_sweater: document.getElementById('c2_d3_sweater').value,
+                c2_d3_size: document.getElementById('c2_d3_size').value,
+                c2_d4_name: document.getElementById('c2_d4_name').value.trim(),
+                c2_d4_rpl: document.getElementById('c2_d4_rpl').value.trim(),
+                c2_d4_sweater: document.getElementById('c2_d4_sweater').value,
+                c2_d4_size: document.getElementById('c2_d4_size').value,
+            };
+
+            store[terrCode] = terrData;
+            localStorage.setItem('EXIUM_SWEATER_STORE', JSON.stringify(store));
+
+            ['c1_m1', 'c1_m2', 'c1_m3', 'c1_m4', 'c2_d1', 'c2_d2', 'c2_d3', 'c2_d4'].forEach(p => updateSweaterSlotIndicator(p));
+
+            const status = getTerritoryStatus(terrData);
+            const statusBadge = document.getElementById('current-territory-status');
+            statusBadge.textContent = status;
+            statusBadge.className = `text-[9px] sm:text-[10px] font-bold px-2 py-0.2 rounded-full ${
+                status === 'Complete' ? 'bg-emerald-500 text-slate-950 font-black' :
+                status === 'In Progress' ? 'bg-amber-400 text-slate-950 font-bold' :
+                'bg-white/10 text-slate-200 border border-white/20'
+            }`;
+
+            let completedCount = 0;
+            r.territories.forEach(ter => {
+                if (getTerritoryStatus(store[String(ter.sap_territory_code)]) === 'Complete') completedCount++;
+            });
+            document.getElementById('region-progress-badge').textContent = `${completedCount}/${r.territories.length} Done`;
+            
+            triggerAutoSync();
+        }
+
+        function saveCurrentTerritoryClick() {
+            onDataChanged();
+            const r = REGION_MAP[currentRegionCode];
+            const t = r ? r.territories[activeTerritoryIndex] : null;
+            const name = t ? t.territory_name : 'Territory';
+            const terrCode = t ? String(t.sap_territory_code) : '';
+
+            if (terrCode && t) {
+                syncTerritoryToCloud(terrCode, store[terrCode]);
+            }
+
+            showToast(`✅ ${name} saved successfully!`);
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast-notification');
+            const msgEl = document.getElementById('toast-msg');
+            msgEl.textContent = msg;
+            toast.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-10');
+            toast.classList.add('opacity-100', 'translate-y-0');
+
+            setTimeout(() => {
+                toast.classList.remove('opacity-100', 'translate-y-0');
+                toast.classList.add('opacity-0', 'pointer-events-none', 'translate-y-10');
+            }, 2200);
+        }
+
+        function getTerritoryStatus(d) {
+            if (!d) return 'Not Started';
+            const c1Ok = d.c1_doc_name && d.c1_doc_rpl && String(d.c1_doc_rpl).length === 6 && d.c1_m1_sweater && d.c1_m1_size && d.c1_m2_sweater && d.c1_m2_size && d.c1_m3_sweater && d.c1_m3_size && d.c1_m4_sweater && d.c1_m4_size;
+            const c2Ok = d.c2_d1_name && d.c2_d1_rpl && String(d.c2_d1_rpl).length === 6 && d.c2_d1_sweater && d.c2_d1_size && 
+                         d.c2_d2_name && d.c2_d2_rpl && String(d.c2_d2_rpl).length === 6 && d.c2_d2_sweater && d.c2_d2_size && 
+                         d.c2_d3_name && d.c2_d3_rpl && String(d.c2_d3_rpl).length === 6 && d.c2_d3_sweater && d.c2_d3_size && 
+                         d.c2_d4_name && d.c2_d4_rpl && String(d.c2_d4_rpl).length === 6 && d.c2_d4_sweater && d.c2_d4_size;
+
+            if (c1Ok && c2Ok) return 'Complete';
+            if (d.c1_doc_name || d.c1_doc_rpl || d.c2_d1_name || d.c2_d1_rpl || d.c2_d2_name || d.c2_d3_name || d.c2_d4_name || d.c1_m1_sweater || d.c2_d1_sweater) return 'In Progress';
+            return 'Not Started';
+        }
+
+        function navigateTerritory(dir) {
+            onDataChanged();
+            const r = REGION_MAP[currentRegionCode];
+            const nextIdx = activeTerritoryIndex + dir;
+            if (nextIdx >= 0 && nextIdx < r.territories.length) {
+                selectTerritoryTab(nextIdx, true);
+            }
+        }
+
+        function onSweaterSelectChange(slotPrefix, sweaterVal) {
+            updateSizeOptionsForSelect(`${slotPrefix}_sweater`, `${slotPrefix}_size`, '');
+            updateSlotImagePreview(`${slotPrefix}_img_preview`, sweaterVal);
+            onDataChanged();
+        }
+
+        function updateSizeOptionsForSelect(swSelectId, szSelectId, currentVal) {
+            const swVal = document.getElementById(swSelectId).value;
+            const szSel = document.getElementById(szSelectId);
+            szSel.innerHTML = '<option value="">-- Size --</option>';
+
+            if (!swVal) return;
+
+            let allowedSizes = ["S", "M", "L", "XL", "XXL"];
+            if (swVal.includes("04")) {
+                allowedSizes = ["XS", "S", "M", "L", "XL"];
+            }
+
+            allowedSizes.forEach(s => {
+                const opt = document.createElement('option');
+                opt.value = s;
+                opt.textContent = s;
+                if (s === currentVal) opt.selected = true;
+                szSel.appendChild(opt);
+            });
+        }
+
+        function updateSlotImagePreview(previewContainerId, sweaterVal) {
+            const el = document.getElementById(previewContainerId);
+            if (!el) return;
+
+            const code = sweaterVal ? sweaterVal.substring(0, 2) : '';
+            const item = SWEATER_DETAILS[code];
+
+            if (item) {
+                el.innerHTML = `
+                    <img src="${item.img}" onerror="this.src='${item.fallback_img}'" alt="Sweater" class="w-full h-full object-cover">
+                    <span class="absolute top-1 left-1 bg-slate-950/80 text-white text-[9px] font-black px-1.5 py-0.5 rounded shadow">${code}</span>
+                `;
+            } else {
+                el.innerHTML = '<i class="fa-solid fa-shirt text-lg text-slate-300"></i>';
+            }
+        }
+
+        function zoomSlotImage(selectId) {
+            const swVal = document.getElementById(selectId).value;
+            const code = swVal ? swVal.substring(0, 2) : '01';
+            openImageLightbox(code);
+        }
+
+        function openImageLightbox(key) {
+            const item = SWEATER_DETAILS[key] || SWEATER_DETAILS["01"];
+            const modal = document.getElementById('image-lightbox-modal');
+            const imgEl = document.getElementById('lightbox-img');
+            imgEl.src = item.img;
+            imgEl.onerror = function() { this.src = item.fallback_img; };
+            
+            document.getElementById('lightbox-code-badge').textContent = item.code;
+            document.getElementById('lightbox-gender').textContent = item.gender;
+            document.getElementById('lightbox-title').textContent = item.name;
+            document.getElementById('lightbox-color').textContent = item.color;
+            document.getElementById('lightbox-sizes').textContent = item.sizes;
+
+            modal.classList.remove('hidden');
+        }
+
+        function closeImageLightbox() {
+            document.getElementById('image-lightbox-modal').classList.add('hidden');
+        }
+
+        function openCatalogModal() {
+            document.getElementById('catalog-modal').classList.remove('hidden');
+        }
+
+        function closeCatalogModal() {
+            document.getElementById('catalog-modal').classList.add('hidden');
+        }
+
+        function isRegionLocked() {
+            if (!isGlobalAccessOpen) return true;
+            if (currentRegionCode && regionLocks[currentRegionCode]) return true;
+            return false;
+        }
+
+        function checkGlobalLockBanner() {
+            const b = document.getElementById('login-global-locked-alert');
+            if (b) {
+                if (!isGlobalAccessOpen) {
+                    b.classList.remove('hidden');
+                } else {
+                    b.classList.add('hidden');
+                }
+            }
+        }
+
+        function togglePasswordVisibility(inputId, btn) {
+            const inp = document.getElementById(inputId);
+            const icon = btn.querySelector('i');
+            if (inp.type === 'password') {
+                inp.type = 'text';
+                icon.className = 'fa-regular fa-eye-slash';
+            } else {
+                inp.type = 'password';
+                icon.className = 'fa-regular fa-eye';
+            }
+        }
+
+        // =========================================================================
+        // CLOUD & GOOGLE DRIVE INTEGRATION
+        // =========================================================================
+        function toggleCloudSettings() {
+            const box = document.getElementById('admin-cloud-settings-box');
+            if (box) {
+                box.classList.toggle('hidden');
+                const input = document.getElementById('custom-cloud-url-input');
+                if (input) input.value = cloudApiUrl;
+            }
+        }
+
+        function saveCloudUrlSetting() {
+            const url = document.getElementById('custom-cloud-url-input').value.trim();
+            cloudApiUrl = url || DEFAULT_CLOUD_URL;
+            localStorage.setItem('EXIUM_CLOUD_URL', cloudApiUrl);
+            showCloudTestResult("✅ Cloud URL saved to local session. Testing connection...", "text-emerald-300 bg-emerald-950/60");
+            testGoogleDriveConnection();
+        }
+
+        async function testGoogleDriveConnection() {
+            const url = (cloudApiUrl && cloudApiUrl.startsWith('http')) ? cloudApiUrl : DEFAULT_CLOUD_URL;
+            if (!url) {
+                showCloudTestResult("⚠️ Please paste your Google Apps Script Web App URL first.", "text-amber-300 bg-amber-950/60");
+                return;
+            }
+
+            showCloudTestResult("⏳ Testing connection to Google Sheet...", "text-blue-300 bg-blue-950/60");
+
+            try {
+                const res = await fetch(url + (url.includes('?') ? '&' : '?') + 'action=ping');
+                const json = await res.json();
+                if (json && json.status === 'success') {
+                    showCloudTestResult(`✅ Connected successfully to Google Sheet! (${json.message || 'OK'})`, "text-emerald-300 bg-emerald-950/60");
+                } else {
+                    showCloudTestResult("⚠️ Received response, but status was not success. Check script permissions.", "text-amber-300 bg-amber-950/60");
+                }
+            } catch (err) {
+                showCloudTestResult(`❌ Connection test failed: ${err.message}. Make sure the Web App deployment is set to 'Anyone'.`, "text-rose-300 bg-rose-950/60");
+            }
+        }
+
+        function showCloudTestResult(msg, className) {
+            const el = document.getElementById('cloud-test-result');
+            if (!el) return;
+            el.innerHTML = msg;
+            el.className = `text-xs font-bold p-2.5 rounded-xl border border-slate-700 ${className}`;
+            el.classList.remove('hidden');
+        }
+
+        async function syncTerritoryToCloud(terrCode, terrData) {
+            const url = (cloudApiUrl && cloudApiUrl.startsWith('http')) ? cloudApiUrl : DEFAULT_CLOUD_URL;
+            if (!url || !terrData || !terrCode) return;
+
+            try {
+                const payload = {
+                    action: "save_territory",
+                    sap_territory_code: String(terrCode).trim(),
+                    data: terrData
+                };
+
+                await fetch(url, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify(payload)
+                });
+                console.log(`[Cloud Sync] Synced territory ${terrCode} to Google Sheet.`);
+            } catch (err) {
+                console.warn("[Cloud Sync] Note:", err);
+            }
+        }
+
+        async function pushAllStoredDataToGoogleSheet() {
+            const url = (cloudApiUrl && cloudApiUrl.startsWith('http')) ? cloudApiUrl : DEFAULT_CLOUD_URL;
+            if (!url) {
+                alert("Please enter and save your Google Apps Script URL first!");
+                return;
+            }
+
+            const allCodes = Object.keys(store);
+            if (allCodes.length === 0) {
+                alert("There are no stored submissions to push yet.");
+                return;
+            }
+
+            if (!confirm(`Push all ${allCodes.length} territory submissions to your Google Sheet now?`)) return;
+
+            showToast("⏳ Pushing all submissions to Google Sheet...");
+
+            try {
+                const payload = {
+                    action: "save_batch",
+                    batch: store
+                };
+
+                await fetch(url, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify(payload)
+                });
+
+                showToast(`✅ Successfully pushed ${allCodes.length} territories to Google Sheet!`);
+                alert(`✅ Successfully pushed ${allCodes.length} territory submissions to your Google Sheet in Google Drive! Check your Google Sheet to see all rows updated.`);
+            } catch (err) {
+                alert(`❌ Failed to push data: ${err.message}`);
+            }
+        }
+
         async function pullCloudData(showFeedback = false) {
             const url = (cloudApiUrl && cloudApiUrl.startsWith('http')) ? cloudApiUrl : DEFAULT_CLOUD_URL;
             if (!url) return;
@@ -2202,15 +2933,18 @@ html_template = """<!DOCTYPE html>
         }
 
         async function exportMasterExcelFromAdmin() {
-            showToast("⏳ Fetching latest live data from Google Sheet...");
-            await pullCloudData(false);
+            showToast("⏳ Fetching live data from Google Sheet...");
+            const res = await pullCloudData(false);
+            if (res && res.success) {
+                showToast(`📊 Generating Master Excel (${res.count} active territories found)...`);
+            } else {
+                showToast("📊 Generating Excel with available data...");
+            }
             generateAndDownloadExcel(ALL_TERRITORIES, "Exium_MUPS_Sweater_Campaign_2026_Master_Export.xlsx");
         }
 
         function generateAndDownloadExcel(territoryList, filename) {
-            onDataChanged();
-            const currentStore = JSON.parse(localStorage.getItem('EXIUM_SWEATER_STORE') || '{}');
-            Object.assign(currentStore, store);
+            const currentStore = Object.assign({}, JSON.parse(localStorage.getItem('EXIUM_SWEATER_STORE') || '{}'), store);
 
             const c1Rows = [];
             const c2Rows = [];
