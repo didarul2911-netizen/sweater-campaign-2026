@@ -1390,7 +1390,10 @@ html_template = """<!DOCTYPE html>
 
             if (!zone) {
                 regSel.innerHTML = '<option value="">-- Select Zone First --</option>';
+                regSel.setAttribute('disabled', 'true');
                 regSel.disabled = true;
+                regSel.classList.remove('bg-white', 'cursor-pointer');
+                regSel.classList.add('bg-slate-100', 'cursor-not-allowed');
                 return;
             }
 
@@ -1404,7 +1407,11 @@ html_template = """<!DOCTYPE html>
                 opt.textContent = `${r.region_name} (${r.sap_region_code})`;
                 regSel.appendChild(opt);
             });
+
+            regSel.removeAttribute('disabled');
             regSel.disabled = false;
+            regSel.classList.remove('bg-slate-100', 'cursor-not-allowed', 'opacity-50');
+            regSel.classList.add('bg-white', 'cursor-pointer');
         }
 
         function onRegionChanged() {
@@ -1424,12 +1431,16 @@ html_template = """<!DOCTYPE html>
             }
 
             const r = REGION_MAP[regCode];
-            document.getElementById('rh-name-display').querySelector('span').textContent = r.regional_head;
-            document.getElementById('rh-territory-count').innerHTML = `Total Territories: <strong>${r.territories.length}</strong>`;
+            const rhNameSpan = document.getElementById('rh-name-display')?.querySelector('span');
+            if (rhNameSpan) rhNameSpan.textContent = r.regional_head || 'N/A';
+            
+            const rhCountStrong = document.getElementById('rh-territory-count')?.querySelector('strong');
+            if (rhCountStrong) rhCountStrong.textContent = r.territories.length;
 
             if (rhCard) rhCard.classList.remove('hidden');
             if (passCard) passCard.classList.remove('hidden');
             if (unlockBtn) unlockBtn.classList.remove('hidden');
+
             if (passInput) passInput.focus();
         }
 
