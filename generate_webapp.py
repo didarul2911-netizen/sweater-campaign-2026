@@ -337,6 +337,7 @@ html_template = """<!DOCTYPE html>
                                             <span id="c1_doc_rpl_badge" class="text-[10px] font-bold text-slate-400">6 digits</span>
                                         </div>
                                         <input type="text" inputmode="numeric" maxlength="6" id="c1_doc_rpl" oninput="onRplInput(this, 'c1_doc_rpl_badge')" placeholder="e.g. 104523" class="w-full bg-white border border-teal-300 rounded-xl px-3.5 py-2 text-xs sm:text-sm text-slate-900 font-mono font-bold placeholder-slate-400 focus:ring-2 focus:ring-teal-500 focus:border-teal-500 focus:outline-none transition tracking-wider">
+                                        <div id="c1_doc_rpl_error" class="hidden mt-1.5"></div>
                                     </div>
                                 </div>
                             </div>
@@ -485,6 +486,7 @@ html_template = """<!DOCTYPE html>
                                         <div>
                                             <div class="flex items-center justify-between"><label class="text-[10px] font-bold text-purple-950">Doctor 1 RPL ID <span class="text-rose-500">*</span></label><span id="c2_d1_rpl_badge" class="text-[9px] font-bold text-slate-400">6 digits</span></div>
                                             <input type="text" inputmode="numeric" maxlength="6" id="c2_d1_rpl" oninput="onRplInput(this, 'c2_d1_rpl_badge')" placeholder="6-digit RPL ID..." class="w-full mt-0.5 bg-white border border-purple-300 rounded-xl px-3 py-1.5 text-xs text-slate-900 font-mono font-bold placeholder-slate-400 focus:outline-none focus:border-purple-500 tracking-wider">
+                                            <div id="c2_d1_rpl_error" class="hidden mt-1"></div>
                                         </div>
                                     </div>
                                     <div class="flex gap-2.5 sm:gap-3 items-center pt-2 border-t border-purple-200/80">
@@ -522,6 +524,7 @@ html_template = """<!DOCTYPE html>
                                         <div>
                                             <div class="flex items-center justify-between"><label class="text-[10px] font-bold text-purple-950">Doctor 2 RPL ID <span class="text-rose-500">*</span></label><span id="c2_d2_rpl_badge" class="text-[9px] font-bold text-slate-400">6 digits</span></div>
                                             <input type="text" inputmode="numeric" maxlength="6" id="c2_d2_rpl" oninput="onRplInput(this, 'c2_d2_rpl_badge')" placeholder="6-digit RPL ID..." class="w-full mt-0.5 bg-white border border-purple-300 rounded-xl px-3 py-1.5 text-xs text-slate-900 font-mono font-bold placeholder-slate-400 focus:outline-none focus:border-purple-500 tracking-wider">
+                                            <div id="c2_d2_rpl_error" class="hidden mt-1"></div>
                                         </div>
                                     </div>
                                     <div class="flex gap-2.5 sm:gap-3 items-center pt-2 border-t border-purple-200/80">
@@ -559,6 +562,7 @@ html_template = """<!DOCTYPE html>
                                         <div>
                                             <div class="flex items-center justify-between"><label class="text-[10px] font-bold text-purple-950">Doctor 3 RPL ID <span class="text-rose-500">*</span></label><span id="c2_d3_rpl_badge" class="text-[9px] font-bold text-slate-400">6 digits</span></div>
                                             <input type="text" inputmode="numeric" maxlength="6" id="c2_d3_rpl" oninput="onRplInput(this, 'c2_d3_rpl_badge')" placeholder="6-digit RPL ID..." class="w-full mt-0.5 bg-white border border-purple-300 rounded-xl px-3 py-1.5 text-xs text-slate-900 font-mono font-bold placeholder-slate-400 focus:outline-none focus:border-purple-500 tracking-wider">
+                                            <div id="c2_d3_rpl_error" class="hidden mt-1"></div>
                                         </div>
                                     </div>
                                     <div class="flex gap-2.5 sm:gap-3 items-center pt-2 border-t border-purple-200/80">
@@ -596,6 +600,7 @@ html_template = """<!DOCTYPE html>
                                         <div>
                                             <div class="flex items-center justify-between"><label class="text-[10px] font-bold text-purple-950">Doctor 4 RPL ID <span class="text-rose-500">*</span></label><span id="c2_d4_rpl_badge" class="text-[9px] font-bold text-slate-400">6 digits</span></div>
                                             <input type="text" inputmode="numeric" maxlength="6" id="c2_d4_rpl" oninput="onRplInput(this, 'c2_d4_rpl_badge')" placeholder="6-digit RPL ID..." class="w-full mt-0.5 bg-white border border-purple-300 rounded-xl px-3 py-1.5 text-xs text-slate-900 font-mono font-bold placeholder-slate-400 focus:outline-none focus:border-purple-500 tracking-wider">
+                                            <div id="c2_d4_rpl_error" class="hidden mt-1"></div>
                                         </div>
                                     </div>
                                     <div class="flex gap-2.5 sm:gap-3 items-center pt-2 border-t border-purple-200/80">
@@ -1058,6 +1063,185 @@ html_template = """<!DOCTYPE html>
     <script>
         const REGION_MAP = ###REGION_MAP###;
         const ALL_TERRITORIES = ###ALL_TERRITORIES###;
+
+        const TERRITORY_INFO_MAP = {};
+        ALL_TERRITORIES.forEach(t => {
+            TERRITORY_INFO_MAP[String(t['SAP Territory Code']).trim()] = t;
+        });
+
+        const RPL_FIELD_CONFIGS = [
+            { id: 'c1_doc_rpl', badgeId: 'c1_doc_rpl_badge', errorId: 'c1_doc_rpl_error', nameId: 'c1_doc_name', campaign: 'Campaign 1 (Gyne Core Doctor)', role: 'Doctor' },
+            { id: 'c2_d1_rpl', badgeId: 'c2_d1_rpl_badge', errorId: 'c2_d1_rpl_error', nameId: 'c2_d1_name', campaign: 'Campaign 2 (Core Doctor Maximization)', role: 'Doctor 1' },
+            { id: 'c2_d2_rpl', badgeId: 'c2_d2_rpl_badge', errorId: 'c2_d2_rpl_error', nameId: 'c2_d2_name', campaign: 'Campaign 2 (Core Doctor Maximization)', role: 'Doctor 2' },
+            { id: 'c2_d3_rpl', badgeId: 'c2_d3_rpl_badge', errorId: 'c2_d3_rpl_error', nameId: 'c2_d3_name', campaign: 'Campaign 2 (Core Doctor Maximization)', role: 'Doctor 3' },
+            { id: 'c2_d4_rpl', badgeId: 'c2_d4_rpl_badge', errorId: 'c2_d4_rpl_error', nameId: 'c2_d4_name', campaign: 'Campaign 2 (Core Doctor Maximization)', role: 'Doctor 4' }
+        ];
+
+        function findRplDuplicateLocation(rplVal, currentFieldId) {
+            if (!rplVal || rplVal.length !== 6) return null;
+            if (!currentRegionCode || !REGION_MAP[currentRegionCode]) return null;
+
+            const r = REGION_MAP[currentRegionCode];
+            const currentTerr = r.territories[activeTerritoryIndex];
+            const currentTerrCode = String(currentTerr.sap_territory_code).trim();
+
+            // 1. Check OTHER fields in CURRENT active territory form
+            for (const cfg of RPL_FIELD_CONFIGS) {
+                if (cfg.id !== currentFieldId) {
+                    const otherVal = document.getElementById(cfg.id)?.value?.trim();
+                    if (otherVal && otherVal === rplVal) {
+                        const otherDocName = document.getElementById(cfg.nameId)?.value?.trim() || 'Unnamed Doctor';
+                        return {
+                            type: 'local',
+                            rpl: rplVal,
+                            territory: currentTerr.territory_name,
+                            terrCode: currentTerrCode,
+                            region: r.region_name,
+                            zone: currentTerr.Zone || r.zone_name || '',
+                            doctorName: otherDocName,
+                            campaign: `${cfg.campaign} [${cfg.role}]`,
+                            locationText: `Current Territory (${currentTerr.territory_name}) - ${cfg.role}`
+                        };
+                    }
+                }
+            }
+
+            // 2. Check across ALL other territories in store (Entire Bangladesh)
+            for (const tCode in store) {
+                if (String(tCode).trim() === currentTerrCode) continue;
+
+                const d = store[tCode];
+                if (!d) continue;
+                const tInfo = TERRITORY_INFO_MAP[tCode] || {};
+
+                // Check Campaign 1
+                if (d.c1_doc_rpl && String(d.c1_doc_rpl).trim() === rplVal) {
+                    return {
+                        type: 'global',
+                        rpl: rplVal,
+                        territory: tInfo.Territory || `Territory ${tCode}`,
+                        terrCode: tCode,
+                        region: tInfo.Region || tInfo['SAP Region Code'] || '',
+                        zone: tInfo.Zone || '',
+                        doctorName: d.c1_doc_name || 'Doctor',
+                        campaign: 'Campaign 1 (Gyne Core Doctor)',
+                        locationText: `${tInfo.Territory || tCode}, Region: ${tInfo.Region || 'N/A'}, Zone: ${tInfo.Zone || 'N/A'}`
+                    };
+                }
+
+                // Check Campaign 2 slots (d1, d2, d3, d4)
+                const c2Slots = [
+                    { key: 'c2_d1_rpl', nameKey: 'c2_d1_name', label: 'Doctor 1' },
+                    { key: 'c2_d2_rpl', nameKey: 'c2_d2_name', label: 'Doctor 2' },
+                    { key: 'c2_d3_rpl', nameKey: 'c2_d3_name', label: 'Doctor 3' },
+                    { key: 'c2_d4_rpl', nameKey: 'c2_d4_name', label: 'Doctor 4' }
+                ];
+
+                for (const slot of c2Slots) {
+                    if (d[slot.key] && String(d[slot.key]).trim() === rplVal) {
+                        return {
+                            type: 'global',
+                            rpl: rplVal,
+                            territory: tInfo.Territory || `Territory ${tCode}`,
+                            terrCode: tCode,
+                            region: tInfo.Region || tInfo['SAP Region Code'] || '',
+                            zone: tInfo.Zone || '',
+                            doctorName: d[slot.nameKey] || slot.label,
+                            campaign: `Campaign 2 (${slot.label})`,
+                            locationText: `${tInfo.Territory || tCode}, Region: ${tInfo.Region || 'N/A'}, Zone: ${tInfo.Zone || 'N/A'}`
+                        };
+                    }
+                }
+            }
+
+            return null;
+        }
+
+        function validateSingleRplField(fieldId, badgeId) {
+            const inputEl = document.getElementById(fieldId);
+            const badge = document.getElementById(badgeId);
+            const errorContainer = document.getElementById(`${fieldId}_error`);
+            if (!inputEl || !badge) return true;
+
+            const val = (inputEl.value || '').trim();
+
+            if (val.length === 0) {
+                badge.textContent = "6 digits";
+                badge.className = "text-[9px] sm:text-[10px] font-bold text-slate-400";
+                inputEl.classList.remove('border-rose-500', 'ring-2', 'ring-rose-200', 'bg-rose-50/40', 'text-rose-950');
+                if (errorContainer) {
+                    errorContainer.innerHTML = '';
+                    errorContainer.classList.add('hidden');
+                }
+                return true;
+            }
+
+            if (val.length < 6) {
+                badge.textContent = `${val.length}/6 digits`;
+                badge.className = "text-[9px] sm:text-[10px] font-black text-amber-600";
+                inputEl.classList.remove('border-rose-500', 'ring-2', 'ring-rose-200', 'bg-rose-50/40', 'text-rose-950');
+                if (errorContainer) {
+                    errorContainer.innerHTML = '';
+                    errorContainer.classList.add('hidden');
+                }
+                return false;
+            }
+
+            // Exactly 6 digits -> Check for duplicates!
+            const dup = findRplDuplicateLocation(val, fieldId);
+
+            if (dup) {
+                badge.innerHTML = `<span class="bg-rose-100 text-rose-800 border border-rose-300 text-[9px] sm:text-[10px] font-black px-2 py-0.5 rounded-full flex items-center gap-1 shadow-sm"><i class="fa-solid fa-triangle-exclamation text-rose-600"></i> DUPLICATE RPL ID</span>`;
+                inputEl.classList.add('border-rose-500', 'ring-2', 'ring-rose-200', 'bg-rose-50/40', 'text-rose-950');
+
+                if (errorContainer) {
+                    errorContainer.innerHTML = `
+                        <div class="p-2.5 bg-rose-50 border border-rose-300 rounded-xl text-[11px] text-rose-900 shadow-sm space-y-1">
+                            <div class="flex items-center gap-1.5 text-rose-700 font-black">
+                                <i class="fa-solid fa-circle-exclamation text-sm text-rose-600"></i>
+                                <span>RPL ID "${val}" is already assigned!</span>
+                            </div>
+                            <div class="text-[10px] text-rose-800 bg-white/80 p-2 rounded-lg border border-rose-200 space-y-0.5 font-medium">
+                                <div>📍 <strong>Territory:</strong> <span class="font-bold text-rose-950">${dup.territory} (${dup.terrCode})</span></div>
+                                <div>🌐 <strong>Region & Zone:</strong> ${dup.region} [${dup.zone}]</div>
+                                <div>👤 <strong>Doctor:</strong> <span class="font-bold text-rose-950">${dup.doctorName}</span> (${dup.campaign})</div>
+                            </div>
+                            <p class="text-[10px] text-rose-600 font-bold">❌ Each doctor can only be included ONCE nationwide. Please use a unique RPL ID.</p>
+                        </div>
+                    `;
+                    errorContainer.classList.remove('hidden');
+                }
+                return false;
+            } else {
+                badge.innerHTML = `<span class="bg-emerald-100 text-emerald-800 border border-emerald-300 text-[9px] sm:text-[10px] font-black px-2 py-0.5 rounded-full flex items-center gap-1 shadow-sm"><i class="fa-solid fa-circle-check text-emerald-600"></i> Valid & Unique</span>`;
+                inputEl.classList.remove('border-rose-500', 'ring-2', 'ring-rose-200', 'bg-rose-50/40', 'text-rose-950');
+                if (errorContainer) {
+                    errorContainer.innerHTML = '';
+                    errorContainer.classList.add('hidden');
+                }
+                return true;
+            }
+        }
+
+        function validateAllRplFieldsInCurrentTerritory() {
+            let allValid = true;
+            for (const cfg of RPL_FIELD_CONFIGS) {
+                const isValid = validateSingleRplField(cfg.id, cfg.badgeId);
+                if (!isValid) allValid = false;
+            }
+            return allValid;
+        }
+
+        function hasAnyRplDuplicates() {
+            for (const cfg of RPL_FIELD_CONFIGS) {
+                const val = document.getElementById(cfg.id)?.value?.trim();
+                if (val && val.length === 6) {
+                    const dup = findRplDuplicateLocation(val, cfg.id);
+                    if (dup) return { hasDuplicate: true, fieldId: cfg.id, rpl: val, dup: dup };
+                }
+            }
+            return { hasDuplicate: false };
+        }
         const ZONES = ###ZONES###;
         const DEFAULT_CLOUD_URL = "###DEFAULT_CLOUD_URL###";
 
@@ -1083,6 +1267,7 @@ html_template = """<!DOCTYPE html>
         window.addEventListener('DOMContentLoaded', () => {
             populateZoneDropdown();
             checkGlobalLockBanner();
+            pullCloudData(false);
 
             const savedSession = JSON.parse(localStorage.getItem('EXIUM_ACTIVE_SESSION') || 'null');
             if (savedSession && savedSession.region_code && REGION_MAP[savedSession.region_code]) {
@@ -1189,6 +1374,7 @@ html_template = """<!DOCTYPE html>
 
             document.getElementById('selection-view').classList.add('hidden');
             document.getElementById('workspace-view').classList.remove('hidden');
+            pullCloudData(false).then(() => { validateAllRplFieldsInCurrentTerritory(); });
 
             document.getElementById('banner-zone').textContent = r.zone;
             document.getElementById('banner-region').textContent = `SAP: ${r.sap_region_code}`;
@@ -1321,7 +1507,7 @@ html_template = """<!DOCTYPE html>
                 const dRplInput = document.getElementById(`c2_${d_item}_rpl`);
                 dRplInput.value = d[`c2_${d_item}_rpl`] || '';
                 dRplInput.disabled = isLocked;
-                updateRplBadgeState(dRplInput, `c2_${d_item}_rpl_badge`);
+                // badge state handled by validateAllRplFieldsInCurrentTerritory
 
                 const sw = d[`c2_${d_item}_sweater`] || '';
                 const sz = d[`c2_${d_item}_size`] || '';
@@ -1335,6 +1521,9 @@ html_template = """<!DOCTYPE html>
                 updateSlotImagePreview(`c2_${d_item}_img_preview`, sw);
                 updateSweaterSlotIndicator(`c2_${d_item}`);
             });
+
+            
+            validateAllRplFieldsInCurrentTerritory();
 
             r.territories.forEach((_, tabIdx) => {
                 const btn = document.getElementById(`terr-tab-btn-${tabIdx}`);
@@ -1357,25 +1546,8 @@ html_template = """<!DOCTYPE html>
 
         function onRplInput(inputEl, badgeId) {
             inputEl.value = inputEl.value.replace(/[^0-9]/g, '').slice(0, 6);
-            updateRplBadgeState(inputEl, badgeId);
+            validateAllRplFieldsInCurrentTerritory();
             onDataChanged();
-        }
-
-        function updateRplBadgeState(inputEl, badgeId) {
-            const val = inputEl.value || '';
-            const badge = document.getElementById(badgeId);
-            if (!badge) return;
-
-            if (val.length === 0) {
-                badge.textContent = "6 digits";
-                badge.className = "text-[9px] sm:text-[10px] font-bold text-slate-400";
-            } else if (val.length < 6) {
-                badge.textContent = `${val.length}/6 digits`;
-                badge.className = "text-[9px] sm:text-[10px] font-black text-amber-600";
-            } else if (val.length === 6) {
-                badge.innerHTML = '<i class="fa-solid fa-check text-emerald-600"></i> Valid 6-Digit';
-                badge.className = "text-[9px] sm:text-[10px] font-black text-emerald-600";
-            }
         }
 
         function updateSweaterSlotIndicator(slotPrefix) {
@@ -1396,6 +1568,11 @@ html_template = """<!DOCTYPE html>
         function triggerAutoSync() {
             if (autoSyncTimeout) clearTimeout(autoSyncTimeout);
             autoSyncTimeout = setTimeout(() => {
+                const dupCheck = hasAnyRplDuplicates();
+                if (dupCheck.hasDuplicate) {
+                    console.warn("[Auto-Sync Blocked]: Duplicate RPL ID detected:", dupCheck.rpl);
+                    return;
+                }
                 if (currentRegionCode && REGION_MAP[currentRegionCode]) {
                     const r = REGION_MAP[currentRegionCode];
                     const t = r.territories[activeTerritoryIndex];
@@ -1468,6 +1645,17 @@ html_template = """<!DOCTYPE html>
         }
 
         function saveCurrentTerritoryClick() {
+            const dupCheck = hasAnyRplDuplicates();
+            if (dupCheck.hasDuplicate) {
+                showToast(`❌ Cannot Save: RPL ID "${dupCheck.rpl}" is already assigned to ${dupCheck.dup.doctorName} in ${dupCheck.dup.territory} (${dupCheck.dup.terrCode}).`);
+                const inputEl = document.getElementById(dupCheck.fieldId);
+                if (inputEl) {
+                    inputEl.focus();
+                    inputEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+                return;
+            }
+
             onDataChanged();
             const r = REGION_MAP[currentRegionCode];
             const t = r ? r.territories[activeTerritoryIndex] : null;
