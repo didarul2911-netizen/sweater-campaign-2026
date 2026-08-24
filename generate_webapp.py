@@ -51,9 +51,18 @@ b64_03 = get_image_base64(os.path.join(base_dir, 'Image', '03 (Men).jpeg'), max_
 b64_04 = get_image_base64(os.path.join(base_dir, 'Image', '04 (Female).jpeg'), max_dim=1000, quality=85)
 b64_05 = get_image_base64(os.path.join(base_dir, 'Image', '05 (Female).jpeg'), max_dim=1000, quality=85)
 
-zone_options = '<option value="">-- Choose Your Zone (35 Zones) --</option>\\n'
+zone_options = '<option value="">-- Choose Your Zone (35 Zones) --</option>\n'
 for z in zones:
-    zone_options += f'                        <option value="{z}">{z}</option>\\n'
+    zone_options += f'                        <option value="{z}">{z}</option>\n'
+
+region_options = '<option value="">-- Choose Your Region --</option>\n'
+for z in zones:
+    z_regs = [r for r in region_map.values() if r['zone'] == z]
+    z_regs.sort(key=lambda x: x['region_name'])
+    region_options += f'                        <optgroup label="{z}">\n'
+    for r in z_regs:
+        region_options += f'                            <option value="{r["sap_region_code"]}">{r["region_name"]} ({r["sap_region_code"]}) - {r["regional_head"]}</option>\n'
+    region_options += '                        </optgroup>\n'
 
 DEFAULT_CLOUD_URL = "https://script.google.com/macros/s/AKfycbzEnDTtNiXEAyB5qHqrxLj1RbNytgOJAB_lKjw_VVVd1C8CiaeYU6iTROiJabkyX_-b/exec"
 
@@ -190,9 +199,8 @@ html_template = """<!DOCTYPE html>
                         <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
                             2. Select Region
                         </label>
-                        <select id="select-region" onchange="onRegionChanged()" disabled class="w-full bg-slate-100 border border-slate-300 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm font-semibold text-slate-800 focus:ring-2 focus:ring-orange-500 focus:border-orange-500 focus:outline-none transition disabled:opacity-50">
-                            <option value="">-- Select Zone First --</option>
-                        </select>
+                        <select id="select-region" onchange="onRegionChanged()" class="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm font-semibold text-slate-800 focus:ring-2 focus:ring-orange-500 focus:border-orange-500 focus:outline-none transition cursor-pointer">
+###REGION_OPTIONS###                        </select>
                     </div>
 
                     <div id="rh-info-card" class="hidden bg-slate-50 border border-slate-200 rounded-2xl p-3.5 space-y-1">
@@ -1377,6 +1385,25 @@ html_template = """<!DOCTYPE html>
             }
         }
 
+        function populateAllRegionsDropdown() {
+            const regSel = document.getElementById('select-region');
+            if (!regSel) return;
+            regSel.innerHTML = '<option value="">-- Choose Your Region --</option>';
+            ZONES.forEach(z => {
+                const group = document.createElement('optgroup');
+                group.label = z;
+                const matching = Object.values(REGION_MAP).filter(r => r.zone === z);
+                matching.sort((a, b) => a.region_name.localeCompare(b.region_name));
+                matching.forEach(r => {
+                    const opt = document.createElement('option');
+                    opt.value = r.sap_region_code;
+                    opt.textContent = `${r.region_name} (${r.sap_region_code}) - ${r.regional_head}`;
+                    group.appendChild(opt);
+                });
+                regSel.appendChild(group);
+            });
+        }
+
         function onZoneChanged() {
             const zone = document.getElementById('select-zone').value;
             const regSel = document.getElementById('select-region');
@@ -1389,33 +1416,25 @@ html_template = """<!DOCTYPE html>
             if (unlockBtn) unlockBtn.classList.add('hidden');
 
             if (!zone) {
-                regSel.innerHTML = '<option value="">-- Select Zone First --</option>';
-                regSel.setAttribute('disabled', 'true');
-                regSel.disabled = true;
-                regSel.classList.remove('bg-white', 'cursor-pointer');
-                regSel.classList.add('bg-slate-100', 'cursor-not-allowed');
+                populateAllRegionsDropdown();
                 return;
             }
 
             const matchingRegions = Object.values(REGION_MAP).filter(r => r.zone === zone);
             matchingRegions.sort((a, b) => a.region_name.localeCompare(b.region_name));
 
-            regSel.innerHTML = '<option value="">-- Choose Region (' + matchingRegions.length + ' Regions) --</option>';
+            regSel.innerHTML = '<option value="">-- Choose Region (' + matchingRegions.length + ' Regions in ' + zone + ') --</option>';
             matchingRegions.forEach(r => {
                 const opt = document.createElement('option');
                 opt.value = r.sap_region_code;
-                opt.textContent = `${r.region_name} (${r.sap_region_code})`;
+                opt.textContent = `${r.region_name} (${r.sap_region_code}) - ${r.regional_head}`;
                 regSel.appendChild(opt);
             });
-
-            regSel.removeAttribute('disabled');
-            regSel.disabled = false;
-            regSel.classList.remove('bg-slate-100', 'cursor-not-allowed', 'opacity-50');
-            regSel.classList.add('bg-white', 'cursor-pointer');
         }
 
         function onRegionChanged() {
             const regCode = document.getElementById('select-region').value;
+            const zoneSel = document.getElementById('select-zone');
             const rhCard = document.getElementById('rh-info-card');
             const passCard = document.getElementById('password-section');
             const unlockBtn = document.getElementById('unlock-btn-container');
@@ -1431,6 +1450,12 @@ html_template = """<!DOCTYPE html>
             }
 
             const r = REGION_MAP[regCode];
+            
+            // Auto-sync Zone select if needed
+            if (zoneSel && r.zone && zoneSel.value !== r.zone) {
+                zoneSel.value = r.zone;
+            }
+
             const rhNameSpan = document.getElementById('rh-name-display')?.querySelector('span');
             if (rhNameSpan) rhNameSpan.textContent = r.regional_head || 'N/A';
             
@@ -2653,6 +2678,7 @@ final_html = final_html.replace("###B64_03###", b64_03)
 final_html = final_html.replace("###B64_04###", b64_04)
 final_html = final_html.replace("###B64_05###", b64_05)
 final_html = final_html.replace("###ZONE_OPTIONS###", zone_options)
+final_html = final_html.replace("###REGION_OPTIONS###", region_options)
 final_html = final_html.replace("###DEFAULT_CLOUD_URL###", DEFAULT_CLOUD_URL)
 final_html = final_html.replace("###REGION_MAP###", json.dumps(region_map))
 final_html = final_html.replace("###ALL_TERRITORIES###", json.dumps(territories))

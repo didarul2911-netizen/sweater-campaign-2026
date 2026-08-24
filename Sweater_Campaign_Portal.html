@@ -124,15 +124,373 @@
                             1. Select Zone
                         </label>
                         <select id="select-zone" onchange="onZoneChanged()" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm font-semibold text-slate-800 focus:ring-2 focus:ring-orange-500 focus:border-orange-500 focus:outline-none transition">
-<option value="">-- Choose Your Zone (35 Zones) --</option>\n                        <option value="B. Baria (GEN-A)">B. Baria (GEN-A)</option>\n                        <option value="Barishal-A (GEN-A)">Barishal-A (GEN-A)</option>\n                        <option value="Barishal-B (GEN-A)">Barishal-B (GEN-A)</option>\n                        <option value="Bogura (GEN-A)">Bogura (GEN-A)</option>\n                        <option value="Chandpur (GEN-A)">Chandpur (GEN-A)</option>\n                        <option value="Chattogram-A (GEN-A)">Chattogram-A (GEN-A)</option>\n                        <option value="Chattogram-B (GEN-A)">Chattogram-B (GEN-A)</option>\n                        <option value="Chattogram-C (GEN-A)">Chattogram-C (GEN-A)</option>\n                        <option value="Chattogram-D (GEN-A)">Chattogram-D (GEN-A)</option>\n                        <option value="Cox Bazar (GEN-A)">Cox Bazar (GEN-A)</option>\n                        <option value="Cumilla (GEN-A)">Cumilla (GEN-A)</option>\n                        <option value="Cumilla-B (GEN-A)">Cumilla-B (GEN-A)</option>\n                        <option value="Dhaka-A (GEN-A)">Dhaka-A (GEN-A)</option>\n                        <option value="Dhaka-B (GEN-A)">Dhaka-B (GEN-A)</option>\n                        <option value="Dhaka-C (GEN-A)">Dhaka-C (GEN-A)</option>\n                        <option value="Dhaka-D (GEN-A)">Dhaka-D (GEN-A)</option>\n                        <option value="Dhaka-I (GEN-A)">Dhaka-I (GEN-A)</option>\n                        <option value="Dinajpur (GEN-A)">Dinajpur (GEN-A)</option>\n                        <option value="Faridpur (GEN-A)">Faridpur (GEN-A)</option>\n                        <option value="Feni (GEN-A)">Feni (GEN-A)</option>\n                        <option value="Gazipur (GEN-A)">Gazipur (GEN-A)</option>\n                        <option value="Jashore (GEN-A)">Jashore (GEN-A)</option>\n                        <option value="Khulna (GEN-A)">Khulna (GEN-A)</option>\n                        <option value="Kushtia (GEN-A)">Kushtia (GEN-A)</option>\n                        <option value="Maizdee (GEN-A)">Maizdee (GEN-A)</option>\n                        <option value="Mymensingh (GEN-A)">Mymensingh (GEN-A)</option>\n                        <option value="Narayangonj (GEN-A)">Narayangonj (GEN-A)</option>\n                        <option value="Narsingdi (GEN-A)">Narsingdi (GEN-A)</option>\n                        <option value="Rajshahi (GEN-A)">Rajshahi (GEN-A)</option>\n                        <option value="Rangpur (GEN-A)">Rangpur (GEN-A)</option>\n                        <option value="Savar (GEN-A)">Savar (GEN-A)</option>\n                        <option value="Sylhet-A (GEN-A)">Sylhet-A (GEN-A)</option>\n                        <option value="Sylhet-B (GEN-A)">Sylhet-B (GEN-A)</option>\n                        <option value="Tangail (GEN-A)">Tangail (GEN-A)</option>\n                        <option value="Uttara (GEN-A)">Uttara (GEN-A)</option>\n                        </select>
+<option value="">-- Choose Your Zone (35 Zones) --</option>
+                        <option value="B. Baria (GEN-A)">B. Baria (GEN-A)</option>
+                        <option value="Barishal-A (GEN-A)">Barishal-A (GEN-A)</option>
+                        <option value="Barishal-B (GEN-A)">Barishal-B (GEN-A)</option>
+                        <option value="Bogura (GEN-A)">Bogura (GEN-A)</option>
+                        <option value="Chandpur (GEN-A)">Chandpur (GEN-A)</option>
+                        <option value="Chattogram-A (GEN-A)">Chattogram-A (GEN-A)</option>
+                        <option value="Chattogram-B (GEN-A)">Chattogram-B (GEN-A)</option>
+                        <option value="Chattogram-C (GEN-A)">Chattogram-C (GEN-A)</option>
+                        <option value="Chattogram-D (GEN-A)">Chattogram-D (GEN-A)</option>
+                        <option value="Cox Bazar (GEN-A)">Cox Bazar (GEN-A)</option>
+                        <option value="Cumilla (GEN-A)">Cumilla (GEN-A)</option>
+                        <option value="Cumilla-B (GEN-A)">Cumilla-B (GEN-A)</option>
+                        <option value="Dhaka-A (GEN-A)">Dhaka-A (GEN-A)</option>
+                        <option value="Dhaka-B (GEN-A)">Dhaka-B (GEN-A)</option>
+                        <option value="Dhaka-C (GEN-A)">Dhaka-C (GEN-A)</option>
+                        <option value="Dhaka-D (GEN-A)">Dhaka-D (GEN-A)</option>
+                        <option value="Dhaka-I (GEN-A)">Dhaka-I (GEN-A)</option>
+                        <option value="Dinajpur (GEN-A)">Dinajpur (GEN-A)</option>
+                        <option value="Faridpur (GEN-A)">Faridpur (GEN-A)</option>
+                        <option value="Feni (GEN-A)">Feni (GEN-A)</option>
+                        <option value="Gazipur (GEN-A)">Gazipur (GEN-A)</option>
+                        <option value="Jashore (GEN-A)">Jashore (GEN-A)</option>
+                        <option value="Khulna (GEN-A)">Khulna (GEN-A)</option>
+                        <option value="Kushtia (GEN-A)">Kushtia (GEN-A)</option>
+                        <option value="Maizdee (GEN-A)">Maizdee (GEN-A)</option>
+                        <option value="Mymensingh (GEN-A)">Mymensingh (GEN-A)</option>
+                        <option value="Narayangonj (GEN-A)">Narayangonj (GEN-A)</option>
+                        <option value="Narsingdi (GEN-A)">Narsingdi (GEN-A)</option>
+                        <option value="Rajshahi (GEN-A)">Rajshahi (GEN-A)</option>
+                        <option value="Rangpur (GEN-A)">Rangpur (GEN-A)</option>
+                        <option value="Savar (GEN-A)">Savar (GEN-A)</option>
+                        <option value="Sylhet-A (GEN-A)">Sylhet-A (GEN-A)</option>
+                        <option value="Sylhet-B (GEN-A)">Sylhet-B (GEN-A)</option>
+                        <option value="Tangail (GEN-A)">Tangail (GEN-A)</option>
+                        <option value="Uttara (GEN-A)">Uttara (GEN-A)</option>
+                        </select>
                     </div>
 
                     <div>
                         <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
                             2. Select Region
                         </label>
-                        <select id="select-region" onchange="onRegionChanged()" disabled class="w-full bg-slate-100 border border-slate-300 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm font-semibold text-slate-800 focus:ring-2 focus:ring-orange-500 focus:border-orange-500 focus:outline-none transition disabled:opacity-50">
-                            <option value="">-- Select Zone First --</option>
+                        <select id="select-region" onchange="onRegionChanged()" class="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm font-semibold text-slate-800 focus:ring-2 focus:ring-orange-500 focus:border-orange-500 focus:outline-none transition cursor-pointer">
+<option value="">-- Choose Your Region --</option>
+                        <optgroup label="B. Baria (GEN-A)">
+                            <option value="16108">B.Baria GEN-A-1 (16108) - Mr. Md. Ashraful Alam</option>
+                            <option value="16109">B.Baria GEN-A-2 (16109) - Mr. Md. Abdul Jalil Sarkar</option>
+                            <option value="16104">Habigonj GEN-A-1 (16104) - Mr. Md. Ashraf Ali</option>
+                            <option value="16425">Habigonj GEN-A-2 (16425) - Md. Mohiuddin Ahmed</option>
+                            <option value="16107">Kosba GEN-A-1 (16107) - Mr. Md. Ruhul Amin</option>
+                            <option value="16105">Madhabpur GEN-A-1 (16105) - Mr. Md. Mosarraf Hossain</option>
+                            <option value="16106">Nabinagar GEN-A-1 (16106) - Mr. Tofazzul Haque</option>
+                            <option value="16682">Nobigonj GEN-A-1 (16682) - Sayful Islam</option>
+                        </optgroup>
+                        <optgroup label="Barishal-A (GEN-A)">
+                            <option value="16058">Barguna GEN-A-1 (16058) - Md. Abdur Rashid</option>
+                            <option value="16053">Barishal GEN-A-2 (16053) - Mr. Md. Azizul Islam Khan</option>
+                            <option value="16535">Barishal GEN-A-3 (16535) - Md. Al Amin Mia</option>
+                            <option value="16054">Gournadi GEN-A-1 (16054) - Mr. Md. Abu Hanif</option>
+                            <option value="16421">Mothbaria GEN-A-1 (16421) - Mr. Md. Hafizur Rahman</option>
+                            <option value="16057">Patuakhali GEN-A-1 (16057) - Mr. Bilash Kumar Biswas</option>
+                            <option value="16422">Patuakhali GEN-A-2 (16422) - Mr. Sujan Kumar Saha</option>
+                        </optgroup>
+                        <optgroup label="Barishal-B (GEN-A)">
+                            <option value="16052">Barishal GEN-A-1 (16052) - Mr. Sujit Kumar Dutta</option>
+                            <option value="16055">Bhola GEN-A-1 (16055) - Mr. Md. Sorwer Hossain</option>
+                            <option value="16056">Charfashion GEN-A-1 (16056) - Mr. Sumon Ranjan Das</option>
+                            <option value="16363">Lalmohon GEN-A-1 (16363) - Mr. Md. Abdur Razzak Mia</option>
+                            <option value="16068">Madaripur GEN-A-1 (16068) - Mr. Md. Abu Jafar Siddik</option>
+                            <option value="16069">Shariatpur GEN-A-1 (16069) - Mr. Md. Shahadat Hossain-579</option>
+                        </optgroup>
+                        <optgroup label="Bogura (GEN-A)">
+                            <option value="16020">Bogura GEN-A-1 (16020) - Mr. Farhan Uddin</option>
+                            <option value="16021">Bogura GEN-A-2 (16021) - Md. Alamgir Hossain</option>
+                            <option value="16321">Bogura GEN-A-3 (16321) - Mr. Md. Habibullah Belaly</option>
+                            <option value="16609">Dupchachia GEN-A-1 (16609) - Md. Jahir Uddin Babor</option>
+                            <option value="16656">Naogoan GEN-A-2 (16656) - Mr. Anwar Hossain</option>
+                            <option value="16019">Noagaon GEN-A-1 (16019) - Mehedi Hasan</option>
+                            <option value="16023">Sherpur (BOG) GEN-A-1 (16023) - Md. Ariful Islam</option>
+                            <option value="16022">Sirajgonj GEN-A-1 (16022) - Md. Rabiul Alam</option>
+                        </optgroup>
+                        <optgroup label="Chandpur (GEN-A)">
+                            <option value="16140">Chandpur GEN-A-1 (16140) - Mr. Md. Mokaram Ahamed</option>
+                            <option value="16139">Chandpur GEN-A-2 (16139) - Md. Obaidur Rahman</option>
+                            <option value="16134">Chatkhil GEN-A-1 (16134) - Mr. Md. Abdur Rahman</option>
+                            <option value="16137">Hazigonj GEN-A-1 (16137) - Mr. Gautam Baral</option>
+                            <option value="16608">Motlab GEN-A-1 (16608) - Md. Halim Uddin</option>
+                            <option value="16138">Ramganj GEN-A-1 (16138) - Md. Rezaul Karim</option>
+                            <option value="16427">Sharastee GEN-A-1 (16427) - Mr. Md. Abdul Roshid</option>
+                        </optgroup>
+                        <optgroup label="Chattogram-A (GEN-A)">
+                            <option value="16167">Baraiyerhat GEN-A-1 (16167) - Mr. Md. Abdus Salam</option>
+                            <option value="16606">Chattogram GEN-A-12 (16606) - Md. Shafikul Islam</option>
+                            <option value="16166">Chattogram GEN-A-3 (16166) - Mohammad Yousuf</option>
+                            <option value="16165">Chattogram GEN-A-8 (16165) - Md. Shamim Al Mamun</option>
+                            <option value="16157">Chattogram GEN-A-9 (16157) - Mr. Md. Zahidul Islam</option>
+                            <option value="16325">Sandwip GEN-A-1 (16325) - Mr. Mohammad Abdul Aziz</option>
+                            <option value="16678">Sitakundu GEN-A-1 (16678) - Mr. Riazul Mostafa</option>
+                        </optgroup>
+                        <optgroup label="Chattogram-B (GEN-A)">
+                            <option value="16168">Chandraghona GEN-A-1 (16168) - Mr. Md. Zakir Hossain</option>
+                            <option value="16679">Chattogram GEN-A-13 (16679) - Mr. Azizul Haque</option>
+                            <option value="16171">Chattogram GEN-A-4 (16171) - Mahmodul Haque</option>
+                            <option value="16164">Chattogram GEN-A-5 (16164) - Mr. Md. Ziaur Rahman</option>
+                            <option value="16155">Hathazari GEN-A-1 (16155) - Mohammad Jamal Hossain</option>
+                            <option value="16429">Rawjan GEN-A-1 (16429) - Mr. Mohammad Jaedul Islam</option>
+                        </optgroup>
+                        <optgroup label="Chattogram-C (GEN-A)">
+                            <option value="16173">Anowara GEN-A-1 (16173) - Mr. Sumon Chandra Das</option>
+                            <option value="16431">Banshkhali GEN-A-1 (16431) - Anamul Haque</option>
+                            <option value="16169">Chattogram GEN-A-1 (16169) - Mr. Md. Salimujjaman</option>
+                            <option value="16326">Chattogram GEN-A-10 (16326) - Mr. Mohammad Ashadur Rahman</option>
+                            <option value="16170">Chattogram GEN-A-6 (16170) - Mr. Md. Fazlul Haque</option>
+                            <option value="16172">Potiya GEN-A-1 (16172) - Md. Majharul Islam</option>
+                            <option value="16601">Potiya GEN-A-2 (16601) - Md. Mostafizur Rahman</option>
+                        </optgroup>
+                        <optgroup label="Chattogram-D (GEN-A)">
+                            <option value="16430">Boalkhali GEN-A-1 (16430) - Mr. Md. Rezaul Hoque</option>
+                            <option value="16610">Chattogram GEN-A-11 (16610) - Md. Zahangir Alam</option>
+                            <option value="16154">Chattogram GEN-A-2 (16154) - Md. Mahabubur Rahman</option>
+                            <option value="16158">Chattogram GEN-A-7 (16158) - Md. Abu Naser</option>
+                            <option value="16156">Fatikchari GEN-A-1 (16156) - Mr. Md. Biddut Hosen</option>
+                            <option value="16532">Fatikchari GEN-A-2 (16532) - Md. Sumsuddoha</option>
+                        </optgroup>
+                        <optgroup label="Cox Bazar (GEN-A)">
+                            <option value="16163">Amirabad GEN-A-1 (16163) - Mr. Dabashis Sarker</option>
+                            <option value="16159">Chakaria GEN-A-1 (16159) - Mr. Mohammad Nazrul Islam</option>
+                            <option value="16160">Cox Bazar GEN-A-1 (16160) - Mr. Amir Sohel</option>
+                            <option value="16161">Cox Bazar GEN-A-2 (16161) - Mr. Md. Mostafa Kamal</option>
+                            <option value="16162">Keranirhat GEN-A-1 (16162) - Mr. Sukrithi Rudra</option>
+                            <option value="16660">Moheshkhali GEN-A-1 (16660) - Md. Wasim Rahman</option>
+                            <option value="16533">Ukhia GEN-A-1 (16533) - Md. Ruhul Amin</option>
+                        </optgroup>
+                        <optgroup label="Cumilla (GEN-A)">
+                            <option value="16141">Barura GEN-A-1 (16141) - Mr. Md. Habibur Rahman</option>
+                            <option value="16428">Cumilla Cantonment GEN-A-1 (16428) - Muhammad Asaduzzaman</option>
+                            <option value="16144">Cumilla GEN-A-1 (16144) - Md. Alamgir Hossain</option>
+                            <option value="16142">Cumilla GEN-A-3 (16142) - Md. Mozammel Haque</option>
+                            <option value="16146">Debidwar GEN-A-1 (16146) - Mr. Nikhil Kumar Roy</option>
+                            <option value="16152">Laksham GEN-A-1 (16152) - Mr. Md. Kabir Hossen</option>
+                        </optgroup>
+                        <optgroup label="Cumilla-B (GEN-A)">
+                            <option value="16145">Chandina GEN-A-1 (16145) - Mr. Bishwajit Kaviraj</option>
+                            <option value="16694">Chandina GEN-A-2 (16694) - Mr. Sk. Shafiqur Rahman</option>
+                            <option value="16143">Cumilla GEN-A-2 (16143) - Md. Monaem Hossain</option>
+                            <option value="16600">Cumilla GEN-A-4 (16600) - Md. Belal Hossen</option>
+                            <option value="16147">Gouripur GEN-A-1 (16147) - Md. Aminur Islam</option>
+                            <option value="16605">Gouripur GEN-A-2 (16605) - Md. Abdul Alim</option>
+                        </optgroup>
+                        <optgroup label="Dhaka-A (GEN-A)">
+                            <option value="16124">Dhaka GEN-A-17 (16124) - Mr. Ali Ahammed</option>
+                            <option value="16123">Dhaka GEN-A-21 (16123) - Mr. Md. Khademul Basar</option>
+                            <option value="16619">Dhaka GEN-A-24 (16619) - Md. Shahajada Shahinur Islam</option>
+                            <option value="16689">Dhaka GEN-A-27 (16689) - Md. Saifur Rahman</option>
+                            <option value="16120">Dhaka GEN-A-4 (16120) - Mr. Md. Mazed Biswas</option>
+                            <option value="16121">Dhaka GEN-A-7 (16121) - Apurba Biswas</option>
+                            <option value="16122">Dhaka GEN-A-9 (16122) - Mr. Md. Mottaleb</option>
+                        </optgroup>
+                        <optgroup label="Dhaka-B (GEN-A)">
+                            <option value="16011">Dhaka GEN-A-11 (16011) - Mr. Murshahid</option>
+                            <option value="16010">Dhaka GEN-A-15 (16010) - Mr. Md. Zahidur Rahman</option>
+                            <option value="16090">Dhaka GEN-A-16 (16090) - Md. Nurnabi Mondal</option>
+                            <option value="16088">Dhaka GEN-A-2 (16088) - Mr. Md. Arif Sarkar</option>
+                            <option value="16012">Dhaka GEN-A-5 (16012) - Mr. Kamruzzaman</option>
+                            <option value="16079">Munshigonj GEN-A-1 (16079) - Mr. Md. Harun or Rashid</option>
+                        </optgroup>
+                        <optgroup label="Dhaka-C (GEN-A)">
+                            <option value="16091">Chattogram Road GEN-A-1 (16091) - Mr. Monoranjan Dhar</option>
+                            <option value="16013">Dhaka GEN-A-10 (16013) - Mr. Md. Bayezid Al Hasan</option>
+                            <option value="16092">Dhaka GEN-A-18 (16092) - Zahidul Islam Shapon</option>
+                            <option value="16602">Dhaka GEN-A-25 (16602) - Zubair Rahman</option>
+                            <option value="16089">Dhaka GEN-A-6 (16089) - Mr. Md. Aktaruzzaman</option>
+                            <option value="16416">Keranigonj GEN-A-1 (16416) - Mr. Md. Sadiqul Alam</option>
+                        </optgroup>
+                        <optgroup label="Dhaka-D (GEN-A)">
+                            <option value="16073">Dhaka GEN-A-1 (16073) - Mr. Md. Masud Rana</option>
+                            <option value="16074">Dhaka GEN-A-13 (16074) - Mr. Santosh Kumar Mandal</option>
+                            <option value="16071">Dhaka GEN-A-14 (16071) - Mr. Md. Mahmudul Hasan</option>
+                            <option value="16417">Dhaka GEN-A-22 (16417) - Mr. Md. Shazidul Haque</option>
+                            <option value="16690">Dhaka GEN-A-29 (16690) - Md. Shahinur Rahman</option>
+                            <option value="16072">Dhaka GEN-A-8 (16072) - Mohammad Rakib Hossain</option>
+                            <option value="16075">Nowabgonj GEN-A-1 (16075) - Mr. Md. Delwar Hossain Moral</option>
+                        </optgroup>
+                        <optgroup label="Dhaka-I (GEN-A)">
+                            <option value="16003">Dhaka GEN-A-12 (16003) - Md. Shahin Alam</option>
+                            <option value="16004">Dhaka GEN-A-19 (16004) - Mr. Kausar Ali</option>
+                            <option value="16002">Dhaka GEN-A-20 (16002) - Mr. Shohrab Hossain</option>
+                            <option value="16415">Dhaka GEN-A-23 (16415) - Mr. Zahid Khan</option>
+                            <option value="16615">Dhaka GEN-A-26 (16615) - Md. Ariful Islam</option>
+                            <option value="16686">Dhaka GEN-A-28 (16686) - Md. Riaz Uddin</option>
+                            <option value="16001">Dhaka GEN-A-3 (16001) - Mr. Md. Faruque Hossain</option>
+                        </optgroup>
+                        <optgroup label="Dinajpur (GEN-A)">
+                            <option value="16025">Dinajpur GEN-A-1 (16025) - Mr. Md. Shiraj Uddawla</option>
+                            <option value="16026">Dinajpur GEN-A-2 (16026) - Md. Habibur Rahman</option>
+                            <option value="16364">Gobindagonj GEN-A-1 (16364) - Mr. Md. Jahurul Haque</option>
+                            <option value="16027">Joypurhat GEN-A (16027) - Mr. Md. Asadujjaman</option>
+                            <option value="16534">Nilphamary GEN-A-1 (16534) - Md. Latiful Alam</option>
+                            <option value="16419">Panchagarh GEN-A-1 (16419) - Md. Nayeb Ali</option>
+                            <option value="16685">Ranisankail GEN-A-1 (16685) - Sabuj Kumar Saha</option>
+                            <option value="16024">Sayedpur GEN-A-1 (16024) - Mr. Md. Mostafizur Rahman</option>
+                            <option value="16028">Thakurgoan GEN-A-1 (16028) - S.M. Shakil Mahmud</option>
+                        </optgroup>
+                        <optgroup label="Faridpur (GEN-A)">
+                            <option value="16067">Bhanga GEN-A-1 (16067) - Mr. Md. Zahid Hossain Khan</option>
+                            <option value="16064">Faridpur GEN-A-1 (16064) - Mr. Sumon Kumar Paul</option>
+                            <option value="16065">Faridpur GEN-A-2 (16065) - Mr. Md. Mehedi Hasan</option>
+                            <option value="16066">Gopalgonj GEN-A-1 (16066) - Md. Abu Zafor</option>
+                            <option value="16586">Gopalgonj GEN-A-2 (16586) - Mr. Provat Kumar Sarker</option>
+                            <option value="16070">Rajbari GEN-A-1 (16070) - Mr. Manitosh Biswas</option>
+                            <option value="16423">Shibchar GEN-A-1 (16423) - Mr. Jiban Kumar Debnath</option>
+                        </optgroup>
+                        <optgroup label="Feni (GEN-A)">
+                            <option value="16695">Chagolnaiya GEN-A-1 (16695) - Mr. Md. Manir Hosen</option>
+                            <option value="16151">Chowddagram GEN-A-1 (16151) - Mr. Md. Bulbul Ahammad</option>
+                            <option value="16153">Daganbhuiyan GEN-A-1 (16153) - Mahabul Hossain</option>
+                            <option value="16148">Feni GEN-A-1 (16148) - Bulbul Ahmed</option>
+                            <option value="16149">Feni GEN-A-2 (16149) - Mr. Md. Noor Alam Siddique</option>
+                            <option value="16150">Feni GEN-A-3 (16150) - Md. Rakibul Alam</option>
+                            <option value="16693">Nangolkot GEN-A-1 (16693) - Amrita Kumar Paul</option>
+                        </optgroup>
+                        <optgroup label="Gazipur (GEN-A)">
+                            <option value="16119">Bhaluka GEN-A-1 (16119) - Mr. Bipul Kanti Roy</option>
+                            <option value="16688">Gafargaon GEN-A-1 (16688) - Md. Salauddin Yousuf</option>
+                            <option value="16116">Gazipur GEN-A-1 (16116) - Mr. Kazi Mokaram Hossain</option>
+                            <option value="16117">Gazipur-Chowrasta GEN-A-1 (16117) - Mr. Mohammad Abdul Baten</option>
+                            <option value="16414">Kaliakoir GEN-A-1 (16414) - Mr. Md. Monsur Rahman</option>
+                            <option value="16411">Kapasia GEN-A-1 (16411) - Mr. Md. Anisuzzaman</option>
+                            <option value="16115">Konabari GEN-A-1 (16115) - Md. Abdul Hye Al Hadi</option>
+                            <option value="16118">Mawna GEN-A-1 (16118) - Mr. Suranjan Dhar</option>
+                        </optgroup>
+                        <optgroup label="Jashore (GEN-A)">
+                            <option value="16051">Chuadanga GEN-A-1 (16051) - Mr. Bikash Chandra Guha</option>
+                            <option value="16047">Jashore GEN-A-1 (16047) - Mr. Shamiul Bhuian</option>
+                            <option value="16048">Jashore GEN-A-2 (16048) - Mr. Md. Nurul Alam Repon</option>
+                            <option value="16680">Jashore GEN-A-3 (16680) - Md. Mizanur Rahman</option>
+                            <option value="16049">Jhenidah GEN-A-1 (16049) - Md. Asaduzzaman</option>
+                            <option value="16050">Magura GEN-A-1 (16050) - Mr. Md. Faisal Kabir</option>
+                            <option value="16420">Meherpur GEN-A-1 (16420) - Mr. Md. Ershad Ali</option>
+                            <option value="16598">Narail GEN-A-1 (16598) - Mr. Emamul Hoque</option>
+                        </optgroup>
+                        <optgroup label="Khulna (GEN-A)">
+                            <option value="16061">Bagerhat GEN-A-1 (16061) - Mr. Md. Asaduzzaman</option>
+                            <option value="16059">Khulna GEN-A-1 (16059) - Mr. Md. Azizul Haque</option>
+                            <option value="16060">Khulna GEN-A-2 (16060) - Mr. Shaikh Md. Saifur Rahman</option>
+                            <option value="16320">Khulna GEN-A-3 (16320) - Mr. Md. Kabirul Islam</option>
+                            <option value="16062">Satkhira GEN-A-1 (16062) - Mr. Md. Mehedi Hasan</option>
+                            <option value="16063">Satkhira GEN-A-2 (16063) - Mr. K.M. Niaz Uddin Ahmed</option>
+                            <option value="16659">Shyamnagor GEN-A-1 (16659) - Md. Waziullah Patwary</option>
+                        </optgroup>
+                        <optgroup label="Kushtia (GEN-A)">
+                            <option value="16658">Bheramara GEN-A-1 (16658) - Mr. Md. Nazmul Huda</option>
+                            <option value="16603">Bonpara GEN-A-1 (16603) - Md. Sadequzzaman</option>
+                            <option value="16043">Ishwardi GEN-A-1 (16043) - Mr. Md. Abdul Latif Roni</option>
+                            <option value="16045">Kushtia GEN-A-1 (16045) - Mr. Habibur Rahaman</option>
+                            <option value="16046">Kushtia GEN-A-2 (16046) - Mr. Md. Mahmudunnabi</option>
+                            <option value="16041">Pabna GEN-A-1 (16041) - Mr. Md. Sultan Mahmud</option>
+                            <option value="16042">Pabna GEN-A-2 (16042) - Md. Asaduzzaman Siddique</option>
+                            <option value="16044">Shahzadpur GEN-A-1 (16044) - Md. Zahangir Alom</option>
+                        </optgroup>
+                        <optgroup label="Maizdee (GEN-A)">
+                            <option value="16133">Chowmuhoni GEN-A-1 (16133) - Mr. Md. Nurul Haque</option>
+                            <option value="16599">Komol Nagar-A-1 (16599) - Mr. Md. Ariful Islam</option>
+                            <option value="16136">Laxmipur GEN-A-1 (16136) - Mr. Md. Shamim Hossain</option>
+                            <option value="16131">Maizdee GEN-A-1 (16131) - Md. Rakibul Islam</option>
+                            <option value="16132">Maizdee GEN-A-2 (16132) - Mr. Md. Ismail Hossain</option>
+                            <option value="16135">Sonaimuri GEN-A-1 (16135) - Mr. Md. Mamun Hossain</option>
+                            <option value="16426">Subornachar GEN-A-1 (16426) - Mr. Murad Hossain</option>
+                        </optgroup>
+                        <optgroup label="Mymensingh (GEN-A)">
+                            <option value="16657">Durgapur GEN-A-1 (16657) - Mr. Mohammad Minhajul Karim</option>
+                            <option value="16604">Fulbaria GEN-A-1 (16604) - Md. Iftekher Hasan Purkayestha</option>
+                            <option value="16129">Fulpur GEN-A-1 (16129) - Mr. Md. Raqibul Islam</option>
+                            <option value="16413">Mohonganj GEN-A-1 (16413) - Mr. Mohammad Ali Jinnah</option>
+                            <option value="16412">Muktagacha GEN-A-1 (16412) - Mr. Eshtyaque Ahmed Khan</option>
+                            <option value="16125">Mymensingh GEN-A-1 (16125) - Nure Alom Siddiki</option>
+                            <option value="16126">Mymensingh GEN-A-2 (16126) - Mr. Md. Golam Moktadir</option>
+                            <option value="16127">Mymensingh GEN-A-3 (16127) - Mr. Md. Ershad Ali</option>
+                            <option value="16130">Netrokona GEN-A-1 (16130) - Mr. Muhammad Zakir Hossain</option>
+                        </optgroup>
+                        <optgroup label="Narayangonj (GEN-A)">
+                            <option value="16530">Madanpur GEN-A-1 (16530) - Md. Kamruzzaman</option>
+                            <option value="16076">Narayangonj GEN-A-1 (16076) - Md. Nurunnabi Sarkar</option>
+                            <option value="16077">Narayangonj GEN-A-2 (16077) - Mr. Subhash Chandra Das</option>
+                            <option value="16078">Narayangonj GEN-A-3 (16078) - Bulbul Ahmed</option>
+                            <option value="16621">Narayangonj GEN-A-4 (16621) - Mr. Aminul Islam</option>
+                            <option value="16081">Sonargoan GEN-A-1 (16081) - Mr. Md. Rokonuzzaman Khan</option>
+                        </optgroup>
+                        <optgroup label="Narsingdi (GEN-A)">
+                            <option value="16322">Bajitpur GEN-A-1 (16322) - Mr. Mehedi Hasan Rasel</option>
+                            <option value="16084">Bhairab GEN-A-1 (16084) - Mr. Sayed Kohel-Uz-Zaman</option>
+                            <option value="16085">Kishoregonj GEN-A-1 (16085) - Mr. Md. Khalilur Rahaman</option>
+                            <option value="16086">Kishoregonj GEN-A-2 (16086) - Mr. Syed Rasel</option>
+                            <option value="16681">Madhobdi GEN-A-1 (16681) - Md. Mamun-Or-Rashid</option>
+                            <option value="16607">Monohordi GEN-A-1 (16607) - Md. Emdadul Haq</option>
+                            <option value="16082">Narsingdi GEN-A-1 (16082) - Mr. Madan Kumar Mandal</option>
+                            <option value="16083">Narsingdi GEN-A-2 (16083) - Mr. Md. Musharaf Hossain</option>
+                        </optgroup>
+                        <optgroup label="Rajshahi (GEN-A)">
+                            <option value="16684">Bagmara GEN-A-1 (16684) - Mr. Md. Hasan Imam Rashel</option>
+                            <option value="16040">Chapainwabgonj GEN-A-1 (16040) - Mr. Md. Enamul Haque</option>
+                            <option value="16613">Chapainwabgonj GEN-A-2 (16613) - Farid Hossain</option>
+                            <option value="16039">Natore GEN-A-1 (16039) - Md. Hasanujjaman</option>
+                            <option value="16683">Natore GEN-A-2 (16683) - Md. Galib Al Feroj</option>
+                            <option value="16038">Patnitola GEN-A-1 (16038) - Mr. Khondokar Mazharul Islam</option>
+                            <option value="16035">Rajshahi GEN-A-1 (16035) - Mr. Md. Johurul Islam</option>
+                            <option value="16036">Rajshahi GEN-A-2 (16036) - Mr. Md. Shahidul Islam</option>
+                            <option value="16037">Rajshahi GEN-A-3 (16037) - Fazlul Haque</option>
+                        </optgroup>
+                        <optgroup label="Rangpur (GEN-A)">
+                            <option value="16034">Gaibandha GEN-A-1 (16034) - Mr. Shahidul Islam</option>
+                            <option value="16032">Kurigram GEN-A-1 (16032) - Md. Sohanur Rahman Samun</option>
+                            <option value="16033">Lalmonirhat GEN-A-1 (16033) - Md. Rabiul Islam</option>
+                            <option value="16620">Mithapukur GEN-A-1 (16620) - Mr. Amzad Hossain Mia</option>
+                            <option value="16614">Nageshwari GEN-A-1 (16614) - Md. Nuruzzaman</option>
+                            <option value="16029">Rangpur GEN-A-1 (16029) - Mr. Md. Moniruzzaman</option>
+                            <option value="16030">Rangpur GEN-A-2 (16030) - Mr. Md. Wahiduzzaman Sarker</option>
+                            <option value="16031">Rangpur GEN-A-3 (16031) - Mr. Raqibul Hasan</option>
+                        </optgroup>
+                        <optgroup label="Savar (GEN-A)">
+                            <option value="16007">Ashulia GEN-A-1 (16007) - Mr. Hasan Al Ahsan</option>
+                            <option value="16323">Dhamrai GEN-A-1 (16323) - Mr. Md. Faysal Kabir</option>
+                            <option value="16612">Manikganj GEN-A-2 (16612) - Mohammad Nasir Uddin Khandaker</option>
+                            <option value="16006">Manikgonj GEN-A-1 (16006) - Mr. Md. Abdus Salam Sarker</option>
+                            <option value="16008">Mirzapur GEN-A-1 (16008) - Taposh Kumar Roy</option>
+                            <option value="16005">Savar GEN-A-1 (16005) - Md. Anisuzzaman Talukder</option>
+                            <option value="16009">Savar GEN-A-2 (16009) - Mr. Tainoor Rahman</option>
+                            <option value="16691">Savar GEN-A-3 (16691) - Md. Tarek Aziz</option>
+                        </optgroup>
+                        <optgroup label="Sylhet-A (GEN-A)">
+                            <option value="16093">Beanibazar GEN-A-1 (16093) - Mohammad Monir Ahmed</option>
+                            <option value="16611">Goalabazar GEN-A-1 (16611) - Mamonur Rashid</option>
+                            <option value="16424">Golapgonj GEN-A-1 (16424) - Md. Chanchal Hossain</option>
+                            <option value="16096">Sunamgonj GEN-A-1 (16096) - Mr. Sanjit Kumar Debnath</option>
+                            <option value="16101">Sylhet GEN-A-1 (16101) - Mr. Md. Golam Sarwar</option>
+                            <option value="16100">Sylhet GEN-A-3 (16100) - Mr. Asraf Kabir</option>
+                            <option value="16095">Sylhet GEN-A-5 (16095) - Md. Jakiul Islam</option>
+                        </optgroup>
+                        <optgroup label="Sylhet-B (GEN-A)">
+                            <option value="16097">Bishwanath GEN-A-1 (16097) - Mr. Md. Arefin Hasan</option>
+                            <option value="16098">Kulaura GEN-A-1 (16098) - Mr. Md. Zohurul Islam</option>
+                            <option value="16103">Moulovibazar GEN-A-1 (16103) - Mr. Ripan Kumar Sarkar</option>
+                            <option value="16102">Sreemongal GEN-A-1 (16102) - Mr. ATM Shakhawat Hossain</option>
+                            <option value="16094">Sylhet GEN-A-2 (16094) - Mr. Mohammad Hasan</option>
+                            <option value="16099">Sylhet GEN-A-4 (16099) - Mr. Md. Millatun Nabi</option>
+                        </optgroup>
+                        <optgroup label="Tangail (GEN-A)">
+                            <option value="16692">Ghatail GEN-A-1 (16692) - Md. Anamul Haque</option>
+                            <option value="16017">Jamalpur GEN-A-1 (16017) - Mr. Md. Mehdi Al-Amin</option>
+                            <option value="16324">Jamalpur GEN-A-2 (16324) - Mr. Md. Uzzal Hossain         </option>
+                            <option value="16016">Modhupur GEN-A-1 (16016) - Mr. Subroto Kumar Datta</option>
+                            <option value="16018">Sherpur GEN-A-1 (16018) - Mr. Md. Taizul Islam</option>
+                            <option value="16418">Sherpur GEN-A-2 (16418) - Mr. Md. Sohel Rana</option>
+                            <option value="16014">Tangail GEN-A-1 (16014) - Mr. Md. Abdul Hamid</option>
+                            <option value="16015">Tangail GEN-A-2 (16015) - Mr. Md. Shafiqul Islam</option>
+                        </optgroup>
+                        <optgroup label="Uttara (GEN-A)">
+                            <option value="16080">Arihajar GEN-A-1 (16080) - Mr. Mohammad Ali</option>
+                            <option value="16687">Kaliganj GEN-A-1 (16687) - Md. Abu Sayem</option>
+                            <option value="16087">Rupgonj GEN-A-1 (16087) - Mr. Md. Shaheedul Islam</option>
+                            <option value="16113">Tongi GEN-A-1 (16113) - Mr. Md. Mahbub Alam Sobuj</option>
+                            <option value="16114">Tongi GEN-A-2 (16114) - Mr. Md. Abdul Kader</option>
+                            <option value="16110">Uttara GEN-A-1 (16110) - Mr. Md. Enamul Haque</option>
+                            <option value="16111">Uttara GEN-A-2 (16111) - Mr. Uzzal Kumar Saha</option>
+                            <option value="16112">Uttara GEN-A-3 (16112) - Md. Asif Anam</option>
+                        </optgroup>
                         </select>
                     </div>
 
@@ -1318,6 +1676,25 @@
             }
         }
 
+        function populateAllRegionsDropdown() {
+            const regSel = document.getElementById('select-region');
+            if (!regSel) return;
+            regSel.innerHTML = '<option value="">-- Choose Your Region --</option>';
+            ZONES.forEach(z => {
+                const group = document.createElement('optgroup');
+                group.label = z;
+                const matching = Object.values(REGION_MAP).filter(r => r.zone === z);
+                matching.sort((a, b) => a.region_name.localeCompare(b.region_name));
+                matching.forEach(r => {
+                    const opt = document.createElement('option');
+                    opt.value = r.sap_region_code;
+                    opt.textContent = `${r.region_name} (${r.sap_region_code}) - ${r.regional_head}`;
+                    group.appendChild(opt);
+                });
+                regSel.appendChild(group);
+            });
+        }
+
         function onZoneChanged() {
             const zone = document.getElementById('select-zone').value;
             const regSel = document.getElementById('select-region');
@@ -1330,33 +1707,25 @@
             if (unlockBtn) unlockBtn.classList.add('hidden');
 
             if (!zone) {
-                regSel.innerHTML = '<option value="">-- Select Zone First --</option>';
-                regSel.setAttribute('disabled', 'true');
-                regSel.disabled = true;
-                regSel.classList.remove('bg-white', 'cursor-pointer');
-                regSel.classList.add('bg-slate-100', 'cursor-not-allowed');
+                populateAllRegionsDropdown();
                 return;
             }
 
             const matchingRegions = Object.values(REGION_MAP).filter(r => r.zone === zone);
             matchingRegions.sort((a, b) => a.region_name.localeCompare(b.region_name));
 
-            regSel.innerHTML = '<option value="">-- Choose Region (' + matchingRegions.length + ' Regions) --</option>';
+            regSel.innerHTML = '<option value="">-- Choose Region (' + matchingRegions.length + ' Regions in ' + zone + ') --</option>';
             matchingRegions.forEach(r => {
                 const opt = document.createElement('option');
                 opt.value = r.sap_region_code;
-                opt.textContent = `${r.region_name} (${r.sap_region_code})`;
+                opt.textContent = `${r.region_name} (${r.sap_region_code}) - ${r.regional_head}`;
                 regSel.appendChild(opt);
             });
-
-            regSel.removeAttribute('disabled');
-            regSel.disabled = false;
-            regSel.classList.remove('bg-slate-100', 'cursor-not-allowed', 'opacity-50');
-            regSel.classList.add('bg-white', 'cursor-pointer');
         }
 
         function onRegionChanged() {
             const regCode = document.getElementById('select-region').value;
+            const zoneSel = document.getElementById('select-zone');
             const rhCard = document.getElementById('rh-info-card');
             const passCard = document.getElementById('password-section');
             const unlockBtn = document.getElementById('unlock-btn-container');
@@ -1372,6 +1741,12 @@
             }
 
             const r = REGION_MAP[regCode];
+            
+            // Auto-sync Zone select if needed
+            if (zoneSel && r.zone && zoneSel.value !== r.zone) {
+                zoneSel.value = r.zone;
+            }
+
             const rhNameSpan = document.getElementById('rh-name-display')?.querySelector('span');
             if (rhNameSpan) rhNameSpan.textContent = r.regional_head || 'N/A';
             
