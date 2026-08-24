@@ -270,7 +270,7 @@
                                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                                     <div>
                                         <label class="block text-xs font-bold text-teal-950 mb-1">Doctor Name <span class="text-rose-500">*</span></label>
-                                        <input type="text" id="c1_doc_name" oninput="onDataChanged()" placeholder="Enter Gynecologist / Doctor Name..." class="w-full bg-white border border-teal-300 rounded-xl px-3.5 py-2 text-xs sm:text-sm text-slate-900 placeholder-slate-400 focus:ring-2 focus:ring-teal-500 focus:border-teal-500 focus:outline-none transition">
+                                        <input type="text" id="c1_doc_name" oninput="onDataChanged(); validateAllRplFields();" placeholder="Enter Gynecologist / Doctor Name..." class="w-full bg-white border border-teal-300 rounded-xl px-3.5 py-2 text-xs sm:text-sm text-slate-900 placeholder-slate-400 focus:ring-2 focus:ring-teal-500 focus:border-teal-500 focus:outline-none transition">
                                     </div>
                                     <div>
                                         <div class="flex items-center justify-between mb-1">
@@ -422,7 +422,7 @@
                                     <div class="space-y-2">
                                         <div>
                                             <label class="text-[10px] font-bold text-purple-950">Doctor 1 Name <span class="text-rose-500">*</span></label>
-                                            <input type="text" id="c2_d1_name" oninput="onDataChanged()" placeholder="Enter Doctor 1 Name..." class="w-full mt-0.5 bg-white border border-purple-300 rounded-xl px-3 py-1.5 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-purple-500">
+                                            <input type="text" id="c2_d1_name" oninput="onDataChanged(); validateAllRplFields();" placeholder="Enter Doctor 1 Name..." class="w-full mt-0.5 bg-white border border-purple-300 rounded-xl px-3 py-1.5 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-purple-500">
                                         </div>
                                         <div>
                                             <div class="flex items-center justify-between"><label class="text-[10px] font-bold text-purple-950">Doctor 1 RPL ID <span class="text-rose-500">*</span></label><span id="c2_d1_rpl_badge" class="text-[9px] font-bold text-slate-400">6 digits</span></div>
@@ -460,7 +460,7 @@
                                     <div class="space-y-2">
                                         <div>
                                             <label class="text-[10px] font-bold text-purple-950">Doctor 2 Name <span class="text-rose-500">*</span></label>
-                                            <input type="text" id="c2_d2_name" oninput="onDataChanged()" placeholder="Enter Doctor 2 Name..." class="w-full mt-0.5 bg-white border border-purple-300 rounded-xl px-3 py-1.5 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-purple-500">
+                                            <input type="text" id="c2_d2_name" oninput="onDataChanged(); validateAllRplFields();" placeholder="Enter Doctor 2 Name..." class="w-full mt-0.5 bg-white border border-purple-300 rounded-xl px-3 py-1.5 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-purple-500">
                                         </div>
                                         <div>
                                             <div class="flex items-center justify-between"><label class="text-[10px] font-bold text-purple-950">Doctor 2 RPL ID <span class="text-rose-500">*</span></label><span id="c2_d2_rpl_badge" class="text-[9px] font-bold text-slate-400">6 digits</span></div>
@@ -498,7 +498,7 @@
                                     <div class="space-y-2">
                                         <div>
                                             <label class="text-[10px] font-bold text-purple-950">Doctor 3 Name <span class="text-rose-500">*</span></label>
-                                            <input type="text" id="c2_d3_name" oninput="onDataChanged()" placeholder="Enter Doctor 3 Name..." class="w-full mt-0.5 bg-white border border-purple-300 rounded-xl px-3 py-1.5 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-purple-500">
+                                            <input type="text" id="c2_d3_name" oninput="onDataChanged(); validateAllRplFields();" placeholder="Enter Doctor 3 Name..." class="w-full mt-0.5 bg-white border border-purple-300 rounded-xl px-3 py-1.5 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-purple-500">
                                         </div>
                                         <div>
                                             <div class="flex items-center justify-between"><label class="text-[10px] font-bold text-purple-950">Doctor 3 RPL ID <span class="text-rose-500">*</span></label><span id="c2_d3_rpl_badge" class="text-[9px] font-bold text-slate-400">6 digits</span></div>
@@ -536,7 +536,7 @@
                                     <div class="space-y-2">
                                         <div>
                                             <label class="text-[10px] font-bold text-purple-950">Doctor 4 Name <span class="text-rose-500">*</span></label>
-                                            <input type="text" id="c2_d4_name" oninput="onDataChanged()" placeholder="Enter Doctor 4 Name..." class="w-full mt-0.5 bg-white border border-purple-300 rounded-xl px-3 py-1.5 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-purple-500">
+                                            <input type="text" id="c2_d4_name" oninput="onDataChanged(); validateAllRplFields();" placeholder="Enter Doctor 4 Name..." class="w-full mt-0.5 bg-white border border-purple-300 rounded-xl px-3 py-1.5 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-purple-500">
                                         </div>
                                         <div>
                                             <div class="flex items-center justify-between"><label class="text-[10px] font-bold text-purple-950">Doctor 4 RPL ID <span class="text-rose-500">*</span></label><span id="c2_d4_rpl_badge" class="text-[9px] font-bold text-slate-400">6 digits</span></div>
@@ -1672,6 +1672,7 @@
 
             store[terrCode] = terrData;
             localStorage.setItem('EXIUM_SWEATER_STORE', JSON.stringify(store));
+                validateAllRplFields();
 
             ['c1_m1', 'c1_m2', 'c1_m3', 'c1_m4', 'c2_d1', 'c2_d2', 'c2_d3', 'c2_d4'].forEach(p => updateSweaterSlotIndicator(p));
 
@@ -1693,732 +1694,107 @@
             triggerAutoSync();
         }
 
-        function saveCurrentTerritoryClick() {
-            onDataChanged();
-            const r = REGION_MAP[currentRegionCode];
-            const t = r ? r.territories[activeTerritoryIndex] : null;
-            const name = t ? t.territory_name : 'Territory';
-            const terrCode = t ? String(t.sap_territory_code) : '';
-
-            if (terrCode && t) {
-                syncTerritoryToCloud(terrCode, store[terrCode]);
-            }
-
-            showToast(`✅ ${name} saved successfully!`);
-        }
-
-        function showToast(msg) {
-            const toast = document.getElementById('toast-notification');
-            const msgEl = document.getElementById('toast-msg');
-            msgEl.textContent = msg;
-            toast.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-10');
-            toast.classList.add('opacity-100', 'translate-y-0');
-
-            setTimeout(() => {
-                toast.classList.remove('opacity-100', 'translate-y-0');
-                toast.classList.add('opacity-0', 'pointer-events-none', 'translate-y-10');
-            }, 2200);
-        }
-
-        function getTerritoryStatus(d) {
-            if (!d) return 'Not Started';
-            const c1Ok = d.c1_doc_name && d.c1_doc_rpl && String(d.c1_doc_rpl).length === 6 && d.c1_m1_sweater && d.c1_m1_size && d.c1_m2_sweater && d.c1_m2_size && d.c1_m3_sweater && d.c1_m3_size && d.c1_m4_sweater && d.c1_m4_size;
-            const c2Ok = d.c2_d1_name && d.c2_d1_rpl && String(d.c2_d1_rpl).length === 6 && d.c2_d1_sweater && d.c2_d1_size && 
-                         d.c2_d2_name && d.c2_d2_rpl && String(d.c2_d2_rpl).length === 6 && d.c2_d2_sweater && d.c2_d2_size && 
-                         d.c2_d3_name && d.c2_d3_rpl && String(d.c2_d3_rpl).length === 6 && d.c2_d3_sweater && d.c2_d3_size && 
-                         d.c2_d4_name && d.c2_d4_rpl && String(d.c2_d4_rpl).length === 6 && d.c2_d4_sweater && d.c2_d4_size;
-
-            if (c1Ok && c2Ok) return 'Complete';
-            if (d.c1_doc_name || d.c1_doc_rpl || d.c2_d1_name || d.c2_d1_rpl || d.c2_d2_name || d.c2_d3_name || d.c2_d4_name || d.c1_m1_sweater || d.c2_d1_sweater) return 'In Progress';
-            return 'Not Started';
-        }
-
-        function navigateTerritory(dir) {
-            onDataChanged();
-            const r = REGION_MAP[currentRegionCode];
-            const nextIdx = activeTerritoryIndex + dir;
-            if (nextIdx >= 0 && nextIdx < r.territories.length) {
-                selectTerritoryTab(nextIdx, true);
-            }
-        }
-
-        function onSweaterSelectChange(slotPrefix, sweaterVal) {
-            updateSizeOptionsForSelect(`${slotPrefix}_sweater`, `${slotPrefix}_size`, '');
-            updateSlotImagePreview(`${slotPrefix}_img_preview`, sweaterVal);
-            onDataChanged();
-        }
-
-        function updateSizeOptionsForSelect(swSelectId, szSelectId, currentVal) {
-            const swVal = document.getElementById(swSelectId).value;
-            const szSel = document.getElementById(szSelectId);
-            szSel.innerHTML = '<option value="">-- Size --</option>';
-
-            if (!swVal) return;
-
-            let allowedSizes = ["S", "M", "L", "XL", "XXL"];
-            if (swVal.includes("04")) {
-                allowedSizes = ["XS", "S", "M", "L", "XL"];
-            }
-
-            allowedSizes.forEach(s => {
-                const opt = document.createElement('option');
-                opt.value = s;
-                opt.textContent = s;
-                if (s === currentVal) opt.selected = true;
-                szSel.appendChild(opt);
-            });
-        }
-
-        function updateSlotImagePreview(previewContainerId, sweaterVal) {
-            const el = document.getElementById(previewContainerId);
-            if (!el) return;
-
-            const code = sweaterVal ? sweaterVal.substring(0, 2) : '';
-            const item = SWEATER_DETAILS[code];
-
-            if (item) {
-                el.innerHTML = `
-                    <img src="${item.img}" onerror="this.src='${item.fallback_img}'" alt="Sweater" class="w-full h-full object-cover">
-                    <span class="absolute top-1 left-1 bg-slate-950/80 text-white text-[9px] font-black px-1.5 py-0.5 rounded shadow">${code}</span>
-                `;
-            } else {
-                el.innerHTML = '<i class="fa-solid fa-shirt text-lg text-slate-300"></i>';
-            }
-        }
-
-        function zoomSlotImage(selectId) {
-            const swVal = document.getElementById(selectId).value;
-            const code = swVal ? swVal.substring(0, 2) : '01';
-            openImageLightbox(code);
-        }
-
-        function openImageLightbox(key) {
-            const item = SWEATER_DETAILS[key] || SWEATER_DETAILS["01"];
-            const modal = document.getElementById('image-lightbox-modal');
-            const imgEl = document.getElementById('lightbox-img');
-            imgEl.src = item.img;
-            imgEl.onerror = function() { this.src = item.fallback_img; };
-            
-            document.getElementById('lightbox-code-badge').textContent = item.code;
-            document.getElementById('lightbox-gender').textContent = item.gender;
-            document.getElementById('lightbox-title').textContent = item.name;
-            document.getElementById('lightbox-color').textContent = item.color;
-            document.getElementById('lightbox-sizes').textContent = item.sizes;
-
-            modal.classList.remove('hidden');
-        }
-
-        function closeImageLightbox() {
-            document.getElementById('image-lightbox-modal').classList.add('hidden');
-        }
-
-        function openCatalogModal() {
-            document.getElementById('catalog-modal').classList.remove('hidden');
-        }
-
-        function closeCatalogModal() {
-            document.getElementById('catalog-modal').classList.add('hidden');
-        }
-
-        function isRegionLocked() {
-            if (!isGlobalAccessOpen) return true;
-            if (currentRegionCode && regionLocks[currentRegionCode]) return true;
-            return false;
-        }
-
-        function checkGlobalLockBanner() {
-            const b = document.getElementById('login-global-locked-alert');
-            if (b) {
-                if (!isGlobalAccessOpen) {
-                    b.classList.remove('hidden');
-                } else {
-                    b.classList.add('hidden');
-                }
-            }
-        }
-
-        function togglePasswordVisibility(inputId, btn) {
-            const inp = document.getElementById(inputId);
-            const icon = btn.querySelector('i');
-            if (inp.type === 'password') {
-                inp.type = 'text';
-                icon.className = 'fa-regular fa-eye-slash';
-            } else {
-                inp.type = 'password';
-                icon.className = 'fa-regular fa-eye';
-            }
-        }
-
-        // =========================================================================
-        // CLOUD & GOOGLE DRIVE INTEGRATION
-        // =========================================================================
-        function toggleCloudSettings() {
-            const box = document.getElementById('admin-cloud-settings-box');
-            if (box) {
-                box.classList.toggle('hidden');
-                const input = document.getElementById('custom-cloud-url-input');
-                if (input) input.value = cloudApiUrl;
-            }
-        }
-
-        function saveCloudUrlSetting() {
-            const url = document.getElementById('custom-cloud-url-input').value.trim();
-            cloudApiUrl = url || DEFAULT_CLOUD_URL;
-            localStorage.setItem('EXIUM_CLOUD_URL', cloudApiUrl);
-            showCloudTestResult("✅ Cloud URL saved to local session. Testing connection...", "text-emerald-300 bg-emerald-950/60");
-            testGoogleDriveConnection();
-        }
-
-        async function testGoogleDriveConnection() {
-            const url = (cloudApiUrl && cloudApiUrl.startsWith('http')) ? cloudApiUrl : DEFAULT_CLOUD_URL;
-            if (!url) {
-                showCloudTestResult("⚠️ Please paste your Google Apps Script Web App URL first.", "text-amber-300 bg-amber-950/60");
-                return;
-            }
-
-            showCloudTestResult("⏳ Testing connection to Google Sheet...", "text-blue-300 bg-blue-950/60");
-
-            try {
-                const res = await fetch(url + (url.includes('?') ? '&' : '?') + 'action=ping');
-                const json = await res.json();
-                if (json && json.status === 'success') {
-                    showCloudTestResult(`✅ Connected successfully to Google Sheet! (${json.message || 'OK'})`, "text-emerald-300 bg-emerald-950/60");
-                } else {
-                    showCloudTestResult("⚠️ Received response, but status was not success. Check script permissions.", "text-amber-300 bg-amber-950/60");
-                }
-            } catch (err) {
-                showCloudTestResult(`❌ Connection test failed: ${err.message}. Make sure the Web App deployment is set to 'Anyone'.`, "text-rose-300 bg-rose-950/60");
-            }
-        }
-
-        function showCloudTestResult(msg, className) {
-            const el = document.getElementById('cloud-test-result');
-            if (!el) return;
-            el.innerHTML = msg;
-            el.className = `text-xs font-bold p-2.5 rounded-xl border border-slate-700 ${className}`;
-            el.classList.remove('hidden');
-        }
-
-        async function syncTerritoryToCloud(terrCode, terrData) {
-            const url = (cloudApiUrl && cloudApiUrl.startsWith('http')) ? cloudApiUrl : DEFAULT_CLOUD_URL;
-            if (!url || !terrData || !terrCode) return;
-
-            try {
-                const payload = {
-                    action: "save_territory",
-                    sap_territory_code: String(terrCode).trim(),
-                    data: terrData
+        
+        // VALIDATE TERRITORY COMPLETENESS BEFORE SAVING
+        function validateTerritoryForSave() {
+            // 1. Check for duplicate Doctor RPL IDs
+            const isRplValid = validateAllRplFields();
+            if (!isRplValid) {
+                return {
+                    valid: false,
+                    message: "❌ Duplicate Doctor RPL ID detected! The same RPL ID cannot be assigned to multiple doctors. Please correct the highlighted red field."
                 };
-
-                await fetch(url, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                    body: JSON.stringify(payload)
-                });
-                console.log(`[Cloud Sync] Synced territory ${terrCode} to Google Sheet.`);
-            } catch (err) {
-                console.warn("[Cloud Sync] Note:", err);
             }
+
+            // 2. Validate Campaign 1: Gyne Core Doctor Development (Family Package)
+            const c1_name = document.getElementById('c1_doc_name').value.trim();
+            const c1_rpl = document.getElementById('c1_doc_rpl').value.trim();
+            const c1_m1_sw = document.getElementById('c1_m1_sweater').value;
+            const c1_m1_sz = document.getElementById('c1_m1_size').value;
+            const c1_m2_sw = document.getElementById('c1_m2_sweater').value;
+            const c1_m2_sz = document.getElementById('c1_m2_size').value;
+            const c1_m3_sw = document.getElementById('c1_m3_sweater').value;
+            const c1_m3_sz = document.getElementById('c1_m3_size').value;
+            const c1_m4_sw = document.getElementById('c1_m4_sweater').value;
+            const c1_m4_sz = document.getElementById('c1_m4_size').value;
+
+            const c1_hasAny = Boolean(c1_name || c1_rpl || c1_m1_sw || c1_m1_sz || c1_m2_sw || c1_m2_sz || c1_m3_sw || c1_m3_sz || c1_m4_sw || c1_m4_sz);
+
+            if (c1_hasAny) {
+                if (!c1_name) {
+                    document.getElementById('c1_doc_name').focus();
+                    return { valid: false, message: "⚠️ Campaign 1: Please enter Doctor Name (or clear all fields if skipping)." };
+                }
+                if (!c1_rpl || c1_rpl.length !== 6) {
+                    document.getElementById('c1_doc_rpl').focus();
+                    return { valid: false, message: "⚠️ Campaign 1: Doctor RPL ID must be exactly 6 digits." };
+                }
+                if (!c1_m1_sw || !c1_m1_sz) {
+                    return { valid: false, message: "⚠️ Campaign 1: Please select both Sweater Design and Size for Sweater 1." };
+                }
+                if (!c1_m2_sw || !c1_m2_sz) {
+                    return { valid: false, message: "⚠️ Campaign 1: Please select both Sweater Design and Size for Sweater 2." };
+                }
+                if (!c1_m3_sw || !c1_m3_sz) {
+                    return { valid: false, message: "⚠️ Campaign 1: Please select both Sweater Design and Size for Sweater 3." };
+                }
+                if (!c1_m4_sw || !c1_m4_sz) {
+                    return { valid: false, message: "⚠️ Campaign 1: Please select both Sweater Design and Size for Sweater 4." };
+                }
+            }
+
+            // 3. Validate Campaign 2: Core Doctor Maximization (Doctors 1 to 4)
+            for (let i = 1; i <= 4; i++) {
+                const d_name = document.getElementById(`c2_d${i}_name`).value.trim();
+                const d_rpl = document.getElementById(`c2_d${i}_rpl`).value.trim();
+                const d_sw = document.getElementById(`c2_d${i}_sweater`).value;
+                const d_sz = document.getElementById(`c2_d${i}_size`).value;
+
+                const hasAny = Boolean(d_name || d_rpl || d_sw || d_sz);
+
+                if (hasAny) {
+                    if (!d_name) {
+                        document.getElementById(`c2_d${i}_name`).focus();
+                        return { valid: false, message: `⚠️ Campaign 2 (Doctor ${i}): Please enter Doctor Name (or clear all 4 fields if skipping).` };
+                    }
+                    if (!d_rpl || d_rpl.length !== 6) {
+                        document.getElementById(`c2_d${i}_rpl`).focus();
+                        return { valid: false, message: `⚠️ Campaign 2 (Doctor ${i}): Doctor RPL ID must be exactly 6 digits.` };
+                    }
+                    if (!d_sw) {
+                        document.getElementById(`c2_d${i}_sweater`).focus();
+                        return { valid: false, message: `⚠️ Campaign 2 (Doctor ${i}): Please select a Sweater design.` };
+                    }
+                    if (!d_sz) {
+                        document.getElementById(`c2_d${i}_size`).focus();
+                        return { valid: false, message: `⚠️ Campaign 2 (Doctor ${i}): Please select a Sweater Size.` };
+                    }
+                }
+            }
+
+            return { valid: true };
         }
 
-        async function pushAllStoredDataToGoogleSheet() {
-            const url = (cloudApiUrl && cloudApiUrl.startsWith('http')) ? cloudApiUrl : DEFAULT_CLOUD_URL;
-            if (!url) {
-                alert("Please enter and save your Google Apps Script URL first!");
+        async function saveCurrentTerritoryClick() {
+            const check = validateTerritoryForSave();
+            if (!check.valid) {
+                alert(check.message);
+                showToast(check.message);
                 return;
             }
 
-            const allCodes = Object.keys(store);
-            if (allCodes.length === 0) {
-                alert("There are no stored submissions to push yet.");
-                return;
-            }
-
-            if (!confirm(`Push all ${allCodes.length} territory submissions to your Google Sheet now?`)) return;
-
-            showToast("⏳ Pushing all submissions to Google Sheet...");
-
-            try {
-                const payload = {
-                    action: "save_batch",
-                    batch: store
-                };
-
-                await fetch(url, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                    body: JSON.stringify(payload)
-                });
-
-                showToast(`✅ Successfully pushed ${allCodes.length} territories to Google Sheet!`);
-                alert(`✅ Successfully pushed ${allCodes.length} territory submissions to your Google Sheet in Google Drive! Check your Google Sheet to see all rows updated.`);
-            } catch (err) {
-                alert(`❌ Failed to push data: ${err.message}`);
-            }
-        }
-
-        async function pullCloudData(showFeedback = false) {
-            const url = (cloudApiUrl && cloudApiUrl.startsWith('http')) ? cloudApiUrl : DEFAULT_CLOUD_URL;
-            if (!url) return;
-
-            try {
-                if (showFeedback) showToast("🔄 Fetching latest data from Google Sheet...");
-                const res = await fetch(url + (url.includes('?') ? '&' : '?') + 'action=get_all');
-                const json = await res.json();
-
-                if (json && json.status === 'success' && json.store) {
-                    for (let k in json.store) {
-                        if (json.store[k] && Object.keys(json.store[k]).length > 0) {
-                            store[k] = Object.assign(store[k] || {}, json.store[k]);
-                        }
-                    }
-                    localStorage.setItem('EXIUM_SWEATER_STORE', JSON.stringify(store));
-                    if (isAdminLoggedIn) {
-                        renderAdminKpisAndSummaries();
-                        renderAdminZoneProgress();
-                        renderAdminProductionMatrix();
-                        renderAdminRegionsTable(document.getElementById('admin-region-search')?.value || '');
-                    }
-                    if (showFeedback) showToast(`✅ Synced latest data from Google Sheet!`);
-                }
-            } catch (err) {
-                console.warn("[Cloud Pull]:", err);
-                if (showFeedback) showToast("ℹ️ Checked Google Cloud.");
-            }
-        }
-
-        function downloadAllDataJson() {
-            const blob = new Blob([JSON.stringify(store, null, 2)], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `Exium_Sweater_Backup_${new Date().toISOString().slice(0,10)}.json`;
-            a.click();
-            URL.revokeObjectURL(url);
-        }
-
-        function importDataJson(e) {
-            const file = e.target.files[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = function(evt) {
-                try {
-                    const imported = JSON.parse(evt.target.result);
-                    Object.assign(store, imported);
-                    localStorage.setItem('EXIUM_SWEATER_STORE', JSON.stringify(store));
-                    if (isAdminLoggedIn) showAdminDashboard();
-                    alert(`✅ Successfully imported backup data!`);
-                } catch (err) {
-                    alert('Invalid JSON backup file.');
-                }
-            };
-            reader.readAsText(file);
-        }
-
-        // =========================================================================
-        // ADMIN DASHBOARD & SUMMARY MATRIX
-        // =========================================================================
-        async function openAdminModal() {
-            document.getElementById('admin-modal').classList.remove('hidden');
-            if (isAdminLoggedIn) {
-                showAdminDashboard();
-                await pullCloudData(false);
-            } else {
-                document.getElementById('admin-auth-view').classList.remove('hidden');
-                document.getElementById('admin-dashboard-view').classList.add('hidden');
-                document.getElementById('admin-pass-input').value = '';
-                document.getElementById('admin-auth-err').classList.add('hidden');
-            }
-        }
-
-        function closeAdminModal() {
-            document.getElementById('admin-modal').classList.add('hidden');
-        }
-
-        function handleAdminPasswordKey(e) {
-            if (e.key === 'Enter') verifyAdminPassword();
-        }
-
-        async function verifyAdminPassword() {
-            const p = document.getElementById('admin-pass-input').value.trim();
-            if (p === 'Exium MUPS') {
-                isAdminLoggedIn = true;
-                showAdminDashboard();
-                await pullCloudData(false);
-            } else {
-                document.getElementById('admin-auth-err').classList.remove('hidden');
-            }
-        }
-
-        function logoutAdmin() {
-            isAdminLoggedIn = false;
-            document.getElementById('admin-auth-view').classList.remove('hidden');
-            document.getElementById('admin-dashboard-view').classList.add('hidden');
-        }
-
-        function showAdminDashboard() {
-            document.getElementById('admin-auth-view').classList.add('hidden');
-            document.getElementById('admin-dashboard-view').classList.remove('hidden');
-
-            const accessBtn = document.getElementById('toggle-global-access-btn');
-            if (isGlobalAccessOpen) {
-                accessBtn.className = 'font-bold text-emerald-600 hover:underline';
-                accessBtn.innerHTML = '<i class="fa-solid fa-lock-open"></i> Open';
-            } else {
-                accessBtn.className = 'font-bold text-rose-600 hover:underline';
-                accessBtn.innerHTML = '<i class="fa-solid fa-lock"></i> Locked';
-            }
-
-            renderAdminKpisAndSummaries();
-            renderAdminZoneProgress();
-            renderAdminProductionMatrix();
-            renderAdminRegionsTable();
-        }
-
-        function renderAdminKpisAndSummaries() {
-            const totalTerrs = ALL_TERRITORIES.length; // 1856
-            let completed = 0;
-            let inProgress = 0;
-            let pending = 0;
-
-            ALL_TERRITORIES.forEach(t => {
-                const d = store[String(t['SAP Territory Code'])];
-                const status = getTerritoryStatus(d);
-
-                if (status === 'Complete') {
-                    completed++;
-                } else if (status === 'In Progress') {
-                    inProgress++;
-                } else {
-                    pending++;
-                }
-            });
-
-            const compPct = ((completed / totalTerrs) * 100).toFixed(1);
-            const inProgPct = ((inProgress / totalTerrs) * 100).toFixed(1);
-            const pendPct = ((pending / totalTerrs) * 100).toFixed(1);
-
-            document.getElementById('kpi-total-territories').textContent = totalTerrs.toLocaleString();
+            onDataChanged();
             
-            document.getElementById('kpi-completed-count').textContent = completed.toLocaleString();
-            document.getElementById('kpi-completed-pct').textContent = `${compPct}%`;
-            document.getElementById('kpi-completed-bar').style.width = `${compPct}%`;
-
-            document.getElementById('kpi-inprogress-count').textContent = inProgress.toLocaleString();
-            document.getElementById('kpi-inprogress-pct').textContent = `${inProgPct}%`;
-            document.getElementById('kpi-inprogress-bar').style.width = `${inProgPct}%`;
-
-            document.getElementById('kpi-pending-count').textContent = pending.toLocaleString();
-            document.getElementById('kpi-pending-pct').textContent = `${pendPct}%`;
-            document.getElementById('kpi-pending-bar').style.width = `${pendPct}%`;
-        }
-
-        function renderAdminZoneProgress() {
-            const tbody = document.getElementById('admin-zone-table-body');
-            tbody.innerHTML = '';
-
-            let finishedZones = 0;
-
-            ZONES.forEach(z => {
-                const zoneRegions = Object.values(REGION_MAP).filter(r => r.zone === z);
-                const zoneTerrs = ALL_TERRITORIES.filter(t => t.Zone === z);
-                
-                let zoneCompleted = 0;
-                zoneTerrs.forEach(t => {
-                    if (getTerritoryStatus(store[String(t['SAP Territory Code'])]) === 'Complete') {
-                        zoneCompleted++;
-                    }
-                });
-
-                const totalInZone = zoneTerrs.length;
-                const remainingInZone = totalInZone - zoneCompleted;
-                const pct = totalInZone > 0 ? Math.round((zoneCompleted / totalInZone) * 100) : 0;
-
-                if (pct === 100) finishedZones++;
-
-                const tr = document.createElement('tr');
-                tr.className = 'hover:bg-slate-50 border-b border-slate-100';
-                tr.innerHTML = `
-                    <td class="p-2.5 font-bold text-slate-900">${z}</td>
-                    <td class="p-2.5 text-center font-mono text-slate-600">${zoneRegions.length}</td>
-                    <td class="p-2.5 text-center font-mono font-bold text-slate-900">${totalInZone}</td>
-                    <td class="p-2.5 text-center font-black text-emerald-600">${zoneCompleted}</td>
-                    <td class="p-2.5 text-center font-bold text-slate-500">${remainingInZone}</td>
-                    <td class="p-2.5 w-40">
-                        <div class="flex items-center gap-2">
-                            <div class="flex-1 bg-slate-200 h-2 rounded-full overflow-hidden">
-                                <div class="bg-orange-500 h-full rounded-full" style="width: ${pct}%"></div>
-                            </div>
-                            <span class="text-[10px] font-black text-slate-700 w-8 text-right">${pct}%</span>
-                        </div>
-                    </td>
-                    <td class="p-2.5 text-right">
-                        <span class="px-2 py-0.5 rounded-full text-[10px] font-black ${
-                            pct === 100 ? 'bg-emerald-100 text-emerald-800 border border-emerald-300' :
-                            pct > 0 ? 'bg-amber-100 text-amber-800 border border-amber-300' :
-                            'bg-slate-100 text-slate-600'
-                        }">
-                            ${pct === 100 ? 'Finished' : (pct > 0 ? 'In Progress' : 'Pending')}
-                        </span>
-                    </td>
-                `;
-                tbody.appendChild(tr);
-            });
-
-            document.getElementById('zone-summary-badge').textContent = `${finishedZones} / ${ZONES.length} Zones Finished`;
-        }
-
-        function setAdminRegionFilter(filterKey) {
-            currentAdminRegionFilter = filterKey;
-            ['all', 'complete', 'progress', 'pending'].forEach(k => {
-                const btn = document.getElementById(`rf-tab-${k}`);
-                if (btn) {
-                    if (k === filterKey) {
-                        btn.className = 'px-2.5 py-1 rounded-lg bg-white text-slate-900 shadow-sm';
-                    } else {
-                        btn.className = 'px-2.5 py-1 rounded-lg text-slate-600 hover:text-slate-900';
-                    }
-                }
-            });
-            renderAdminRegionsTable(document.getElementById('admin-region-search').value);
-        }
-
-        function renderAdminRegionsTable(query = '') {
-            const tbody = document.getElementById('admin-regions-table-body');
-            tbody.innerHTML = '';
-
-            const q = query.toLowerCase();
-            const regions = Object.values(REGION_MAP).filter(r => {
-                const matchText = !q || (
-                    r.region_name.toLowerCase().includes(q) ||
-                    r.regional_head.toLowerCase().includes(q) ||
-                    r.zone.toLowerCase().includes(q) ||
-                    r.sap_region_code.includes(q)
-                );
-                if (!matchText) return false;
-
-                let completed = 0;
-                r.territories.forEach(t => {
-                    if (getTerritoryStatus(store[String(t.sap_territory_code)]) === 'Complete') completed++;
-                });
-
-                if (currentAdminRegionFilter === 'complete') return completed === r.territories.length;
-                if (currentAdminRegionFilter === 'progress') return completed > 0 && completed < r.territories.length;
-                if (currentAdminRegionFilter === 'pending') return completed === 0;
-                return true;
-            });
-
-            regions.forEach(r => {
-                let completed = 0;
-                r.territories.forEach(t => {
-                    if (getTerritoryStatus(store[String(t.sap_territory_code)]) === 'Complete') completed++;
-                });
-
-                const isLocked = Boolean(regionLocks[r.sap_region_code]);
-                const tr = document.createElement('tr');
-                tr.className = 'hover:bg-slate-50';
-                tr.innerHTML = `
-                    <td class="p-2.5 font-mono text-slate-500">${r.sap_region_code}</td>
-                    <td class="p-2.5 font-bold text-slate-900">${r.region_name}</td>
-                    <td class="p-2.5 text-slate-600">${r.zone}</td>
-                    <td class="p-2.5 text-slate-700">${r.regional_head}</td>
-                    <td class="p-2.5">
-                        <span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${completed === r.territories.length ? 'bg-emerald-100 text-emerald-800' : (completed > 0 ? 'bg-amber-100 text-amber-800' : 'bg-slate-100 text-slate-600')}">
-                            ${completed}/${r.territories.length} Done
-                        </span>
-                    </td>
-                    <td class="p-2.5">
-                        <button onclick="toggleSingleRegionLock('${r.sap_region_code}')" class="px-2.5 py-1 rounded-lg text-[10px] font-black ${isLocked ? 'bg-rose-100 text-rose-700 hover:bg-rose-200' : 'bg-emerald-100 text-emerald-700 hover:bg-emerald-200'} transition">
-                            <i class="fa-solid ${isLocked ? 'fa-lock' : 'fa-lock-open'}"></i> ${isLocked ? 'Locked' : 'Unlocked'}
-                        </button>
-                    </td>
-                    <td class="p-2.5 text-right space-x-1">
-                        <button onclick="deleteSingleRegionData('${r.sap_region_code}')" class="px-2.5 py-1 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 rounded-lg text-[10px] font-bold transition">
-                            <i class="fa-solid fa-trash-can"></i> Clear
-                        </button>
-                    </td>
-                `;
-                tbody.appendChild(tr);
-            });
-        }
-
-        function filterAdminRegions(val) {
-            renderAdminRegionsTable(val);
-        }
-
-        function toggleGlobalSubmissionsAccess() {
-            isGlobalAccessOpen = !isGlobalAccessOpen;
-            localStorage.setItem('EXIUM_GLOBAL_ACCESS', JSON.stringify(isGlobalAccessOpen));
-            checkGlobalLockBanner();
-            showAdminDashboard();
-            if (currentRegionCode) selectTerritoryTab(activeTerritoryIndex, false);
-        }
-
-        function toggleSingleRegionLock(regCode) {
-            regionLocks[regCode] = !regionLocks[regCode];
-            localStorage.setItem('EXIUM_REGION_LOCKS', JSON.stringify(regionLocks));
-            renderAdminRegionsTable(document.getElementById('admin-region-search').value);
-            if (currentRegionCode === regCode) {
-                selectTerritoryTab(activeTerritoryIndex, false);
-            }
-        }
-
-        async function deleteSingleRegionData(regCode) {
-            const r = REGION_MAP[regCode];
-            if (!confirm(`Are you sure you want to delete all entries for ${r.region_name} (${regCode})?`)) return;
-
-            r.territories.forEach(t => {
-                delete store[String(t.sap_territory_code)];
-            });
-
-            localStorage.setItem('EXIUM_SWEATER_STORE', JSON.stringify(store));
-            renderAdminKpisAndSummaries();
-            renderAdminZoneProgress();
-            renderAdminProductionMatrix();
-            renderAdminRegionsTable(document.getElementById('admin-region-search')?.value || '');
-            
-            if (currentRegionCode === regCode) {
-                renderTerritoryTabs();
-                selectTerritoryTab(activeTerritoryIndex, false);
-            }
-
-            const url = (cloudApiUrl && cloudApiUrl.startsWith('http')) ? cloudApiUrl : DEFAULT_CLOUD_URL;
-            if (url) {
-                try {
-                    await fetch(url, {
-                        method: 'POST',
-                        mode: 'no-cors',
-                        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                        body: JSON.stringify({ action: "delete_region", sap_region_code: regCode })
-                    });
-                } catch(e) {
-                    console.warn("[Cloud Delete Region]:", e);
-                }
-            }
-
-            alert(`🗑️ All data for ${r.region_name} has been cleared from portal and Google Sheet.`);
-        }
-
-        async function deleteAllCampaignData() {
-            const pass = prompt("⚠️ MASTER RESET WARNING: This will delete ALL territory entries across all 252 regions!\n\nType 'DELETE ALL' to confirm:");
-            if (pass !== 'DELETE ALL') {
-                alert("Master reset cancelled.");
-                return;
-            }
-
-            showToast("⏳ Resetting all data in Google Sheet...");
-
-            store = {};
-            localStorage.removeItem('EXIUM_SWEATER_STORE');
-            localStorage.removeItem('EXIUM_ACTIVE_SESSION');
-
-            const url = (cloudApiUrl && cloudApiUrl.startsWith('http')) ? cloudApiUrl : DEFAULT_CLOUD_URL;
-            if (url) {
-                try {
-                    await fetch(url, {
-                        method: 'POST',
-                        mode: 'no-cors',
-                        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                        body: JSON.stringify({ action: "reset_all" })
-                    });
-                } catch(e) {
-                    console.warn("[Cloud Reset All]:", e);
-                }
-            }
-
-            renderAdminKpisAndSummaries();
-            renderAdminZoneProgress();
-            renderAdminProductionMatrix();
-            renderAdminRegionsTable();
             if (currentRegionCode) {
-                renderTerritoryTabs();
-                selectTerritoryTab(activeTerritoryIndex, false);
+                const r = REGION_MAP[currentRegionCode];
+                const t = r.territories[activeTerritoryIndex];
+                const terrCode = String(t.sap_territory_code);
+                await syncTerritoryToCloud(terrCode, store[terrCode]);
             }
-            showToast("✅ All campaign data reset!");
-            alert("🗑️ All campaign data has been completely reset and deleted from both portal and Google Sheet!");
+            
+            showToast("✅ Territory saved & synced to Google Sheet!");
         }
 
-        function renderAdminProductionMatrix() {
-            const counts = {
-                "01": { "XS": 0, "S": 0, "M": 0, "L": 0, "XL": 0, "XXL": 0, total: 0 },
-                "02": { "XS": 0, "S": 0, "M": 0, "L": 0, "XL": 0, "XXL": 0, total: 0 },
-                "03": { "XS": 0, "S": 0, "M": 0, "L": 0, "XL": 0, "XXL": 0, total: 0 },
-                "04": { "XS": 0, "S": 0, "M": 0, "L": 0, "XL": 0, "XXL": 0, total: 0 },
-                "05": { "XS": 0, "S": 0, "M": 0, "L": 0, "XL": 0, "XXL": 0, total: 0 }
-            };
-
-            Object.values(store).forEach(d => {
-                ['m1', 'm2', 'm3', 'm4'].forEach(m => {
-                    const sw = d[`c1_${m}_sweater`];
-                    const sz = d[`c1_${m}_size`];
-                    if (sw && sz) {
-                        const code = sw.substring(0, 2);
-                        if (counts[code] && counts[code][sz] !== undefined) {
-                            counts[code][sz]++;
-                            counts[code].total++;
-                        }
-                    }
-                });
-                ['d1', 'd2', 'd3', 'd4'].forEach(di => {
-                    const sw = d[`c2_${di}_sweater`];
-                    const sz = d[`c2_${di}_size`];
-                    if (sw && sz) {
-                        const code = sw.substring(0, 2);
-                        if (counts[code] && counts[code][sz] !== undefined) {
-                            counts[code][sz]++;
-                            counts[code].total++;
-                        }
-                    }
-                });
-            });
-
-            const tbody = document.getElementById('admin-matrix-body');
-            tbody.innerHTML = '';
-
-            let grandTotal = 0;
-            const sizeTotals = { "XS": 0, "S": 0, "M": 0, "L": 0, "XL": 0, "XXL": 0 };
-
-            ["01", "02", "03", "04", "05"].forEach(code => {
-                const item = SWEATER_DETAILS[code];
-                const c = counts[code];
-                grandTotal += c.total;
-                Object.keys(sizeTotals).forEach(s => sizeTotals[s] += c[s]);
-
-                const tr = document.createElement('tr');
-                tr.className = 'hover:bg-slate-50';
-                tr.innerHTML = `
-                    <td class="p-2.5 text-left font-bold text-slate-900">${code} - ${item.name} (${item.gender})</td>
-                    <td class="p-2.5">${c.XS || '-'}</td>
-                    <td class="p-2.5">${c.S}</td>
-                    <td class="p-2.5">${c.M}</td>
-                    <td class="p-2.5">${c.L}</td>
-                    <td class="p-2.5">${c.XL}</td>
-                    <td class="p-2.5">${c.XXL || '-'}</td>
-                    <td class="p-2.5 font-black text-orange-600 bg-orange-50">${c.total}</td>
-                `;
-                tbody.appendChild(tr);
-            });
-
-            const trTotal = document.createElement('tr');
-            trTotal.className = 'bg-slate-100 font-black text-slate-900 border-t-2 border-slate-300';
-            trTotal.innerHTML = `
-                <td class="p-2.5 text-left uppercase text-slate-700">Total Count</td>
-                <td class="p-2.5">${sizeTotals.XS}</td>
-                <td class="p-2.5">${sizeTotals.S}</td>
-                <td class="p-2.5">${sizeTotals.M}</td>
-                <td class="p-2.5">${sizeTotals.L}</td>
-                <td class="p-2.5">${sizeTotals.XL}</td>
-                <td class="p-2.5">${sizeTotals.XXL}</td>
-                <td class="p-2.5 text-emerald-600 bg-emerald-100 text-sm">${grandTotal}</td>
-            `;
-            tbody.appendChild(trTotal);
-        }
-
-        // =========================================================================
-        // EXCEL EXPORTS (LIVE FETCH FROM CLOUD BEFORE DOWNLOAD)
-        // =========================================================================
         function exportCurrentRegionExcel() {
             if (!currentRegionCode || !REGION_MAP[currentRegionCode]) return;
             const r = REGION_MAP[currentRegionCode];
