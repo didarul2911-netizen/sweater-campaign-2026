@@ -103,41 +103,26 @@ html_template = """<!DOCTYPE html>
     <!-- Top Navigation Header -->
     <header class="bg-white border-b border-slate-200 shadow-sm sticky top-0 z-40">
         <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-2 sm:py-2.5">
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div class="flex items-center justify-between gap-3">
                 
-                <!-- Line 1: Logo + Title -->
-                <div class="flex items-center justify-between sm:justify-start gap-2.5">
-                    <div class="flex items-center gap-2 sm:gap-2.5 min-w-0">
-                        <img src="###B64_LOGO###" onerror="this.src='Exium MUPS Logo.png'" alt="Exium MUPS" class="h-7 sm:h-8 md:h-9 w-auto object-contain flex-shrink-0">
-                        <div class="border-l-2 border-slate-300 pl-2 sm:pl-2.5 flex items-center gap-1.5 sm:gap-2 min-w-0">
-                            <h1 class="text-sm sm:text-base md:text-lg font-black text-slate-900 tracking-tight leading-none whitespace-nowrap">Sweater for Doctors</h1>
-                            <span class="text-[10px] sm:text-xs bg-orange-500 text-white font-black px-1.5 sm:px-2 py-0.5 rounded-full leading-none shadow-sm flex-shrink-0">4Q'26</span>
-                        </div>
-                    </div>
-
-                    <!-- Desktop Buttons -->
-                    <div class="hidden sm:flex items-center gap-2">
-                        <button onclick="openCatalogModal()" class="px-3.5 py-1.5 bg-orange-50 hover:bg-orange-100 text-orange-800 border border-orange-200 rounded-xl text-xs font-bold flex items-center gap-1.5 transition shadow-sm active:scale-95 whitespace-nowrap">
-                            <i class="fa-solid fa-vest text-orange-600"></i>
-                            <span>Catalogue & Sizes</span>
-                        </button>
-                        <div id="header-admin-btn-container">
-                            <button onclick="openAdminModal()" class="px-3.5 py-1.5 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 transition shadow-sm active:scale-95 whitespace-nowrap">
-                                <i class="fa-solid fa-shield-halved text-orange-400"></i>
-                                <span>Admin</span>
-                            </button>
-                        </div>
+                <!-- Left: Logo + Title -->
+                <div class="flex items-center gap-2 sm:gap-2.5 min-w-0">
+                    <img src="###B64_LOGO###" onerror="this.src='Exium MUPS Logo.png'" alt="Exium MUPS" class="h-7 sm:h-8 md:h-9 w-auto object-contain flex-shrink-0">
+                    <div class="border-l-2 border-slate-300 pl-2 sm:pl-2.5 flex items-center gap-1.5 sm:gap-2 min-w-0">
+                        <h1 class="text-sm sm:text-base md:text-lg font-black text-slate-900 tracking-tight leading-none whitespace-nowrap">Sweater for Doctors</h1>
+                        <span class="text-[10px] sm:text-xs bg-orange-500 text-white font-black px-1.5 sm:px-2 py-0.5 rounded-full leading-none shadow-sm flex-shrink-0">4Q'26</span>
                     </div>
                 </div>
 
-                <!-- Line 2 on Mobile -->
-                <div class="flex sm:hidden items-center gap-2 pt-1 border-t border-slate-100">
-                    <button onclick="openCatalogModal()" class="flex-1 py-1.5 px-3 bg-orange-50 hover:bg-orange-100 text-orange-800 border border-orange-200 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 shadow-sm active:scale-95">
+                <!-- Right Alignment: Catalogue & Sizes + Admin -->
+                <div class="flex items-center gap-2 flex-shrink-0">
+                    <button onclick="openCatalogModal()" class="px-2.5 sm:px-3.5 py-1.5 bg-orange-50 hover:bg-orange-100 text-orange-800 border border-orange-200 rounded-xl text-xs font-bold flex items-center gap-1.5 transition shadow-sm active:scale-95 whitespace-nowrap">
                         <i class="fa-solid fa-vest text-orange-600"></i>
-                        <span>Catalogue & Sizes</span>
+                        <span class="hidden xs:inline">Catalogue & Sizes</span>
+                        <span class="xs:hidden">Catalog</span>
                     </button>
-                    <div id="mobile-admin-btn-container" class="flex-shrink-0">
-                        <button onclick="openAdminModal()" class="py-1.5 px-3 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-bold flex items-center gap-1 shadow-sm active:scale-95">
+                    <div id="header-admin-btn-container">
+                        <button onclick="openAdminModal()" class="px-2.5 sm:px-3.5 py-1.5 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 transition shadow-sm active:scale-95 whitespace-nowrap">
                             <i class="fa-solid fa-shield-halved text-orange-400"></i>
                             <span>Admin</span>
                         </button>
@@ -341,11 +326,11 @@ html_template = """<!DOCTYPE html>
                                 </div>
                             </div>
 
-                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
                                 <!-- Sweater 1 (Doctor) -->
                                 <div class="bg-slate-50 border border-slate-200 rounded-2xl p-3 space-y-2">
                                     <div class="flex items-center justify-between">
-                                        <span class="text-xs font-bold text-teal-900 flex items-center gap-1.5"><span class="w-4 h-4 rounded-full bg-teal-600 text-white flex items-center justify-center text-[10px] font-black">1</span> Sweater 1 (Doctor)</span>
+                                        <span class="text-xs font-bold text-teal-900 flex items-center gap-1.5"><span class="w-4 h-4 rounded-full bg-teal-600 text-white flex items-center justify-center text-[10px] font-black">1</span> Sweater 1 (Doctor / Family Member)</span>
                                         <span id="c1_m1_check_badge"><span class="text-slate-400 text-[10px] font-medium"><i class="fa-regular fa-circle"></i> Pending</span></span>
                                     </div>
                                     <div class="flex gap-2.5 sm:gap-3 items-center">
@@ -1211,28 +1196,57 @@ html_template = """<!DOCTYPE html>
                 const mobOpt = document.createElement('option');
                 mobOpt.value = idx;
                 mobOpt.textContent = `${t.territory_name} (${status})`;
+                if (idx === activeTerritoryIndex) mobOpt.selected = true;
                 mobSelect.appendChild(mobOpt);
+
+                const isActive = (idx === activeTerritoryIndex);
+
+                let btnClasses = '';
+                let badgeClasses = '';
+                let badgeText = status;
+
+                if (status === 'Complete') {
+                    badgeText = '✓ Complete';
+                    if (isActive) {
+                        btnClasses = 'bg-emerald-600 text-white border-emerald-600 shadow-md ring-2 ring-emerald-500/30';
+                        badgeClasses = 'bg-white text-emerald-900 font-black shadow-sm';
+                    } else {
+                        btnClasses = 'bg-emerald-50/70 hover:bg-emerald-100/70 text-emerald-950 border-emerald-200/90';
+                        badgeClasses = 'bg-emerald-100 text-emerald-800 border border-emerald-300 font-bold';
+                    }
+                } else if (status === 'In Progress') {
+                    badgeText = '⏳ In Progress';
+                    if (isActive) {
+                        btnClasses = 'bg-amber-500 text-white border-amber-500 shadow-md ring-2 ring-amber-500/30';
+                        badgeClasses = 'bg-white text-amber-900 font-black shadow-sm';
+                    } else {
+                        btnClasses = 'bg-amber-50/70 hover:bg-amber-100/70 text-amber-950 border-amber-200/90';
+                        badgeClasses = 'bg-amber-100 text-amber-800 border border-amber-300 font-bold';
+                    }
+                } else {
+                    // Not Started
+                    badgeText = '○ Not Started';
+                    if (isActive) {
+                        btnClasses = 'bg-slate-900 text-white border-slate-900 shadow-md ring-2 ring-slate-900/30';
+                        badgeClasses = 'bg-slate-700 text-slate-100 font-bold';
+                    } else {
+                        btnClasses = 'bg-white hover:bg-slate-50 text-slate-700 border-slate-200';
+                        badgeClasses = 'bg-slate-100 text-slate-500 border border-slate-200 font-medium';
+                    }
+                }
 
                 const btn = document.createElement('button');
                 btn.type = 'button';
                 btn.onclick = () => selectTerritoryTab(idx);
                 btn.id = `terr-tab-btn-${idx}`;
-                btn.className = `w-full text-left p-3 rounded-2xl text-xs font-bold transition flex items-center justify-between border ${
-                    idx === activeTerritoryIndex 
-                    ? 'bg-orange-500 text-white border-orange-500 shadow-md' 
-                    : 'bg-slate-50 hover:bg-slate-100 text-slate-700 border-slate-200'
-                }`;
+                btn.className = `w-full text-left p-2.5 sm:p-3 rounded-2xl text-xs font-bold transition flex items-center justify-between border ${btnClasses}`;
 
                 btn.innerHTML = `
                     <div class="truncate pr-1 min-w-0">
-                        <div class="truncate font-black text-xs">${t.territory_name}</div>
-                        <div class="text-[10px] ${idx === activeTerritoryIndex ? 'text-orange-100' : 'text-slate-400'} font-mono">SAP: ${t.sap_territory_code}</div>
+                        <div class="truncate font-black text-xs ${isActive ? 'text-white' : 'text-slate-900'}">${t.territory_name}</div>
+                        <div class="text-[10px] ${isActive ? 'text-white/80' : 'text-slate-400'} font-mono">SAP: ${t.sap_territory_code}</div>
                     </div>
-                    <span class="text-[9px] font-black px-1.5 py-0.5 rounded-full flex-shrink-0 ${
-                        status === 'Complete' ? (idx === activeTerritoryIndex ? 'bg-white text-slate-950' : 'bg-emerald-100 text-emerald-800 border border-emerald-300') :
-                        status === 'In Progress' ? (idx === activeTerritoryIndex ? 'bg-white text-slate-950' : 'bg-amber-100 text-amber-800 border border-amber-300') :
-                        (idx === activeTerritoryIndex ? 'bg-orange-600 text-white' : 'bg-slate-200 text-slate-600')
-                    }">${status === 'Complete' ? '✓ Complete' : status}</span>
+                    <span class="text-[9px] px-2 py-0.5 rounded-full flex-shrink-0 whitespace-nowrap ${badgeClasses}">${badgeText}</span>
                 `;
                 deskList.appendChild(btn);
             });
@@ -1242,6 +1256,7 @@ html_template = """<!DOCTYPE html>
 
         function selectTerritoryTab(idx, shouldScroll = true) {
             activeTerritoryIndex = idx;
+            renderTerritoryTabs();
             const r = REGION_MAP[currentRegionCode];
             const t = r.territories[idx];
             const terrCode = String(t.sap_territory_code);
@@ -1968,28 +1983,57 @@ html_template = """<!DOCTYPE html>
                 const mobOpt = document.createElement('option');
                 mobOpt.value = idx;
                 mobOpt.textContent = `${t.territory_name} (${status})`;
+                if (idx === activeTerritoryIndex) mobOpt.selected = true;
                 mobSelect.appendChild(mobOpt);
+
+                const isActive = (idx === activeTerritoryIndex);
+
+                let btnClasses = '';
+                let badgeClasses = '';
+                let badgeText = status;
+
+                if (status === 'Complete') {
+                    badgeText = '✓ Complete';
+                    if (isActive) {
+                        btnClasses = 'bg-emerald-600 text-white border-emerald-600 shadow-md ring-2 ring-emerald-500/30';
+                        badgeClasses = 'bg-white text-emerald-900 font-black shadow-sm';
+                    } else {
+                        btnClasses = 'bg-emerald-50/70 hover:bg-emerald-100/70 text-emerald-950 border-emerald-200/90';
+                        badgeClasses = 'bg-emerald-100 text-emerald-800 border border-emerald-300 font-bold';
+                    }
+                } else if (status === 'In Progress') {
+                    badgeText = '⏳ In Progress';
+                    if (isActive) {
+                        btnClasses = 'bg-amber-500 text-white border-amber-500 shadow-md ring-2 ring-amber-500/30';
+                        badgeClasses = 'bg-white text-amber-900 font-black shadow-sm';
+                    } else {
+                        btnClasses = 'bg-amber-50/70 hover:bg-amber-100/70 text-amber-950 border-amber-200/90';
+                        badgeClasses = 'bg-amber-100 text-amber-800 border border-amber-300 font-bold';
+                    }
+                } else {
+                    // Not Started
+                    badgeText = '○ Not Started';
+                    if (isActive) {
+                        btnClasses = 'bg-slate-900 text-white border-slate-900 shadow-md ring-2 ring-slate-900/30';
+                        badgeClasses = 'bg-slate-700 text-slate-100 font-bold';
+                    } else {
+                        btnClasses = 'bg-white hover:bg-slate-50 text-slate-700 border-slate-200';
+                        badgeClasses = 'bg-slate-100 text-slate-500 border border-slate-200 font-medium';
+                    }
+                }
 
                 const btn = document.createElement('button');
                 btn.type = 'button';
                 btn.onclick = () => selectTerritoryTab(idx);
                 btn.id = `terr-tab-btn-${idx}`;
-                btn.className = `w-full text-left p-3 rounded-2xl text-xs font-bold transition flex items-center justify-between border ${
-                    idx === activeTerritoryIndex 
-                    ? 'bg-orange-500 text-white border-orange-500 shadow-md' 
-                    : 'bg-slate-50 hover:bg-slate-100 text-slate-700 border-slate-200'
-                }`;
+                btn.className = `w-full text-left p-2.5 sm:p-3 rounded-2xl text-xs font-bold transition flex items-center justify-between border ${btnClasses}`;
 
                 btn.innerHTML = `
                     <div class="truncate pr-1 min-w-0">
-                        <div class="truncate font-black text-xs">${t.territory_name}</div>
-                        <div class="text-[10px] ${idx === activeTerritoryIndex ? 'text-orange-100' : 'text-slate-400'} font-mono">SAP: ${t.sap_territory_code}</div>
+                        <div class="truncate font-black text-xs ${isActive ? 'text-white' : 'text-slate-900'}">${t.territory_name}</div>
+                        <div class="text-[10px] ${isActive ? 'text-white/80' : 'text-slate-400'} font-mono">SAP: ${t.sap_territory_code}</div>
                     </div>
-                    <span class="text-[9px] font-black px-1.5 py-0.5 rounded-full flex-shrink-0 ${
-                        status === 'Complete' ? (idx === activeTerritoryIndex ? 'bg-white text-slate-950' : 'bg-emerald-100 text-emerald-800 border border-emerald-300') :
-                        status === 'In Progress' ? (idx === activeTerritoryIndex ? 'bg-white text-slate-950' : 'bg-amber-100 text-amber-800 border border-amber-300') :
-                        (idx === activeTerritoryIndex ? 'bg-orange-600 text-white' : 'bg-slate-200 text-slate-600')
-                    }">${status === 'Complete' ? '✓ Complete' : status}</span>
+                    <span class="text-[9px] px-2 py-0.5 rounded-full flex-shrink-0 whitespace-nowrap ${badgeClasses}">${badgeText}</span>
                 `;
                 deskList.appendChild(btn);
             });
@@ -1999,6 +2043,7 @@ html_template = """<!DOCTYPE html>
 
         function selectTerritoryTab(idx, shouldScroll = true) {
             activeTerritoryIndex = idx;
+            renderTerritoryTabs();
             const r = REGION_MAP[currentRegionCode];
             const t = r.territories[idx];
             const terrCode = String(t.sap_territory_code);
