@@ -316,11 +316,11 @@ html_template = """<!DOCTYPE html>
                                 <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-white text-teal-800 flex items-center justify-center font-black text-xs sm:text-sm flex-shrink-0 shadow-sm mt-0.5 sm:mt-0">1</div>
                                 <div class="min-w-0">
                                     <h4 class="text-xs sm:text-sm md:text-base font-black text-white leading-snug">Gyne Core Doctor Development (Family Package)</h4>
-                                    <p class="text-[10px] sm:text-xs text-teal-100 mt-0.5 leading-tight">1 Doctor per Territory &bull; 4 Sweaters for Family</p>
+                                    <p class="text-[10px] sm:text-xs text-teal-100 mt-0.5 leading-tight">1 Doctor per Territory &bull; 3 Sweaters (Option to Add 4th Sweater)</p>
                                 </div>
                             </div>
                             <div class="self-start sm:self-auto pl-9 sm:pl-0">
-                                <span class="text-[10px] sm:text-xs font-black bg-teal-950/80 text-teal-200 border border-teal-400/40 px-2.5 py-0.5 rounded-full inline-block whitespace-nowrap shadow-sm">4 Sweaters Total</span>
+                                <span class="text-[10px] sm:text-xs font-black bg-teal-950/80 text-teal-200 border border-teal-400/40 px-2.5 py-0.5 rounded-full inline-block whitespace-nowrap shadow-sm">Family Package</span>
                             </div>
                         </div>
 
@@ -341,11 +341,11 @@ html_template = """<!DOCTYPE html>
                                 </div>
                             </div>
 
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
-                                <!-- 1 -->
+                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+                                <!-- Sweater 1 (Doctor) -->
                                 <div class="bg-slate-50 border border-slate-200 rounded-2xl p-3 space-y-2">
                                     <div class="flex items-center justify-between">
-                                        <span class="text-xs font-bold text-teal-900 flex items-center gap-1.5"><span class="w-4 h-4 rounded-full bg-teal-600 text-white flex items-center justify-center text-[10px] font-black">1</span> Sweater 1 (Family Member)</span>
+                                        <span class="text-xs font-bold text-teal-900 flex items-center gap-1.5"><span class="w-4 h-4 rounded-full bg-teal-600 text-white flex items-center justify-center text-[10px] font-black">1</span> Sweater 1 (Doctor)</span>
                                         <span id="c1_m1_check_badge"><span class="text-slate-400 text-[10px] font-medium"><i class="fa-regular fa-circle"></i> Pending</span></span>
                                     </div>
                                     <div class="flex gap-2.5 sm:gap-3 items-center">
@@ -369,7 +369,8 @@ html_template = """<!DOCTYPE html>
                                         </div>
                                     </div>
                                 </div>
-                                <!-- 2 -->
+
+                                <!-- Sweater 2 (Family Member) -->
                                 <div class="bg-slate-50 border border-slate-200 rounded-2xl p-3 space-y-2">
                                     <div class="flex items-center justify-between">
                                         <span class="text-xs font-bold text-teal-900 flex items-center gap-1.5"><span class="w-4 h-4 rounded-full bg-teal-600 text-white flex items-center justify-center text-[10px] font-black">2</span> Sweater 2 (Family Member)</span>
@@ -396,7 +397,8 @@ html_template = """<!DOCTYPE html>
                                         </div>
                                     </div>
                                 </div>
-                                <!-- 3 -->
+
+                                <!-- Sweater 3 (Family Member) -->
                                 <div class="bg-slate-50 border border-slate-200 rounded-2xl p-3 space-y-2">
                                     <div class="flex items-center justify-between">
                                         <span class="text-xs font-bold text-teal-900 flex items-center gap-1.5"><span class="w-4 h-4 rounded-full bg-teal-600 text-white flex items-center justify-center text-[10px] font-black">3</span> Sweater 3 (Family Member)</span>
@@ -423,11 +425,24 @@ html_template = """<!DOCTYPE html>
                                         </div>
                                     </div>
                                 </div>
-                                <!-- 4 -->
-                                <div class="bg-slate-50 border border-slate-200 rounded-2xl p-3 space-y-2">
+
+                                <!-- Add Another Sweater Button Container -->
+                                <div id="c1_add_m4_btn_container" onclick="showC1Sweater4(true)" class="border-2 border-dashed border-teal-300 hover:border-teal-500 bg-teal-50/40 hover:bg-teal-50 rounded-2xl p-4 flex flex-col items-center justify-center text-center cursor-pointer transition group gap-2 min-h-[140px]">
+                                    <div class="w-10 h-10 rounded-full bg-teal-100 group-hover:bg-teal-600 text-teal-600 group-hover:text-white flex items-center justify-center transition shadow-sm font-black"><i class="fa-solid fa-plus text-base"></i></div>
+                                    <div>
+                                        <h5 class="text-xs font-black text-teal-950 group-hover:text-teal-700">Add Another Sweater</h5>
+                                        <p class="text-[10px] text-slate-500">Sweater 4 (Family Member)</p>
+                                    </div>
+                                </div>
+
+                                <!-- Sweater 4 (Family Member) - Revealed on Click -->
+                                <div id="c1_m4_container" class="hidden bg-slate-50 border border-slate-200 rounded-2xl p-3 space-y-2">
                                     <div class="flex items-center justify-between">
                                         <span class="text-xs font-bold text-teal-900 flex items-center gap-1.5"><span class="w-4 h-4 rounded-full bg-teal-600 text-white flex items-center justify-center text-[10px] font-black">4</span> Sweater 4 (Family Member)</span>
-                                        <span id="c1_m4_check_badge"><span class="text-slate-400 text-[10px] font-medium"><i class="fa-regular fa-circle"></i> Pending</span></span>
+                                        <div class="flex items-center gap-1.5">
+                                            <span id="c1_m4_check_badge"><span class="text-slate-400 text-[10px] font-medium"><i class="fa-regular fa-circle"></i> Pending</span></span>
+                                            <button type="button" onclick="hideAndClearC1Sweater4()" title="Remove 4th Sweater" class="text-[10px] text-rose-500 hover:text-rose-700 font-bold px-1.5 py-0.5 rounded hover:bg-rose-50"><i class="fa-solid fa-xmark"></i></button>
+                                        </div>
                                     </div>
                                     <div class="flex gap-2.5 sm:gap-3 items-center">
                                         <div id="c1_m4_img_preview" onclick="zoomSlotImage('c1_m4_sweater')" class="sweater-card-img w-16 h-20 sm:w-20 sm:h-24 rounded-xl bg-white border border-slate-300 overflow-hidden flex-shrink-0 flex items-center justify-center text-slate-400 cursor-pointer shadow-sm relative group"><i class="fa-solid fa-shirt text-lg text-slate-300"></i></div>
@@ -461,15 +476,16 @@ html_template = """<!DOCTYPE html>
                                 <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-white text-purple-800 flex items-center justify-center font-black text-xs sm:text-sm flex-shrink-0 shadow-sm mt-0.5 sm:mt-0">2</div>
                                 <div class="min-w-0">
                                     <h4 class="text-xs sm:text-sm md:text-base font-black text-white leading-snug">Core Doctor Maximization</h4>
-                                    <p class="text-[10px] sm:text-xs text-purple-100 mt-0.5 leading-tight">4 Doctors per Territory &bull; 1 Sweater Each</p>
+                                    <p class="text-[10px] sm:text-xs text-purple-100 mt-0.5 leading-tight">3 Doctors per Territory &bull; 1 Sweater Each</p>
                                 </div>
                             </div>
                             <div class="self-start sm:self-auto pl-9 sm:pl-0">
-                                <span class="text-[10px] sm:text-xs font-black bg-purple-950/80 text-purple-200 border border-purple-400/40 px-2.5 py-0.5 rounded-full inline-block whitespace-nowrap shadow-sm">4 Sweaters Total</span>
+                                <span class="text-[10px] sm:text-xs font-black bg-purple-950/80 text-purple-200 border border-purple-400/40 px-2.5 py-0.5 rounded-full inline-block whitespace-nowrap shadow-sm">3 Doctors Total</span>
                             </div>
                         </div>
 
                         <div class="p-4 sm:p-6 space-y-4">
+                            <!-- 2 Top Side-by-Side, 1 Centered in Middle Below -->
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
                                 <!-- Doc 1 -->
                                 <div class="bg-purple-50/50 border border-purple-200 rounded-2xl p-3.5 space-y-2.5">
@@ -508,6 +524,7 @@ html_template = """<!DOCTYPE html>
                                         </div>
                                     </div>
                                 </div>
+
                                 <!-- Doc 2 -->
                                 <div class="bg-purple-50/50 border border-purple-200 rounded-2xl p-3.5 space-y-2.5">
                                     <div class="flex items-center justify-between">
@@ -545,76 +562,42 @@ html_template = """<!DOCTYPE html>
                                         </div>
                                     </div>
                                 </div>
-                                <!-- Doc 3 -->
-                                <div class="bg-purple-50/50 border border-purple-200 rounded-2xl p-3.5 space-y-2.5">
-                                    <div class="flex items-center justify-between">
-                                        <span class="text-xs font-bold text-purple-950 flex items-center gap-1.5"><span class="w-4 h-4 rounded-full bg-purple-600 text-white flex items-center justify-center text-[10px] font-black">3</span> Doctor 3</span>
-                                        <span id="c2_d3_check_badge"><span class="text-slate-400 text-[10px] font-medium"><i class="fa-regular fa-circle"></i> Pending</span></span>
-                                    </div>
-                                    <div class="space-y-2">
-                                        <div>
-                                            <label class="text-[10px] font-bold text-purple-950">Doctor 3 Name <span class="text-rose-500">*</span></label>
-                                            <input type="text" id="c2_d3_name" oninput="onDataChanged()" placeholder="Enter Doctor 3 Name..." class="w-full mt-0.5 bg-white border border-purple-300 rounded-xl px-3 py-1.5 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-purple-500">
+
+                                <!-- Doc 3 (Middle Centered Below) -->
+                                <div class="md:col-span-2 flex justify-center">
+                                    <div class="w-full max-w-xl bg-purple-50/50 border border-purple-200 rounded-2xl p-3.5 space-y-2.5 shadow-sm">
+                                        <div class="flex items-center justify-between">
+                                            <span class="text-xs font-bold text-purple-950 flex items-center gap-1.5"><span class="w-4 h-4 rounded-full bg-purple-600 text-white flex items-center justify-center text-[10px] font-black">3</span> Doctor 3</span>
+                                            <span id="c2_d3_check_badge"><span class="text-slate-400 text-[10px] font-medium"><i class="fa-regular fa-circle"></i> Pending</span></span>
                                         </div>
-                                        <div>
-                                            <div class="flex items-center justify-between"><label class="text-[10px] font-bold text-purple-950">Doctor 3 RPL ID <span class="text-rose-500">*</span></label><span id="c2_d3_rpl_badge" class="text-[9px] font-bold text-slate-400">6 digits</span></div>
-                                            <input type="text" inputmode="numeric" maxlength="6" id="c2_d3_rpl" oninput="onRplInput(this, 'c2_d3_rpl_badge')" placeholder="6-digit RPL ID..." class="w-full mt-0.5 bg-white border border-purple-300 rounded-xl px-3 py-1.5 text-xs text-slate-900 font-mono font-bold placeholder-slate-400 focus:outline-none focus:border-purple-500 tracking-wider">
-                                        </div>
-                                    </div>
-                                    <div class="flex gap-2.5 sm:gap-3 items-center pt-2 border-t border-purple-200/80">
-                                        <div id="c2_d3_img_preview" onclick="zoomSlotImage('c2_d3_sweater')" class="sweater-card-img w-16 h-20 sm:w-20 sm:h-24 rounded-xl bg-white border border-slate-300 overflow-hidden flex-shrink-0 flex items-center justify-center text-slate-400 cursor-pointer shadow-sm relative group"><i class="fa-solid fa-shirt text-lg text-slate-300"></i></div>
-                                        <div class="flex-1 space-y-1.5 min-w-0">
+                                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                                             <div>
-                                                <label class="text-[10px] font-bold text-slate-500">Sweater Option</label>
-                                                <select id="c2_d3_sweater" onchange="onSweaterSelectChange('c2_d3', this.value)" class="w-full mt-0.5 bg-white border border-slate-300 rounded-lg px-2 py-1.5 text-xs text-slate-900 font-semibold focus:outline-none focus:border-purple-500">
-                                                    <option value="">-- Select Sweater --</option>
-                                                    <option value="01 - Men's V-Neck (Grey)">01 - Men's V-Neck (Grey)</option>
-                                                    <option value="02 - Men's V-Neck (Navy Blue)">02 - Men's V-Neck (Navy Blue)</option>
-                                                    <option value="03 - Men's V-Neck (Cream Check)">03 - Men's V-Neck (Cream Check)</option>
-                                                    <option value="04 - Women's Short Cardigan (Check)">04 - Women's Short Cardigan</option>
-                                                    <option value="05 - Women's Semi Long Cardigan (Black)">05 - Women's Semi Long</option>
-                                                </select>
+                                                <label class="text-[10px] font-bold text-purple-950">Doctor 3 Name <span class="text-rose-500">*</span></label>
+                                                <input type="text" id="c2_d3_name" oninput="onDataChanged()" placeholder="Enter Doctor 3 Name..." class="w-full mt-0.5 bg-white border border-purple-300 rounded-xl px-3 py-1.5 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-purple-500">
                                             </div>
                                             <div>
-                                                <label class="text-[10px] font-bold text-slate-500">Size</label>
-                                                <select id="c2_d3_size" onchange="onDataChanged()" class="w-full mt-0.5 bg-white border border-slate-300 rounded-lg px-2 py-1 text-xs text-slate-900 font-black focus:outline-none focus:border-purple-500"><option value="">-- Size --</option></select>
+                                                <div class="flex items-center justify-between"><label class="text-[10px] font-bold text-purple-950">Doctor 3 RPL ID <span class="text-rose-500">*</span></label><span id="c2_d3_rpl_badge" class="text-[9px] font-bold text-slate-400">6 digits</span></div>
+                                                <input type="text" inputmode="numeric" maxlength="6" id="c2_d3_rpl" oninput="onRplInput(this, 'c2_d3_rpl_badge')" placeholder="6-digit RPL ID..." class="w-full mt-0.5 bg-white border border-purple-300 rounded-xl px-3 py-1.5 text-xs text-slate-900 font-mono font-bold placeholder-slate-400 focus:outline-none focus:border-purple-500 tracking-wider">
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
-                                <!-- Doc 4 -->
-                                <div class="bg-purple-50/50 border border-purple-200 rounded-2xl p-3.5 space-y-2.5">
-                                    <div class="flex items-center justify-between">
-                                        <span class="text-xs font-bold text-purple-950 flex items-center gap-1.5"><span class="w-4 h-4 rounded-full bg-purple-600 text-white flex items-center justify-center text-[10px] font-black">4</span> Doctor 4</span>
-                                        <span id="c2_d4_check_badge"><span class="text-slate-400 text-[10px] font-medium"><i class="fa-regular fa-circle"></i> Pending</span></span>
-                                    </div>
-                                    <div class="space-y-2">
-                                        <div>
-                                            <label class="text-[10px] font-bold text-purple-950">Doctor 4 Name <span class="text-rose-500">*</span></label>
-                                            <input type="text" id="c2_d4_name" oninput="onDataChanged()" placeholder="Enter Doctor 4 Name..." class="w-full mt-0.5 bg-white border border-purple-300 rounded-xl px-3 py-1.5 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-purple-500">
-                                        </div>
-                                        <div>
-                                            <div class="flex items-center justify-between"><label class="text-[10px] font-bold text-purple-950">Doctor 4 RPL ID <span class="text-rose-500">*</span></label><span id="c2_d4_rpl_badge" class="text-[9px] font-bold text-slate-400">6 digits</span></div>
-                                            <input type="text" inputmode="numeric" maxlength="6" id="c2_d4_rpl" oninput="onRplInput(this, 'c2_d4_rpl_badge')" placeholder="6-digit RPL ID..." class="w-full mt-0.5 bg-white border border-purple-300 rounded-xl px-3 py-1.5 text-xs text-slate-900 font-mono font-bold placeholder-slate-400 focus:outline-none focus:border-purple-500 tracking-wider">
-                                        </div>
-                                    </div>
-                                    <div class="flex gap-2.5 sm:gap-3 items-center pt-2 border-t border-purple-200/80">
-                                        <div id="c2_d4_img_preview" onclick="zoomSlotImage('c2_d4_sweater')" class="sweater-card-img w-16 h-20 sm:w-20 sm:h-24 rounded-xl bg-white border border-slate-300 overflow-hidden flex-shrink-0 flex items-center justify-center text-slate-400 cursor-pointer shadow-sm relative group"><i class="fa-solid fa-shirt text-lg text-slate-300"></i></div>
-                                        <div class="flex-1 space-y-1.5 min-w-0">
-                                            <div>
-                                                <label class="text-[10px] font-bold text-slate-500">Sweater Option</label>
-                                                <select id="c2_d4_sweater" onchange="onSweaterSelectChange('c2_d4', this.value)" class="w-full mt-0.5 bg-white border border-slate-300 rounded-lg px-2 py-1.5 text-xs text-slate-900 font-semibold focus:outline-none focus:border-purple-500">
-                                                    <option value="">-- Select Sweater --</option>
-                                                    <option value="01 - Men's V-Neck (Grey)">01 - Men's V-Neck (Grey)</option>
-                                                    <option value="02 - Men's V-Neck (Navy Blue)">02 - Men's V-Neck (Navy Blue)</option>
-                                                    <option value="03 - Men's V-Neck (Cream Check)">03 - Men's V-Neck (Cream Check)</option>
-                                                    <option value="04 - Women's Short Cardigan (Check)">04 - Women's Short Cardigan</option>
-                                                    <option value="05 - Women's Semi Long Cardigan (Black)">05 - Women's Semi Long</option>
-                                                </select>
-                                            </div>
-                                            <div>
-                                                <label class="text-[10px] font-bold text-slate-500">Size</label>
-                                                <select id="c2_d4_size" onchange="onDataChanged()" class="w-full mt-0.5 bg-white border border-slate-300 rounded-lg px-2 py-1 text-xs text-slate-900 font-black focus:outline-none focus:border-purple-500"><option value="">-- Size --</option></select>
+                                        <div class="flex gap-2.5 sm:gap-3 items-center pt-2 border-t border-purple-200/80">
+                                            <div id="c2_d3_img_preview" onclick="zoomSlotImage('c2_d3_sweater')" class="sweater-card-img w-16 h-20 sm:w-20 sm:h-24 rounded-xl bg-white border border-slate-300 overflow-hidden flex-shrink-0 flex items-center justify-center text-slate-400 cursor-pointer shadow-sm relative group"><i class="fa-solid fa-shirt text-lg text-slate-300"></i></div>
+                                            <div class="flex-1 space-y-1.5 min-w-0">
+                                                <div>
+                                                    <label class="text-[10px] font-bold text-slate-500">Sweater Option</label>
+                                                    <select id="c2_d3_sweater" onchange="onSweaterSelectChange('c2_d3', this.value)" class="w-full mt-0.5 bg-white border border-slate-300 rounded-lg px-2 py-1.5 text-xs text-slate-900 font-semibold focus:outline-none focus:border-purple-500">
+                                                        <option value="">-- Select Sweater --</option>
+                                                        <option value="01 - Men's V-Neck (Grey)">01 - Men's V-Neck (Grey)</option>
+                                                        <option value="02 - Men's V-Neck (Navy Blue)">02 - Men's V-Neck (Navy Blue)</option>
+                                                        <option value="03 - Men's V-Neck (Cream Check)">03 - Men's V-Neck (Cream Check)</option>
+                                                        <option value="04 - Women's Short Cardigan (Check)">04 - Women's Short Cardigan</option>
+                                                        <option value="05 - Women's Semi Long Cardigan (Black)">05 - Women's Semi Long</option>
+                                                    </select>
+                                                </div>
+                                                <div>
+                                                    <label class="text-[10px] font-bold text-slate-500">Size</label>
+                                                    <select id="c2_d3_size" onchange="onDataChanged()" class="w-full mt-0.5 bg-white border border-slate-300 rounded-lg px-2 py-1 text-xs text-slate-900 font-black focus:outline-none focus:border-purple-500"><option value="">-- Size --</option></select>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -1407,6 +1390,32 @@ html_template = """<!DOCTYPE html>
             }, 1200);
         }
 
+        
+        function showC1Sweater4(triggerChange = false) {
+            const container = document.getElementById('c1_m4_container');
+            const btn = document.getElementById('c1_add_m4_btn_container');
+            if (container) container.classList.remove('hidden');
+            if (btn) btn.classList.add('hidden');
+            if (triggerChange) onDataChanged();
+        }
+
+        function hideC1Sweater4ViewOnly() {
+            const container = document.getElementById('c1_m4_container');
+            const btn = document.getElementById('c1_add_m4_btn_container');
+            if (container) container.classList.add('hidden');
+            if (btn) btn.classList.remove('hidden');
+        }
+
+        function hideAndClearC1Sweater4() {
+            const swSelect = document.getElementById('c1_m4_sweater');
+            const szSelect = document.getElementById('c1_m4_size');
+            if (swSelect) swSelect.value = '';
+            if (szSelect) szSelect.innerHTML = '<option value="">-- Size --</option>';
+            updateSweaterSlotIndicator('c1_m4');
+            hideC1Sweater4ViewOnly();
+            onDataChanged();
+        }
+
         function onDataChanged() {
             if (isRegionLocked() || !currentRegionCode) return;
 
@@ -1447,7 +1456,7 @@ html_template = """<!DOCTYPE html>
             store[terrCode] = terrData;
             localStorage.setItem('EXIUM_SWEATER_STORE', JSON.stringify(store));
 
-            ['c1_m1', 'c1_m2', 'c1_m3', 'c1_m4', 'c2_d1', 'c2_d2', 'c2_d3', 'c2_d4'].forEach(p => updateSweaterSlotIndicator(p));
+            ['c1_m1', 'c1_m2', 'c1_m3', 'c1_m4', 'c2_d1', 'c2_d2', 'c2_d3'].forEach(p => updateSweaterSlotIndicator(p));
 
             const status = getTerritoryStatus(terrData);
             const statusBadge = document.getElementById('current-territory-status');
@@ -2138,6 +2147,32 @@ html_template = """<!DOCTYPE html>
             }, 1200);
         }
 
+        
+        function showC1Sweater4(triggerChange = false) {
+            const container = document.getElementById('c1_m4_container');
+            const btn = document.getElementById('c1_add_m4_btn_container');
+            if (container) container.classList.remove('hidden');
+            if (btn) btn.classList.add('hidden');
+            if (triggerChange) onDataChanged();
+        }
+
+        function hideC1Sweater4ViewOnly() {
+            const container = document.getElementById('c1_m4_container');
+            const btn = document.getElementById('c1_add_m4_btn_container');
+            if (container) container.classList.add('hidden');
+            if (btn) btn.classList.remove('hidden');
+        }
+
+        function hideAndClearC1Sweater4() {
+            const swSelect = document.getElementById('c1_m4_sweater');
+            const szSelect = document.getElementById('c1_m4_size');
+            if (swSelect) swSelect.value = '';
+            if (szSelect) szSelect.innerHTML = '<option value="">-- Size --</option>';
+            updateSweaterSlotIndicator('c1_m4');
+            hideC1Sweater4ViewOnly();
+            onDataChanged();
+        }
+
         function onDataChanged() {
             if (isRegionLocked() || !currentRegionCode) return;
 
@@ -2178,7 +2213,7 @@ html_template = """<!DOCTYPE html>
             store[terrCode] = terrData;
             localStorage.setItem('EXIUM_SWEATER_STORE', JSON.stringify(store));
 
-            ['c1_m1', 'c1_m2', 'c1_m3', 'c1_m4', 'c2_d1', 'c2_d2', 'c2_d3', 'c2_d4'].forEach(p => updateSweaterSlotIndicator(p));
+            ['c1_m1', 'c1_m2', 'c1_m3', 'c1_m4', 'c2_d1', 'c2_d2', 'c2_d3'].forEach(p => updateSweaterSlotIndicator(p));
 
             const status = getTerritoryStatus(terrData);
             const statusBadge = document.getElementById('current-territory-status');
@@ -2970,7 +3005,7 @@ html_template = """<!DOCTYPE html>
                     "Size 3": d.c1_m3_size || '',
                     "Sweater 4": d.c1_m4_sweater || '',
                     "Size 4": d.c1_m4_size || '',
-                    "Status": (d.c1_doc_name && d.c1_doc_rpl && String(d.c1_doc_rpl).length === 6 && d.c1_m1_sweater && d.c1_m1_size && d.c1_m2_sweater && d.c1_m2_size && d.c1_m3_sweater && d.c1_m3_size && d.c1_m4_sweater && d.c1_m4_size) ? "Complete" : (d.c1_doc_name || d.c1_doc_rpl || d.c1_m1_sweater ? "In Progress" : "Not Started")
+                    "Status": (d.c1_doc_name && d.c1_doc_rpl && String(d.c1_doc_rpl).length === 6 && d.c1_m1_sweater && d.c1_m1_size && d.c1_m2_sweater && d.c1_m2_size && d.c1_m3_sweater && d.c1_m3_size && (!d.c1_m4_sweater || (d.c1_m4_sweater && d.c1_m4_size))) ? "Complete" : (d.c1_doc_name || d.c1_doc_rpl || d.c1_m1_sweater ? "In Progress" : "Not Started")
                 });
 
                 c2Rows.push({
