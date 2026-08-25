@@ -423,11 +423,23 @@ html_template = """<!DOCTYPE html>
                                         </div>
                                     </div>
                                 </div>
-                                <!-- 4 -->
-                                <div class="bg-slate-50 border border-slate-200 rounded-2xl p-3 space-y-2">
+                                <!-- 4. Add Another Sweater Button Container -->
+                                <div id="c1_add_m4_btn_container" onclick="showC1Sweater4(true)" class="border-2 border-dashed border-teal-300 hover:border-teal-500 bg-teal-50/40 hover:bg-teal-50 rounded-2xl p-4 flex flex-col items-center justify-center text-center cursor-pointer transition group gap-2 min-h-[140px]">
+                                    <div class="w-10 h-10 rounded-full bg-teal-100 group-hover:bg-teal-600 text-teal-600 group-hover:text-white flex items-center justify-center transition shadow-sm font-black"><i class="fa-solid fa-plus text-base"></i></div>
+                                    <div>
+                                        <h5 class="text-xs font-black text-teal-950 group-hover:text-teal-700">Add Another Sweater</h5>
+                                        <p class="text-[10px] text-slate-500">Sweater 4 (Family Member)</p>
+                                    </div>
+                                </div>
+
+                                <!-- 4. Sweater 4 (Family Member) - Revealed on Click -->
+                                <div id="c1_m4_container" class="hidden bg-slate-50 border border-slate-200 rounded-2xl p-3 space-y-2">
                                     <div class="flex items-center justify-between">
                                         <span class="text-xs font-bold text-teal-900 flex items-center gap-1.5"><span class="w-4 h-4 rounded-full bg-teal-600 text-white flex items-center justify-center text-[10px] font-black">4</span> Sweater 4 (Family Member)</span>
-                                        <span id="c1_m4_check_badge"><span class="text-slate-400 text-[10px] font-medium"><i class="fa-regular fa-circle"></i> Pending</span></span>
+                                        <div class="flex items-center gap-1.5">
+                                            <span id="c1_m4_check_badge"><span class="text-slate-400 text-[10px] font-medium"><i class="fa-regular fa-circle"></i> Pending</span></span>
+                                            <button type="button" onclick="hideAndClearC1Sweater4()" title="Remove 4th Sweater" class="text-[10px] text-rose-500 hover:text-rose-700 font-bold px-1.5 py-0.5 rounded hover:bg-rose-50"><i class="fa-solid fa-xmark"></i></button>
+                                        </div>
                                     </div>
                                     <div class="flex gap-2.5 sm:gap-3 items-center">
                                         <div id="c1_m4_img_preview" onclick="zoomSlotImage('c1_m4_sweater')" class="sweater-card-img w-16 h-20 sm:w-20 sm:h-24 rounded-xl bg-white border border-slate-300 overflow-hidden flex-shrink-0 flex items-center justify-center text-slate-400 cursor-pointer shadow-sm relative group"><i class="fa-solid fa-shirt text-lg text-slate-300"></i></div>
@@ -1211,6 +1223,7 @@ html_template = """<!DOCTYPE html>
         }
 
         function renderTerritoryTabs() {
+            if (!currentRegionCode || !REGION_MAP[currentRegionCode]) return;
             const r = REGION_MAP[currentRegionCode];
             const deskList = document.getElementById('desktop-territory-list');
             const mobSelect = document.getElementById('mobile-territory-select');
@@ -1228,28 +1241,57 @@ html_template = """<!DOCTYPE html>
                 const mobOpt = document.createElement('option');
                 mobOpt.value = idx;
                 mobOpt.textContent = `${t.territory_name} (${status})`;
+                if (idx === activeTerritoryIndex) mobOpt.selected = true;
                 mobSelect.appendChild(mobOpt);
+
+                const isActive = (idx === activeTerritoryIndex);
+
+                let btnClasses = '';
+                let badgeClasses = '';
+                let badgeText = status;
+
+                if (status === 'Complete') {
+                    badgeText = '✓ Complete';
+                    if (isActive) {
+                        btnClasses = 'bg-emerald-600 text-white border-emerald-600 shadow-md ring-2 ring-emerald-500/30';
+                        badgeClasses = 'bg-white text-emerald-900 font-black shadow-sm';
+                    } else {
+                        btnClasses = 'bg-emerald-50/70 hover:bg-emerald-100/70 text-emerald-950 border-emerald-200/90';
+                        badgeClasses = 'bg-emerald-100 text-emerald-800 border border-emerald-300 font-bold';
+                    }
+                } else if (status === 'In Progress') {
+                    badgeText = '⏳ In Progress';
+                    if (isActive) {
+                        btnClasses = 'bg-amber-500 text-white border-amber-500 shadow-md ring-2 ring-amber-500/30';
+                        badgeClasses = 'bg-white text-amber-900 font-black shadow-sm';
+                    } else {
+                        btnClasses = 'bg-amber-50/70 hover:bg-amber-100/70 text-amber-950 border-amber-200/90';
+                        badgeClasses = 'bg-amber-100 text-amber-800 border border-amber-300 font-bold';
+                    }
+                } else {
+                    // Not Started
+                    badgeText = '○ Not Started';
+                    if (isActive) {
+                        btnClasses = 'bg-slate-900 text-white border-slate-900 shadow-md ring-2 ring-slate-900/30';
+                        badgeClasses = 'bg-slate-700 text-slate-100 font-bold';
+                    } else {
+                        btnClasses = 'bg-white hover:bg-slate-50 text-slate-700 border-slate-200';
+                        badgeClasses = 'bg-slate-100 text-slate-500 border border-slate-200 font-medium';
+                    }
+                }
 
                 const btn = document.createElement('button');
                 btn.type = 'button';
                 btn.onclick = () => selectTerritoryTab(idx);
                 btn.id = `terr-tab-btn-${idx}`;
-                btn.className = `w-full text-left p-3 rounded-2xl text-xs font-bold transition flex items-center justify-between border ${
-                    idx === activeTerritoryIndex 
-                    ? 'bg-orange-500 text-white border-orange-500 shadow-md' 
-                    : 'bg-slate-50 hover:bg-slate-100 text-slate-700 border-slate-200'
-                }`;
+                btn.className = `w-full text-left p-2.5 sm:p-3 rounded-2xl text-xs font-bold transition flex items-center justify-between border ${btnClasses}`;
 
                 btn.innerHTML = `
                     <div class="truncate pr-1 min-w-0">
-                        <div class="truncate font-black text-xs">${t.territory_name}</div>
-                        <div class="text-[10px] ${idx === activeTerritoryIndex ? 'text-orange-100' : 'text-slate-400'} font-mono">SAP: ${t.sap_territory_code}</div>
+                        <div class="truncate font-black text-xs ${isActive ? 'text-white' : 'text-slate-900'}">${t.territory_name}</div>
+                        <div class="text-[10px] ${isActive ? 'text-white/80' : 'text-slate-400'} font-mono">SAP: ${t.sap_territory_code}</div>
                     </div>
-                    <span class="text-[9px] font-black px-1.5 py-0.5 rounded-full flex-shrink-0 ${
-                        status === 'Complete' ? (idx === activeTerritoryIndex ? 'bg-white text-slate-950' : 'bg-emerald-100 text-emerald-800 border border-emerald-300') :
-                        status === 'In Progress' ? (idx === activeTerritoryIndex ? 'bg-white text-slate-950' : 'bg-amber-100 text-amber-800 border border-amber-300') :
-                        (idx === activeTerritoryIndex ? 'bg-orange-600 text-white' : 'bg-slate-200 text-slate-600')
-                    }">${status === 'Complete' ? '✓ Complete' : status}</span>
+                    <span class="text-[9px] px-2 py-0.5 rounded-full flex-shrink-0 whitespace-nowrap ${badgeClasses}">${badgeText}</span>
                 `;
                 deskList.appendChild(btn);
             });
@@ -1407,6 +1449,32 @@ html_template = """<!DOCTYPE html>
             }, 1200);
         }
 
+        
+        function showC1Sweater4(triggerChange = false) {
+            const container = document.getElementById('c1_m4_container');
+            const btn = document.getElementById('c1_add_m4_btn_container');
+            if (container) container.classList.remove('hidden');
+            if (btn) btn.classList.add('hidden');
+            if (triggerChange) onDataChanged();
+        }
+
+        function hideC1Sweater4ViewOnly() {
+            const container = document.getElementById('c1_m4_container');
+            const btn = document.getElementById('c1_add_m4_btn_container');
+            if (container) container.classList.add('hidden');
+            if (btn) btn.classList.remove('hidden');
+        }
+
+        function hideAndClearC1Sweater4() {
+            const swSelect = document.getElementById('c1_m4_sweater');
+            const szSelect = document.getElementById('c1_m4_size');
+            if (swSelect) swSelect.value = '';
+            if (szSelect) szSelect.innerHTML = '<option value="">-- Size --</option>';
+            updateSlotImagePreview('c1_m4');
+            hideC1Sweater4ViewOnly();
+            onDataChanged();
+        }
+
         function onDataChanged() {
             if (isRegionLocked() || !currentRegionCode) return;
 
@@ -1513,6 +1581,7 @@ html_template = """<!DOCTYPE html>
             const nextIdx = activeTerritoryIndex + dir;
             if (nextIdx >= 0 && nextIdx < r.territories.length) {
                 selectTerritoryTab(nextIdx, true);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
             }
         }
 
