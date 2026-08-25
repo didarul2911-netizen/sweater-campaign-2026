@@ -301,7 +301,7 @@ html_template = """<!DOCTYPE html>
                                 <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-white text-teal-800 flex items-center justify-center font-black text-xs sm:text-sm flex-shrink-0 shadow-sm mt-0.5 sm:mt-0">1</div>
                                 <div class="min-w-0">
                                     <h4 class="text-xs sm:text-sm md:text-base font-black text-white leading-snug">Gyne Core Doctor Development (Family Package)</h4>
-                                    <p class="text-[10px] sm:text-xs text-teal-100 mt-0.5 leading-tight">1 Doctor per Territory &bull; 4 Sweaters for Family</p>
+                                    <p class="text-[10px] sm:text-xs text-teal-100 mt-0.5 font-medium">3 sweaters for doctor and family</p>
                                 </div>
                             </div>
                             <div class="self-start sm:self-auto pl-9 sm:pl-0">
@@ -458,16 +458,18 @@ html_template = """<!DOCTYPE html>
                                 <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-white text-purple-800 flex items-center justify-center font-black text-xs sm:text-sm flex-shrink-0 shadow-sm mt-0.5 sm:mt-0">2</div>
                                 <div class="min-w-0">
                                     <h4 class="text-xs sm:text-sm md:text-base font-black text-white leading-snug">Core Doctor Maximization</h4>
-                                    <p class="text-[10px] sm:text-xs text-purple-100 mt-0.5 leading-tight">4 Doctors per Territory &bull; 1 Sweater Each</p>
+                                    <p class="text-[10px] sm:text-xs text-purple-100 mt-0.5 leading-tight">3 Doctors per Territory &bull; 1 Sweater Each</p>
                                 </div>
                             </div>
                             <div class="self-start sm:self-auto pl-9 sm:pl-0">
-                                <span class="text-[10px] sm:text-xs font-black bg-purple-950/80 text-purple-200 border border-purple-400/40 px-2.5 py-0.5 rounded-full inline-block whitespace-nowrap shadow-sm">4 Sweaters Total</span>
+                                <span class="text-[10px] sm:text-xs font-black bg-purple-950/80 text-purple-200 border border-purple-400/40 px-2.5 py-0.5 rounded-full inline-block whitespace-nowrap shadow-sm">3 Doctors Total</span>
                             </div>
                         </div>
 
                         <div class="p-4 sm:p-6 space-y-4">
+                            <!-- 2 Top Side-by-Side, 1 Centered in Middle Below -->
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
+                                
                                 <!-- Doc 1 -->
                                 <div class="bg-purple-50/50 border border-purple-200 rounded-2xl p-3.5 space-y-2.5">
                                     <div class="flex items-center justify-between">
@@ -505,6 +507,7 @@ html_template = """<!DOCTYPE html>
                                         </div>
                                     </div>
                                 </div>
+
                                 <!-- Doc 2 -->
                                 <div class="bg-purple-50/50 border border-purple-200 rounded-2xl p-3.5 space-y-2.5">
                                     <div class="flex items-center justify-between">
@@ -542,80 +545,47 @@ html_template = """<!DOCTYPE html>
                                         </div>
                                     </div>
                                 </div>
-                                <!-- Doc 3 -->
-                                <div class="bg-purple-50/50 border border-purple-200 rounded-2xl p-3.5 space-y-2.5">
-                                    <div class="flex items-center justify-between">
-                                        <span class="text-xs font-bold text-purple-950 flex items-center gap-1.5"><span class="w-4 h-4 rounded-full bg-purple-600 text-white flex items-center justify-center text-[10px] font-black">3</span> Doctor 3</span>
-                                        <span id="c2_d3_check_badge"><span class="text-slate-400 text-[10px] font-medium"><i class="fa-regular fa-circle"></i> Pending</span></span>
-                                    </div>
-                                    <div class="space-y-2">
-                                        <div>
-                                            <label class="text-[10px] font-bold text-purple-950">Doctor 3 Name <span class="text-rose-500">*</span></label>
-                                            <input type="text" id="c2_d3_name" oninput="onDataChanged()" placeholder="Enter Doctor 3 Name..." class="w-full mt-0.5 bg-white border border-purple-300 rounded-xl px-3 py-1.5 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-purple-500">
+
+                                <!-- Doc 3 (Middle Centered Below) -->
+                                <div class="md:col-span-2 flex justify-center">
+                                    <div class="w-full max-w-xl bg-purple-50/50 border border-purple-200 rounded-2xl p-3.5 space-y-2.5 shadow-sm">
+                                        <div class="flex items-center justify-between">
+                                            <span class="text-xs font-bold text-purple-950 flex items-center gap-1.5"><span class="w-4 h-4 rounded-full bg-purple-600 text-white flex items-center justify-center text-[10px] font-black">3</span> Doctor 3</span>
+                                            <span id="c2_d3_check_badge"><span class="text-slate-400 text-[10px] font-medium"><i class="fa-regular fa-circle"></i> Pending</span></span>
                                         </div>
-                                        <div>
-                                            <div class="flex items-center justify-between"><label class="text-[10px] font-bold text-purple-950">Doctor 3 RPL ID <span class="text-rose-500">*</span></label><span id="c2_d3_rpl_badge" class="text-[9px] font-bold text-slate-400">6 digits</span></div>
-                                            <input type="text" inputmode="numeric" maxlength="6" id="c2_d3_rpl" oninput="onRplInput(this, 'c2_d3_rpl_badge')" placeholder="6-digit RPL ID..." class="w-full mt-0.5 bg-white border border-purple-300 rounded-xl px-3 py-1.5 text-xs text-slate-900 font-mono font-bold placeholder-slate-400 focus:outline-none focus:border-purple-500 tracking-wider">
-                                        </div>
-                                    </div>
-                                    <div class="flex gap-2.5 sm:gap-3 items-center pt-2 border-t border-purple-200/80">
-                                        <div id="c2_d3_img_preview" onclick="zoomSlotImage('c2_d3_sweater')" class="sweater-card-img w-16 h-20 sm:w-20 sm:h-24 rounded-xl bg-white border border-slate-300 overflow-hidden flex-shrink-0 flex items-center justify-center text-slate-400 cursor-pointer shadow-sm relative group"><i class="fa-solid fa-shirt text-lg text-slate-300"></i></div>
-                                        <div class="flex-1 space-y-1.5 min-w-0">
+                                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                                             <div>
-                                                <label class="text-[10px] font-bold text-slate-500">Sweater Option</label>
-                                                <select id="c2_d3_sweater" onchange="onSweaterSelectChange('c2_d3', this.value)" class="w-full mt-0.5 bg-white border border-slate-300 rounded-lg px-2 py-1.5 text-xs text-slate-900 font-semibold focus:outline-none focus:border-purple-500">
-                                                    <option value="">-- Select Sweater --</option>
-                                                    <option value="01 - Men's V-Neck (Grey)">01 - Men's V-Neck (Grey)</option>
-                                                    <option value="02 - Men's V-Neck (Navy Blue)">02 - Men's V-Neck (Navy Blue)</option>
-                                                    <option value="03 - Men's V-Neck (Cream Check)">03 - Men's V-Neck (Cream Check)</option>
-                                                    <option value="04 - Women's Short Cardigan (Check)">04 - Women's Short Cardigan</option>
-                                                    <option value="05 - Women's Semi Long Cardigan (Black)">05 - Women's Semi Long</option>
-                                                </select>
+                                                <label class="text-[10px] font-bold text-purple-950">Doctor 3 Name <span class="text-rose-500">*</span></label>
+                                                <input type="text" id="c2_d3_name" oninput="onDataChanged()" placeholder="Enter Doctor 3 Name..." class="w-full mt-0.5 bg-white border border-purple-300 rounded-xl px-3 py-1.5 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-purple-500">
                                             </div>
                                             <div>
-                                                <label class="text-[10px] font-bold text-slate-500">Size</label>
-                                                <select id="c2_d3_size" onchange="onDataChanged()" class="w-full mt-0.5 bg-white border border-slate-300 rounded-lg px-2 py-1 text-xs text-slate-900 font-black focus:outline-none focus:border-purple-500"><option value="">-- Size --</option></select>
+                                                <div class="flex items-center justify-between"><label class="text-[10px] font-bold text-purple-950">Doctor 3 RPL ID <span class="text-rose-500">*</span></label><span id="c2_d3_rpl_badge" class="text-[9px] font-bold text-slate-400">6 digits</span></div>
+                                                <input type="text" inputmode="numeric" maxlength="6" id="c2_d3_rpl" oninput="onRplInput(this, 'c2_d3_rpl_badge')" placeholder="6-digit RPL ID..." class="w-full mt-0.5 bg-white border border-purple-300 rounded-xl px-3 py-1.5 text-xs text-slate-900 font-mono font-bold placeholder-slate-400 focus:outline-none focus:border-purple-500 tracking-wider">
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
-                                <!-- Doc 4 -->
-                                <div class="bg-purple-50/50 border border-purple-200 rounded-2xl p-3.5 space-y-2.5">
-                                    <div class="flex items-center justify-between">
-                                        <span class="text-xs font-bold text-purple-950 flex items-center gap-1.5"><span class="w-4 h-4 rounded-full bg-purple-600 text-white flex items-center justify-center text-[10px] font-black">4</span> Doctor 4</span>
-                                        <span id="c2_d4_check_badge"><span class="text-slate-400 text-[10px] font-medium"><i class="fa-regular fa-circle"></i> Pending</span></span>
-                                    </div>
-                                    <div class="space-y-2">
-                                        <div>
-                                            <label class="text-[10px] font-bold text-purple-950">Doctor 4 Name <span class="text-rose-500">*</span></label>
-                                            <input type="text" id="c2_d4_name" oninput="onDataChanged()" placeholder="Enter Doctor 4 Name..." class="w-full mt-0.5 bg-white border border-purple-300 rounded-xl px-3 py-1.5 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-purple-500">
-                                        </div>
-                                        <div>
-                                            <div class="flex items-center justify-between"><label class="text-[10px] font-bold text-purple-950">Doctor 4 RPL ID <span class="text-rose-500">*</span></label><span id="c2_d4_rpl_badge" class="text-[9px] font-bold text-slate-400">6 digits</span></div>
-                                            <input type="text" inputmode="numeric" maxlength="6" id="c2_d4_rpl" oninput="onRplInput(this, 'c2_d4_rpl_badge')" placeholder="6-digit RPL ID..." class="w-full mt-0.5 bg-white border border-purple-300 rounded-xl px-3 py-1.5 text-xs text-slate-900 font-mono font-bold placeholder-slate-400 focus:outline-none focus:border-purple-500 tracking-wider">
-                                        </div>
-                                    </div>
-                                    <div class="flex gap-2.5 sm:gap-3 items-center pt-2 border-t border-purple-200/80">
-                                        <div id="c2_d4_img_preview" onclick="zoomSlotImage('c2_d4_sweater')" class="sweater-card-img w-16 h-20 sm:w-20 sm:h-24 rounded-xl bg-white border border-slate-300 overflow-hidden flex-shrink-0 flex items-center justify-center text-slate-400 cursor-pointer shadow-sm relative group"><i class="fa-solid fa-shirt text-lg text-slate-300"></i></div>
-                                        <div class="flex-1 space-y-1.5 min-w-0">
-                                            <div>
-                                                <label class="text-[10px] font-bold text-slate-500">Sweater Option</label>
-                                                <select id="c2_d4_sweater" onchange="onSweaterSelectChange('c2_d4', this.value)" class="w-full mt-0.5 bg-white border border-slate-300 rounded-lg px-2 py-1.5 text-xs text-slate-900 font-semibold focus:outline-none focus:border-purple-500">
-                                                    <option value="">-- Select Sweater --</option>
-                                                    <option value="01 - Men's V-Neck (Grey)">01 - Men's V-Neck (Grey)</option>
-                                                    <option value="02 - Men's V-Neck (Navy Blue)">02 - Men's V-Neck (Navy Blue)</option>
-                                                    <option value="03 - Men's V-Neck (Cream Check)">03 - Men's V-Neck (Cream Check)</option>
-                                                    <option value="04 - Women's Short Cardigan (Check)">04 - Women's Short Cardigan</option>
-                                                    <option value="05 - Women's Semi Long Cardigan (Black)">05 - Women's Semi Long</option>
-                                                </select>
-                                            </div>
-                                            <div>
-                                                <label class="text-[10px] font-bold text-slate-500">Size</label>
-                                                <select id="c2_d4_size" onchange="onDataChanged()" class="w-full mt-0.5 bg-white border border-slate-300 rounded-lg px-2 py-1 text-xs text-slate-900 font-black focus:outline-none focus:border-purple-500"><option value="">-- Size --</option></select>
+                                        <div class="flex gap-2.5 sm:gap-3 items-center pt-2 border-t border-purple-200/80">
+                                            <div id="c2_d3_img_preview" onclick="zoomSlotImage('c2_d3_sweater')" class="sweater-card-img w-16 h-20 sm:w-20 sm:h-24 rounded-xl bg-white border border-slate-300 overflow-hidden flex-shrink-0 flex items-center justify-center text-slate-400 cursor-pointer shadow-sm relative group"><i class="fa-solid fa-shirt text-lg text-slate-300"></i></div>
+                                            <div class="flex-1 space-y-1.5 min-w-0">
+                                                <div>
+                                                    <label class="text-[10px] font-bold text-slate-500">Sweater Option</label>
+                                                    <select id="c2_d3_sweater" onchange="onSweaterSelectChange('c2_d3', this.value)" class="w-full mt-0.5 bg-white border border-slate-300 rounded-lg px-2 py-1.5 text-xs text-slate-900 font-semibold focus:outline-none focus:border-purple-500">
+                                                        <option value="">-- Select Sweater --</option>
+                                                        <option value="01 - Men's V-Neck (Grey)">01 - Men's V-Neck (Grey)</option>
+                                                        <option value="02 - Men's V-Neck (Navy Blue)">02 - Men's V-Neck (Navy Blue)</option>
+                                                        <option value="03 - Men's V-Neck (Cream Check)">03 - Men's V-Neck (Cream Check)</option>
+                                                        <option value="04 - Women's Short Cardigan (Check)">04 - Women's Short Cardigan</option>
+                                                        <option value="05 - Women's Semi Long Cardigan (Black)">05 - Women's Semi Long</option>
+                                                    </select>
+                                                </div>
+                                                <div>
+                                                    <label class="text-[10px] font-bold text-slate-500">Size</label>
+                                                    <select id="c2_d3_size" onchange="onDataChanged()" class="w-full mt-0.5 bg-white border border-slate-300 rounded-lg px-2 py-1 text-xs text-slate-900 font-black focus:outline-none focus:border-purple-500"><option value="">-- Size --</option></select>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+
                             </div>
                         </div>
                     </div>
@@ -1292,6 +1262,8 @@ html_template = """<!DOCTYPE html>
 
         function selectTerritoryTab(idx, shouldScroll = true) {
             activeTerritoryIndex = idx;
+            renderTerritoryTabs();
+
             const r = REGION_MAP[currentRegionCode];
             const t = r.territories[idx];
             const terrCode = String(t.sap_territory_code);
@@ -1302,35 +1274,46 @@ html_template = """<!DOCTYPE html>
                 territory_idx: idx
             }));
 
-            document.getElementById('mobile-territory-select').value = idx;
-            document.getElementById('current-territory-title').textContent = t.territory_name;
-            document.getElementById('current-territory-code').textContent = `SAP Code: ${terrCode}`;
+            const mobSelect = document.getElementById('mobile-territory-select');
+            if (mobSelect) mobSelect.value = idx;
+
+            const tTitle = document.getElementById('current-territory-title');
+            if (tTitle) tTitle.textContent = t.territory_name;
+
+            const tCode = document.getElementById('current-territory-code');
+            if (tCode) tCode.textContent = `SAP Code: ${terrCode}`;
 
             const status = getTerritoryStatus(d);
             const statusBadge = document.getElementById('current-territory-status');
-            statusBadge.textContent = status;
-            statusBadge.className = `text-[9px] sm:text-[10px] font-bold px-2 py-0.2 rounded-full ${
-                status === 'Complete' ? 'bg-emerald-500 text-slate-950 font-black' :
-                status === 'In Progress' ? 'bg-amber-400 text-slate-950 font-bold' :
-                'bg-white/10 text-slate-200 border border-white/20'
-            }`;
+            if (statusBadge) {
+                statusBadge.textContent = status;
+                statusBadge.className = `text-[10px] sm:text-xs font-black px-3 py-1 rounded-full ${
+                    status === 'Complete' ? 'bg-emerald-500 text-slate-950 font-black' :
+                    status === 'In Progress' ? 'bg-amber-400 text-slate-950 font-black' :
+                    'bg-white/10 text-slate-200 border border-white/20'
+                }`;
+            }
 
             const isLocked = isRegionLocked();
             const lockedNotice = document.getElementById('territory-locked-notice');
-            if (isLocked) {
-                lockedNotice.classList.remove('hidden');
-            } else {
-                lockedNotice.classList.add('hidden');
+            if (lockedNotice) {
+                if (isLocked) lockedNotice.classList.remove('hidden');
+                else lockedNotice.classList.add('hidden');
             }
 
+            // Campaign 1 Form Load
             const c1DocInput = document.getElementById('c1_doc_name');
-            c1DocInput.value = d.c1_doc_name || '';
-            c1DocInput.disabled = isLocked;
+            if (c1DocInput) {
+                c1DocInput.value = d.c1_doc_name || '';
+                c1DocInput.disabled = isLocked;
+            }
 
             const c1DocRpl = document.getElementById('c1_doc_rpl');
-            c1DocRpl.value = d.c1_doc_rpl || '';
-            c1DocRpl.disabled = isLocked;
-            updateRplBadgeState(c1DocRpl, 'c1_doc_rpl_badge');
+            if (c1DocRpl) {
+                c1DocRpl.value = d.c1_doc_rpl || '';
+                c1DocRpl.disabled = isLocked;
+                updateRplBadgeState(c1DocRpl, 'c1_doc_rpl_badge');
+            }
 
             ['m1', 'm2', 'm3', 'm4'].forEach(m => {
                 const sw = d[`c1_${m}_sweater`] || '';
@@ -1338,51 +1321,55 @@ html_template = """<!DOCTYPE html>
                 const swSel = document.getElementById(`c1_${m}_sweater`);
                 const szSel = document.getElementById(`c1_${m}_size`);
                 
-                swSel.value = sw;
-                swSel.disabled = isLocked;
+                if (swSel) {
+                    swSel.value = sw;
+                    swSel.disabled = isLocked;
+                }
                 updateSizeOptionsForSelect(`c1_${m}_sweater`, `c1_${m}_size`, sz);
-                szSel.disabled = isLocked;
+                if (szSel) szSel.disabled = isLocked;
                 updateSlotImagePreview(`c1_${m}_img_preview`, sw);
                 updateSweaterSlotIndicator(`c1_${m}`);
             });
 
-            ['d1', 'd2', 'd3', 'd4'].forEach(d_item => {
+            if (d.c1_m4_sweater || d.c1_m4_size) {
+                showC1Sweater4(false);
+            } else {
+                hideC1Sweater4ViewOnly();
+            }
+
+            // Campaign 2 Form Load (3 Doctors)
+            ['d1', 'd2', 'd3'].forEach(d_item => {
                 const dNameInput = document.getElementById(`c2_${d_item}_name`);
-                dNameInput.value = d[`c2_${d_item}_name`] || '';
-                dNameInput.disabled = isLocked;
+                if (dNameInput) {
+                    dNameInput.value = d[`c2_${d_item}_name`] || '';
+                    dNameInput.disabled = isLocked;
+                }
 
                 const dRplInput = document.getElementById(`c2_${d_item}_rpl`);
-                dRplInput.value = d[`c2_${d_item}_rpl`] || '';
-                dRplInput.disabled = isLocked;
-                updateRplBadgeState(dRplInput, `c2_${d_item}_rpl_badge`);
+                if (dRplInput) {
+                    dRplInput.value = d[`c2_${d_item}_rpl`] || '';
+                    dRplInput.disabled = isLocked;
+                    updateRplBadgeState(dRplInput, `c2_${d_item}_rpl_badge`);
+                }
 
                 const sw = d[`c2_${d_item}_sweater`] || '';
                 const sz = d[`c2_${d_item}_size`] || '';
                 const swSel = document.getElementById(`c2_${d_item}_sweater`);
                 const szSel = document.getElementById(`c2_${d_item}_size`);
 
-                swSel.value = sw;
-                swSel.disabled = isLocked;
+                if (swSel) {
+                    swSel.value = sw;
+                    swSel.disabled = isLocked;
+                }
                 updateSizeOptionsForSelect(`c2_${d_item}_sweater`, `c2_${d_item}_size`, sz);
-                szSel.disabled = isLocked;
+                if (szSel) szSel.disabled = isLocked;
                 updateSlotImagePreview(`c2_${d_item}_img_preview`, sw);
                 updateSweaterSlotIndicator(`c2_${d_item}`);
             });
 
-            r.territories.forEach((_, tabIdx) => {
-                const btn = document.getElementById(`terr-tab-btn-${tabIdx}`);
-                if (btn) {
-                    if (tabIdx === idx) {
-                        btn.className = 'w-full text-left p-3 rounded-2xl text-xs font-bold transition flex items-center justify-between border bg-orange-500 text-white border-orange-500 shadow-md';
-                    } else {
-                        btn.className = 'w-full text-left p-3 rounded-2xl text-xs font-bold transition flex items-center justify-between border bg-slate-50 hover:bg-slate-100 text-slate-700 border-slate-200';
-                    }
-                }
-            });
-
             if (shouldScroll) {
                 const bannerEl = document.getElementById('active-territory-banner-card');
-                if (bannerEl) {
+                if (bannerEl && window.innerWidth < 1024) {
                     bannerEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 }
             }
@@ -2404,7 +2391,7 @@ html_template = """<!DOCTYPE html>
                     "Size 3": d.c1_m3_size || '',
                     "Sweater 4": d.c1_m4_sweater || '',
                     "Size 4": d.c1_m4_size || '',
-                    "Status": (d.c1_doc_name && d.c1_doc_rpl && String(d.c1_doc_rpl).length === 6 && d.c1_m1_sweater && d.c1_m1_size && d.c1_m2_sweater && d.c1_m2_size && d.c1_m3_sweater && d.c1_m3_size && d.c1_m4_sweater && d.c1_m4_size) ? "Complete" : (d.c1_doc_name || d.c1_doc_rpl || d.c1_m1_sweater ? "In Progress" : "Not Started")
+                    "Status": (d.c1_doc_name && d.c1_doc_rpl && String(d.c1_doc_rpl).length === 6 && d.c1_m1_sweater && d.c1_m1_size && d.c1_m2_sweater && d.c1_m2_size && d.c1_m3_sweater && d.c1_m3_size && (!d.c1_m4_sweater || (d.c1_m4_sweater && d.c1_m4_size))) ? "Complete" : (d.c1_doc_name || d.c1_doc_rpl || d.c1_m1_sweater ? "In Progress" : "Not Started")
                 });
 
                 c2Rows.push({
@@ -2426,11 +2413,11 @@ html_template = """<!DOCTYPE html>
                     "Doctor 3 RPL ID": d.c2_d3_rpl || '',
                     "Sweater 3": d.c2_d3_sweater || '',
                     "Size 3": d.c2_d3_size || '',
-                    "Doctor 4 Name": d.c2_d4_name || '',
-                    "Doctor 4 RPL ID": d.c2_d4_rpl || '',
-                    "Sweater 4": d.c2_d4_sweater || '',
-                    "Size 4": d.c2_d4_size || '',
-                    "Status": (d.c2_d1_name && d.c2_d1_rpl && String(d.c2_d1_rpl).length === 6 && d.c2_d1_sweater && d.c2_d1_size && d.c2_d2_name && d.c2_d2_rpl && String(d.c2_d2_rpl).length === 6 && d.c2_d2_sweater && d.c2_d2_size && d.c2_d3_name && d.c2_d3_rpl && String(d.c2_d3_rpl).length === 6 && d.c2_d3_sweater && d.c2_d3_size && d.c2_d4_name && d.c2_d4_rpl && String(d.c2_d4_rpl).length === 6 && d.c2_d4_sweater && d.c2_d4_size) ? "Complete" : (d.c2_d1_name || d.c2_d1_rpl || d.c2_d1_sweater || d.c2_d2_name || d.c2_d2_rpl || d.c2_d3_name || d.c2_d4_name ? "In Progress" : "Not Started")
+                    "Doctor 4 Name": '',
+                    "Doctor 4 RPL ID": '',
+                    "Sweater 4": '',
+                    "Size 4": '',
+                    "Status": (d.c2_d1_name && d.c2_d1_rpl && String(d.c2_d1_rpl).length === 6 && d.c2_d1_sweater && d.c2_d1_size && d.c2_d2_name && d.c2_d2_rpl && String(d.c2_d2_rpl).length === 6 && d.c2_d2_sweater && d.c2_d2_size && d.c2_d3_name && d.c2_d3_rpl && String(d.c2_d3_rpl).length === 6 && d.c2_d3_sweater && d.c2_d3_size) ? "Complete" : (d.c2_d1_name || d.c2_d1_rpl || d.c2_d1_sweater || d.c2_d2_name || d.c2_d3_name ? "In Progress" : "Not Started")
                 });
             });
 
