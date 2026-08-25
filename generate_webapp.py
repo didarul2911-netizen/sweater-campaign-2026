@@ -118,7 +118,7 @@ html_template = """<!DOCTYPE html>
                 <div class="flex items-center gap-2 flex-shrink-0">
                     <button onclick="openCatalogModal()" class="px-2.5 sm:px-3.5 py-1.5 bg-orange-50 hover:bg-orange-100 text-orange-800 border border-orange-200 rounded-xl text-xs font-bold flex items-center gap-1.5 transition shadow-sm active:scale-95 whitespace-nowrap">
                         <i class="fa-solid fa-vest text-orange-600"></i>
-                        <span class="hidden xs:inline">Catalogue & Sizes</span>
+                        <span class="hidden xs:inline">Catalogue & Measurement</span>
                         <span class="xs:hidden">Catalog</span>
                     </button>
                     <div id="header-admin-btn-container">
@@ -682,7 +682,13 @@ html_template = """<!DOCTYPE html>
                         <p class="text-[10px] sm:text-xs text-slate-500">Lubnan Trade Consortium Ltd. (Richman / Lubnan)</p>
                     </div>
                 </div>
-                <button onclick="closeCatalogModal()" class="w-8 h-8 rounded-full bg-white border border-slate-300 text-slate-600 hover:bg-slate-100 flex items-center justify-center transition"><i class="fa-solid fa-xmark text-sm"></i></button>
+                <div class="flex items-center gap-2">
+                    <button onclick="downloadCataloguePdf()" class="px-3 py-1.5 bg-orange-500 hover:bg-orange-600 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-sm transition active:scale-95">
+                        <i class="fa-solid fa-file-pdf"></i>
+                        <span>Download PDF</span>
+                    </button>
+                    <button onclick="closeCatalogModal()" class="w-8 h-8 rounded-full bg-white border border-slate-300 text-slate-600 hover:bg-slate-100 flex items-center justify-center transition"><i class="fa-solid fa-xmark text-sm"></i></button>
+                </div>
             </div>
                         <div class="p-4 sm:p-6 overflow-y-auto custom-scrollbar space-y-6">
                 <!-- 5 Sweater Image Cards -->
@@ -1467,56 +1473,59 @@ html_template = """<!DOCTYPE html>
             const t = r.territories[activeTerritoryIndex];
             const terrCode = String(t.sap_territory_code);
 
-            const terrData = {
-                c1_doc_name: document.getElementById('c1_doc_name').value.trim(),
-                c1_doc_rpl: document.getElementById('c1_doc_rpl').value.trim(),
-                c1_m1_sweater: document.getElementById('c1_m1_sweater').value,
-                c1_m1_size: document.getElementById('c1_m1_size').value,
-                c1_m2_sweater: document.getElementById('c1_m2_sweater').value,
-                c1_m2_size: document.getElementById('c1_m2_size').value,
-                c1_m3_sweater: document.getElementById('c1_m3_sweater').value,
-                c1_m3_size: document.getElementById('c1_m3_size').value,
-                c1_m4_sweater: document.getElementById('c1_m4_sweater').value,
-                c1_m4_size: document.getElementById('c1_m4_size').value,
+            const isM4Visible = !document.getElementById('c1_m4_container')?.classList.contains('hidden');
 
-                c2_d1_name: document.getElementById('c2_d1_name').value.trim(),
-                c2_d1_rpl: document.getElementById('c2_d1_rpl').value.trim(),
-                c2_d1_sweater: document.getElementById('c2_d1_sweater').value,
-                c2_d1_size: document.getElementById('c2_d1_size').value,
-                c2_d2_name: document.getElementById('c2_d2_name').value.trim(),
-                c2_d2_rpl: document.getElementById('c2_d2_rpl').value.trim(),
-                c2_d2_sweater: document.getElementById('c2_d2_sweater').value,
-                c2_d2_size: document.getElementById('c2_d2_size').value,
-                c2_d3_name: document.getElementById('c2_d3_name').value.trim(),
-                c2_d3_rpl: document.getElementById('c2_d3_rpl').value.trim(),
-                c2_d3_sweater: document.getElementById('c2_d3_sweater').value,
-                c2_d3_size: document.getElementById('c2_d3_size').value,
-                c2_d4_name: document.getElementById('c2_d4_name').value.trim(),
-                c2_d4_rpl: document.getElementById('c2_d4_rpl').value.trim(),
-                c2_d4_sweater: document.getElementById('c2_d4_sweater').value,
-                c2_d4_size: document.getElementById('c2_d4_size').value,
+            const terrData = {
+                c1_doc_name: document.getElementById('c1_doc_name')?.value.trim() || '',
+                c1_doc_rpl: document.getElementById('c1_doc_rpl')?.value.trim() || '',
+                c1_m1_sweater: document.getElementById('c1_m1_sweater')?.value || '',
+                c1_m1_size: document.getElementById('c1_m1_size')?.value || '',
+                c1_m2_sweater: document.getElementById('c1_m2_sweater')?.value || '',
+                c1_m2_size: document.getElementById('c1_m2_size')?.value || '',
+                c1_m3_sweater: document.getElementById('c1_m3_sweater')?.value || '',
+                c1_m3_size: document.getElementById('c1_m3_size')?.value || '',
+                c1_m4_sweater: isM4Visible ? (document.getElementById('c1_m4_sweater')?.value || '') : '',
+                c1_m4_size: isM4Visible ? (document.getElementById('c1_m4_size')?.value || '') : '',
+
+                c2_d1_name: document.getElementById('c2_d1_name')?.value.trim() || '',
+                c2_d1_rpl: document.getElementById('c2_d1_rpl')?.value.trim() || '',
+                c2_d1_sweater: document.getElementById('c2_d1_sweater')?.value || '',
+                c2_d1_size: document.getElementById('c2_d1_size')?.value || '',
+
+                c2_d2_name: document.getElementById('c2_d2_name')?.value.trim() || '',
+                c2_d2_rpl: document.getElementById('c2_d2_rpl')?.value.trim() || '',
+                c2_d2_sweater: document.getElementById('c2_d2_sweater')?.value || '',
+                c2_d2_size: document.getElementById('c2_d2_size')?.value || '',
+
+                c2_d3_name: document.getElementById('c2_d3_name')?.value.trim() || '',
+                c2_d3_rpl: document.getElementById('c2_d3_rpl')?.value.trim() || '',
+                c2_d3_sweater: document.getElementById('c2_d3_sweater')?.value || '',
+                c2_d3_size: document.getElementById('c2_d3_size')?.value || '',
+
+                c2_d4_name: '',
+                c2_d4_rpl: '',
+                c2_d4_sweater: '',
+                c2_d4_size: ''
             };
 
             store[terrCode] = terrData;
             localStorage.setItem('EXIUM_SWEATER_STORE', JSON.stringify(store));
 
-            ['c1_m1', 'c1_m2', 'c1_m3', 'c1_m4', 'c2_d1', 'c2_d2', 'c2_d3', 'c2_d4'].forEach(p => updateSweaterSlotIndicator(p));
+            ['c1_m1', 'c1_m2', 'c1_m3', 'c1_m4', 'c2_d1', 'c2_d2', 'c2_d3'].forEach(p => updateSweaterSlotIndicator(p));
+            updateTerritorySlotCheckBadges(terrData);
 
             const status = getTerritoryStatus(terrData);
             const statusBadge = document.getElementById('current-territory-status');
-            statusBadge.textContent = status;
-            statusBadge.className = `text-[9px] sm:text-[10px] font-bold px-2 py-0.2 rounded-full ${
-                status === 'Complete' ? 'bg-emerald-500 text-slate-950 font-black' :
-                status === 'In Progress' ? 'bg-amber-400 text-slate-950 font-bold' :
-                'bg-white/10 text-slate-200 border border-white/20'
-            }`;
+            if (statusBadge) {
+                statusBadge.textContent = status;
+                statusBadge.className = `text-[10px] sm:text-xs font-black px-3 py-1 rounded-full ${
+                    status === 'Complete' ? 'bg-emerald-500 text-slate-950 font-black' :
+                    status === 'In Progress' ? 'bg-amber-400 text-slate-950 font-black' :
+                    'bg-white/10 text-slate-200 border border-white/20'
+                }`;
+            }
 
-            let completedCount = 0;
-            r.territories.forEach(ter => {
-                if (getTerritoryStatus(store[String(ter.sap_territory_code)]) === 'Complete') completedCount++;
-            });
-            document.getElementById('region-progress-badge').textContent = `${completedCount}/${r.territories.length} Done`;
-            
+            renderTerritoryTabs();
             triggerAutoSync();
         }
 
@@ -1637,6 +1646,48 @@ html_template = """<!DOCTYPE html>
 
         function closeImageLightbox() {
             document.getElementById('image-lightbox-modal').classList.add('hidden');
+        }
+
+        
+        function downloadCataloguePdf() {
+            const printWin = window.open('', '_blank');
+            const catContent = document.getElementById('catalog-modal')?.querySelector('.max-w-4xl')?.innerHTML || '';
+            
+            printWin.document.write(`
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>Exium MUPS - Sweater Designs Catalogue and Measurement Specification</title>
+                    <script src="https://cdn.tailwindcss.com"></script>
+                    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+                    <style>
+                        body { font-family: 'Plus Jakarta Sans', sans-serif; padding: 20px; background: #fff; }
+                        @media print {
+                            button { display: none !important; }
+                            @page { margin: 1cm; size: A4 portrait; }
+                        }
+                    </style>
+                </head>
+                <body class="p-6">
+                    <div class="max-w-4xl mx-auto space-y-6">
+                        <div class="flex items-center justify-between border-b-2 border-slate-900 pb-4">
+                            <div>
+                                <h1 class="text-2xl font-black text-slate-900 tracking-tight">Exium MUPS - Sweater Designs & Size Specifications</h1>
+                                <p class="text-xs text-slate-600 font-bold">Lubnan Trade Consortium Ltd. (Richman / Lubnan) &bull; Campaign 4Q'26</p>
+                            </div>
+                            <button onclick="window.print()" class="px-4 py-2 bg-orange-500 text-white font-bold rounded-xl text-xs shadow">Print / Save as PDF</button>
+                        </div>
+                        ${catContent}
+                    </div>
+                    <script>
+                        window.onload = function() {
+                            setTimeout(() => { window.print(); }, 400);
+                        };
+                    </script>
+                </body>
+                </html>
+            `);
+            printWin.document.close();
         }
 
         function openCatalogModal() {
