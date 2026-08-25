@@ -61,9 +61,9 @@ function restoreHeaders() {
   if (sheet2) {
     sheet2.getRange("A1:F1").merge().setValue("TERRITORY INFORMATION (EXIUM FIELD FORCE LIST)")
       .setBackground("#1E293B").setFontColor("#FFFFFF").setFontWeight("bold").setHorizontalAlignment("center").setVerticalAlignment("middle");
-    sheet2.getRange("G1:V1").merge().setValue("CAMPAIGN 2: CORE DOCTOR MAXIMIZATION (1 SWEATER / DOCTOR - 4 DOCTORS / TERRITORY)")
+    sheet2.getRange("G1:R1").merge().setValue("CAMPAIGN 2: CORE DOCTOR MAXIMIZATION (1 SWEATER / DOCTOR - 3 DOCTORS / TERRITORY)")
       .setBackground("#6B21A8").setFontColor("#FFFFFF").setFontWeight("bold").setHorizontalAlignment("center").setVerticalAlignment("middle");
-    sheet2.getRange("W1").setValue("STATUS")
+    sheet2.getRange("S1").setValue("STATUS")
       .setBackground("#047857").setFontColor("#FFFFFF").setFontWeight("bold").setHorizontalAlignment("center").setVerticalAlignment("middle");
 
     var h2 = [
@@ -71,7 +71,6 @@ function restoreHeaders() {
       "Doctor 1 Name", "Doctor 1 RPL ID", "Sweater 1", "Size 1",
       "Doctor 2 Name", "Doctor 2 RPL ID", "Sweater 2", "Size 2",
       "Doctor 3 Name", "Doctor 3 RPL ID", "Sweater 3", "Size 3",
-      "Doctor 4 Name", "Doctor 4 RPL ID", "Sweater 4", "Size 4",
       "Territory Status"
     ];
     sheet2.getRange(2, 1, 1, h2.length).setValues([h2])
@@ -114,10 +113,10 @@ function setupSheets() {
     for (var j = 0; j < baseTerritories.length; j++) {
       var b2 = baseTerritories[j];
       var rNum2 = j + 3;
-      var f2 = '=IF(AND(G' + rNum2 + '<>"",LEN(H' + rNum2 + ')=6,I' + rNum2 + '<>"",J' + rNum2 + '<>"",K' + rNum2 + '<>"",LEN(L' + rNum2 + ')=6,M' + rNum2 + '<>"",N' + rNum2 + '<>"",O' + rNum2 + '<>"",LEN(P' + rNum2 + ')=6,Q' + rNum2 + '<>"",R' + rNum2 + '<>"",S' + rNum2 + '<>"",LEN(T' + rNum2 + ')=6,U' + rNum2 + '<>"",V' + rNum2 + '<>""), "Complete", IF(OR(G' + rNum2 + '<>"",H' + rNum2 + '<>"",I' + rNum2 + '<>"",K' + rNum2 + '<>"",L' + rNum2 + '<>"",M' + rNum2 + '<>"",O' + rNum2 + '<>"",P' + rNum2 + '<>"",Q' + rNum2 + '<>"",S' + rNum2 + '<>"",T' + rNum2 + '<>"",U' + rNum2 + '<>""), "In Progress", "Not Started"))';
-      rows2.push([b2[0], b2[1], b2[2], b2[3], b2[4], b2[5], "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", f2]);
+      var f2 = '=IF(AND(G' + rNum2 + '<>"",LEN(H' + rNum2 + ')=6,I' + rNum2 + '<>"",J' + rNum2 + '<>"",K' + rNum2 + '<>"",LEN(L' + rNum2 + ')=6,M' + rNum2 + '<>"",N' + rNum2 + '<>"",O' + rNum2 + '<>"",LEN(P' + rNum2 + ')=6,Q' + rNum2 + '<>"",R' + rNum2 + '<>""), "Complete", IF(OR(G' + rNum2 + '<>"",H' + rNum2 + '<>"",I' + rNum2 + '<>"",K' + rNum2 + '<>"",L' + rNum2 + '<>"",M' + rNum2 + '<>"",O' + rNum2 + '<>"",P' + rNum2 + '<>"",Q' + rNum2 + '<>""), "In Progress", "Not Started"))';
+      rows2.push([b2[0], b2[1], b2[2], b2[3], b2[4], b2[5], "", "", "", "", "", "", "", "", "", "", "", "", f2]);
     }
-    sheet2.getRange(3, 1, rows2.length, 23).setValues(rows2);
+    sheet2.getRange(3, 1, rows2.length, 19).setValues(rows2);
   }
 }
 
@@ -185,7 +184,7 @@ function doGet(e) {
     if (sheet2) {
       var lr2 = sheet2.getLastRow();
       if (lr2 > 2) {
-        var v2 = sheet2.getRange(3, 1, lr2 - 2, 22).getValues();
+        var v2 = sheet2.getRange(3, 1, lr2 - 2, 18).getValues();
         for (var j = 0; j < v2.length; j++) {
           var code2 = String(v2[j][4]).trim();
           if (code2) {
@@ -202,10 +201,6 @@ function doGet(e) {
             var d3_rpl = String(v2[j][15] || "").trim();
             var d3_sw = String(v2[j][16] || "").trim();
             var d3_sz = String(v2[j][17] || "").trim();
-            var d4_name = String(v2[j][18] || "").trim();
-            var d4_rpl = String(v2[j][19] || "").trim();
-            var d4_sw = String(v2[j][20] || "").trim();
-            var d4_sz = String(v2[j][21] || "").trim();
 
             store[code2].c2_d1_name = d1_name;
             store[code2].c2_d1_rpl = d1_rpl;
@@ -219,10 +214,10 @@ function doGet(e) {
             store[code2].c2_d3_rpl = d3_rpl;
             store[code2].c2_d3_sweater = d3_sw;
             store[code2].c2_d3_size = d3_sz;
-            store[code2].c2_d4_name = d4_name;
-            store[code2].c2_d4_rpl = d4_rpl;
-            store[code2].c2_d4_sweater = d4_sw;
-            store[code2].c2_d4_size = d4_sz;
+            store[code2].c2_d4_name = "";
+            store[code2].c2_d4_rpl = "";
+            store[code2].c2_d4_sweater = "";
+            store[code2].c2_d4_size = "";
           }
         }
       }
@@ -321,8 +316,8 @@ function updateTerritoryInSheets(ss, terrCode, d) {
       var codes2 = sheet2.getRange(3, 5, lr2 - 2, 1).getValues();
       for (var j = 0; j < codes2.length; j++) {
         if (String(codes2[j][0]).trim() === String(terrCode).trim()) {
-          var v2 = [d.c2_d1_name||"", d.c2_d1_rpl||"", d.c2_d1_sweater||"", d.c2_d1_size||"", d.c2_d2_name||"", d.c2_d2_rpl||"", d.c2_d2_sweater||"", d.c2_d2_size||"", d.c2_d3_name||"", d.c2_d3_rpl||"", d.c2_d3_sweater||"", d.c2_d3_size||"", d.c2_d4_name||"", d.c2_d4_rpl||"", d.c2_d4_sweater||"", d.c2_d4_size||""];
-          sheet2.getRange(j + 3, 7, 1, 16).setValues([v2]);
+          var v2 = [d.c2_d1_name||"", d.c2_d1_rpl||"", d.c2_d1_sweater||"", d.c2_d1_size||"", d.c2_d2_name||"", d.c2_d2_rpl||"", d.c2_d2_sweater||"", d.c2_d2_size||"", d.c2_d3_name||"", d.c2_d3_rpl||"", d.c2_d3_sweater||"", d.c2_d3_size||""];
+          sheet2.getRange(j + 3, 7, 1, 12).setValues([v2]);
           break;
         }
       }
@@ -355,8 +350,8 @@ function clearRegionSheetData(ss, regCode) {
       var rCodes2 = sheet2.getRange(3, 2, lr2 - 2, 1).getValues();
       for (var j = 0; j < rCodes2.length; j++) {
         if (String(rCodes2[j][0]).trim() === String(regCode).trim()) {
-          var v2 = ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""];
-          sheet2.getRange(j + 3, 7, 1, 16).setValues([v2]);
+          var v2 = ["", "", "", "", "", "", "", "", "", "", "", ""];
+          sheet2.getRange(j + 3, 7, 1, 12).setValues([v2]);
         }
       }
     }
@@ -380,7 +375,7 @@ function clearAllSheetData(ss) {
   if (sheet2) {
     var lr2 = sheet2.getLastRow();
     if (lr2 > 2) {
-      sheet2.getRange(3, 7, lr2 - 2, 16).clearContent();
+      sheet2.getRange(3, 7, lr2 - 2, 12).clearContent();
     }
   }
 }
