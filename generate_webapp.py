@@ -339,11 +339,11 @@ html_template = """<!DOCTYPE html>
                             <div class="flex items-start sm:items-center gap-2.5 sm:gap-3 min-w-0">
                                 <div class="w-8 h-8 rounded-xl bg-white/10 flex items-center justify-center font-black text-sm flex-shrink-0">1</div>
                                 <div class="min-w-0">
-                                    <h4 class="text-xs sm:text-sm md:text-base font-black text-white leading-snug">Gyne Core Doctor Development (Family Package)</h4>
-                                    <p class="text-[10px] sm:text-xs text-teal-100/80">1 Doctor • 3 Sweaters standard (+ Optional 4th Sweater)</p>
+                                    <h4 class="text-xs sm:text-sm md:text-base font-black text-white leading-snug">Campaign 1: Gyne Core Doctor Development (Family Package)</h4>
+                                    <p class="text-[10px] sm:text-xs text-teal-100/80">1 Doctor • 3 Sweaters Standard (+ Optional 4th Sweater) per Territory</p>
                                 </div>
                             </div>
-                            <span id="c1-status-pill" class="px-2.5 py-1 rounded-full text-[10px] sm:text-xs font-bold bg-white/20 text-white backdrop-blur-sm self-start sm:self-auto flex-shrink-0">3 or 4 Sweaters / Terr</span>
+                            <span id="c1-status-pill" class="px-2.5 py-1 rounded-full text-[10px] sm:text-xs font-bold bg-white/20 text-white backdrop-blur-sm self-start sm:self-auto flex-shrink-0">3 or 4 Sweaters / Territory</span>
                         </div>
 
                         <div class="p-4 sm:p-6 space-y-4">
@@ -503,11 +503,11 @@ html_template = """<!DOCTYPE html>
                             <div class="flex items-start sm:items-center gap-2.5 sm:gap-3 min-w-0">
                                 <div class="w-8 h-8 rounded-xl bg-white/10 flex items-center justify-center font-black text-sm flex-shrink-0">2</div>
                                 <div class="min-w-0">
-                                    <h4 class="text-xs sm:text-sm md:text-base font-black text-white leading-snug">Core Doctor Maximization (1 Sweater / Doctor)</h4>
-                                    <p class="text-[10px] sm:text-xs text-purple-100/80">3 Core Doctors per territory • 1 sweater per doctor</p>
+                                    <h4 class="text-xs sm:text-sm md:text-base font-black text-white leading-snug">Campaign 2: Core Doctor Maximization (1 Sweater / Doctor)</h4>
+                                    <p class="text-[10px] sm:text-xs text-purple-100/80">3 Core Doctors per Territory • 1 Sweater per Doctor</p>
                                 </div>
                             </div>
-                            <span id="c2-status-pill" class="px-2.5 py-1 rounded-full text-[10px] sm:text-xs font-bold bg-white/20 text-white backdrop-blur-sm self-start sm:self-auto flex-shrink-0">3 Doctors / Terr</span>
+                            <span id="c2-status-pill" class="px-2.5 py-1 rounded-full text-[10px] sm:text-xs font-bold bg-white/20 text-white backdrop-blur-sm self-start sm:self-auto flex-shrink-0">3 Doctors / Territory</span>
                         </div>
 
                         <div class="p-4 sm:p-6 space-y-4">
@@ -652,35 +652,35 @@ html_template = """<!DOCTYPE html>
 
     </main>
 
-    <!-- LIGHTBOX MODAL -->
+    <!-- LIGHTBOX MODAL WITH EMBEDDED MEASUREMENT TABLE -->
     <div id="lightbox-modal" class="fixed inset-0 z-50 bg-slate-950/90 backdrop-blur-md hidden flex items-center justify-center p-3 sm:p-6" onclick="closeLightbox()">
-        <div class="bg-slate-900 border border-slate-800 rounded-3xl shadow-2xl max-w-lg w-full overflow-hidden" onclick="event.stopPropagation()">
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl shadow-2xl max-w-lg w-full max-h-[95vh] flex flex-col overflow-hidden" onclick="event.stopPropagation()">
             <div class="p-4 border-b border-slate-800 flex items-center justify-between">
                 <div>
                     <h3 id="lightbox-title" class="font-black text-sm text-white">Sweater Design Preview</h3>
-                    <p id="lightbox-subtitle" class="text-xs text-orange-400">Design Details</p>
+                    <p id="lightbox-subtitle" class="text-xs text-orange-400">Design Details & Exact Sizing</p>
                 </div>
                 <button onclick="closeLightbox()" class="w-8 h-8 rounded-full bg-slate-800 text-slate-400 hover:text-white flex items-center justify-center transition"><i class="fa-solid fa-xmark"></i></button>
             </div>
-            <div class="p-4 space-y-4">
-                <div class="aspect-[3/4] bg-slate-950 rounded-2xl overflow-hidden border border-slate-800 flex items-center justify-center relative">
+            <div class="p-4 overflow-y-auto custom-scrollbar space-y-4">
+                <div class="aspect-[3/4] max-h-72 mx-auto bg-slate-950 rounded-2xl overflow-hidden border border-slate-800 flex items-center justify-center relative">
                     <img id="lightbox-img" src="" alt="Sweater" class="w-full h-full object-cover">
                 </div>
-                <div id="lightbox-details" class="bg-slate-800/60 rounded-2xl p-3.5 text-xs space-y-1.5 border border-slate-700/50">
-                    <!-- Populated dynamically -->
+                <div id="lightbox-details" class="bg-slate-800/80 rounded-2xl p-3.5 text-xs space-y-2.5 border border-slate-700">
+                    <!-- Populated dynamically with specific size chart -->
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- CATALOGUE MODAL -->
+    <!-- CATALOGUE & SIZES MODAL -->
     <div id="catalog-modal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm hidden flex items-center justify-center p-3 sm:p-6" onclick="closeCatalogModal()">
-        <div class="bg-white border border-slate-200 rounded-3xl shadow-2xl max-w-4xl w-full max-h-[90vh] flex flex-col overflow-hidden" onclick="event.stopPropagation()">
+        <div class="bg-white border border-slate-200 rounded-3xl shadow-2xl max-w-4xl w-full max-h-[92vh] flex flex-col overflow-hidden" onclick="event.stopPropagation()">
             <div class="px-5 py-4 border-b border-slate-200 flex items-center justify-between bg-slate-50">
                 <div class="flex items-center gap-2.5">
                     <div class="w-8 h-8 rounded-xl bg-orange-500 text-white flex items-center justify-center font-bold text-sm shadow-sm"><i class="fa-solid fa-vest"></i></div>
                     <div>
-                        <h3 class="font-bold text-xs sm:text-sm text-slate-900">Sweater Designs Catalogue & Size Specification</h3>
+                        <h3 class="font-black text-xs sm:text-sm text-slate-900">Sweater Designs Catalogue & Size Measurement Specifications</h3>
                         <p class="text-[10px] sm:text-xs text-slate-500">Lubnan Trade Consortium Ltd. (Richman / Lubnan)</p>
                     </div>
                 </div>
@@ -688,48 +688,56 @@ html_template = """<!DOCTYPE html>
             </div>
             <div class="p-4 sm:p-6 overflow-y-auto custom-scrollbar space-y-6">
                 <!-- 5 Sweater Image Cards -->
-                <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
-                    <div onclick="openImageLightbox('01')" class="bg-slate-50 border border-slate-200 hover:border-orange-400 rounded-2xl p-2.5 space-y-2 cursor-pointer transition group shadow-sm">
-                        <div class="aspect-[3/4] bg-white rounded-xl overflow-hidden border border-slate-200 relative"><img src="###B64_01###" onerror="this.src='Image/01 (Men).jpeg'" alt="01" class="w-full h-full object-cover"><span class="absolute top-1.5 left-1.5 bg-slate-900/90 text-white text-[10px] font-black px-2 py-0.5 rounded-md">01</span></div>
-                        <div><span class="text-[9px] font-bold uppercase text-orange-700 bg-orange-50 px-1.5 py-0.5 rounded">Men's</span><h4 class="text-xs font-black text-slate-900 mt-1 leading-tight">V-Neck (Grey)</h4><p class="text-[10px] text-slate-500">Sizes: S - XXL</p></div>
-                    </div>
-                    <div onclick="openImageLightbox('02')" class="bg-slate-50 border border-slate-200 hover:border-orange-400 rounded-2xl p-2.5 space-y-2 cursor-pointer transition group shadow-sm">
-                        <div class="aspect-[3/4] bg-white rounded-xl overflow-hidden border border-slate-200 relative"><img src="###B64_02###" onerror="this.src='Image/02 (Men).jpeg'" alt="02" class="w-full h-full object-cover"><span class="absolute top-1.5 left-1.5 bg-slate-900/90 text-white text-[10px] font-black px-2 py-0.5 rounded-md">02</span></div>
-                        <div><span class="text-[9px] font-bold uppercase text-orange-700 bg-orange-50 px-1.5 py-0.5 rounded">Men's</span><h4 class="text-xs font-black text-slate-900 mt-1 leading-tight">V-Neck (Navy)</h4><p class="text-[10px] text-slate-500">Sizes: S - XXL</p></div>
-                    </div>
-                    <div onclick="openImageLightbox('03')" class="bg-slate-50 border border-slate-200 hover:border-orange-400 rounded-2xl p-2.5 space-y-2 cursor-pointer transition group shadow-sm">
-                        <div class="aspect-[3/4] bg-white rounded-xl overflow-hidden border border-slate-200 relative"><img src="###B64_03###" onerror="this.src='Image/03 (Men).jpeg'" alt="03" class="w-full h-full object-cover"><span class="absolute top-1.5 left-1.5 bg-slate-900/90 text-white text-[10px] font-black px-2 py-0.5 rounded-md">03</span></div>
-                        <div><span class="text-[9px] font-bold uppercase text-orange-700 bg-orange-50 px-1.5 py-0.5 rounded">Men's</span><h4 class="text-xs font-black text-slate-900 mt-1 leading-tight">V-Neck (Cream)</h4><p class="text-[10px] text-slate-500">Sizes: S - XXL</p></div>
-                    </div>
-                    <div onclick="openImageLightbox('04')" class="bg-slate-50 border border-slate-200 hover:border-orange-400 rounded-2xl p-2.5 space-y-2 cursor-pointer transition group shadow-sm">
-                        <div class="aspect-[3/4] bg-white rounded-xl overflow-hidden border border-slate-200 relative"><img src="###B64_04###" onerror="this.src='Image/04 (Female).jpeg'" alt="04" class="w-full h-full object-cover"><span class="absolute top-1.5 left-1.5 bg-slate-900/90 text-white text-[10px] font-black px-2 py-0.5 rounded-md">04</span></div>
-                        <div><span class="text-[9px] font-bold uppercase text-purple-700 bg-purple-50 px-1.5 py-0.5 rounded">Women's</span><h4 class="text-xs font-black text-slate-900 mt-1 leading-tight">Short Cardigan</h4><p class="text-[10px] text-slate-500">Sizes: XS - XL</p></div>
-                    </div>
-                    <div onclick="openImageLightbox('05')" class="bg-slate-50 border border-slate-200 hover:border-orange-400 rounded-2xl p-2.5 space-y-2 cursor-pointer transition group shadow-sm col-span-2 sm:col-span-1">
-                        <div class="aspect-[3/4] bg-white rounded-xl overflow-hidden border border-slate-200 relative"><img src="###B64_05###" onerror="this.src='Image/05 (Female).jpeg'" alt="05" class="w-full h-full object-cover"><span class="absolute top-1.5 left-1.5 bg-slate-900/90 text-white text-[10px] font-black px-2 py-0.5 rounded-md">05</span></div>
-                        <div><span class="text-[9px] font-bold uppercase text-purple-700 bg-purple-50 px-1.5 py-0.5 rounded">Women's</span><h4 class="text-xs font-black text-slate-900 mt-1 leading-tight">Semi Long Cardigan</h4><p class="text-[10px] text-slate-500">Sizes: S - XXL</p></div>
+                <div>
+                    <h4 class="text-xs font-black uppercase tracking-wider text-slate-700 mb-3 flex items-center gap-2">
+                        <i class="fa-solid fa-shirt text-orange-500"></i>
+                        <span>Available 5 Sweater Designs (Click to Enlarge)</span>
+                    </h4>
+                    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
+                        <div onclick="openImageLightbox('01')" class="bg-slate-50 border border-slate-200 hover:border-orange-400 rounded-2xl p-2.5 space-y-2 cursor-pointer transition group shadow-sm">
+                            <div class="aspect-[3/4] bg-white rounded-xl overflow-hidden border border-slate-200 relative"><img src="###B64_01###" onerror="this.src='Image/01 (Men).jpeg'" alt="01" class="w-full h-full object-cover"><span class="absolute top-1.5 left-1.5 bg-slate-900/90 text-white text-[10px] font-black px-2 py-0.5 rounded-md">01</span></div>
+                            <div><span class="text-[9px] font-bold uppercase text-orange-700 bg-orange-50 px-1.5 py-0.5 rounded">Men's</span><h4 class="text-xs font-black text-slate-900 mt-1 leading-tight">V-Neck (Grey)</h4><p class="text-[10px] text-slate-500">Sizes: S - XXL</p></div>
+                        </div>
+                        <div onclick="openImageLightbox('02')" class="bg-slate-50 border border-slate-200 hover:border-orange-400 rounded-2xl p-2.5 space-y-2 cursor-pointer transition group shadow-sm">
+                            <div class="aspect-[3/4] bg-white rounded-xl overflow-hidden border border-slate-200 relative"><img src="###B64_02###" onerror="this.src='Image/02 (Men).jpeg'" alt="02" class="w-full h-full object-cover"><span class="absolute top-1.5 left-1.5 bg-slate-900/90 text-white text-[10px] font-black px-2 py-0.5 rounded-md">02</span></div>
+                            <div><span class="text-[9px] font-bold uppercase text-orange-700 bg-orange-50 px-1.5 py-0.5 rounded">Men's</span><h4 class="text-xs font-black text-slate-900 mt-1 leading-tight">V-Neck (Navy)</h4><p class="text-[10px] text-slate-500">Sizes: S - XXL</p></div>
+                        </div>
+                        <div onclick="openImageLightbox('03')" class="bg-slate-50 border border-slate-200 hover:border-orange-400 rounded-2xl p-2.5 space-y-2 cursor-pointer transition group shadow-sm">
+                            <div class="aspect-[3/4] bg-white rounded-xl overflow-hidden border border-slate-200 relative"><img src="###B64_03###" onerror="this.src='Image/03 (Men).jpeg'" alt="03" class="w-full h-full object-cover"><span class="absolute top-1.5 left-1.5 bg-slate-900/90 text-white text-[10px] font-black px-2 py-0.5 rounded-md">03</span></div>
+                            <div><span class="text-[9px] font-bold uppercase text-orange-700 bg-orange-50 px-1.5 py-0.5 rounded">Men's</span><h4 class="text-xs font-black text-slate-900 mt-1 leading-tight">V-Neck (Cream)</h4><p class="text-[10px] text-slate-500">Sizes: S - XXL</p></div>
+                        </div>
+                        <div onclick="openImageLightbox('04')" class="bg-slate-50 border border-slate-200 hover:border-orange-400 rounded-2xl p-2.5 space-y-2 cursor-pointer transition group shadow-sm">
+                            <div class="aspect-[3/4] bg-white rounded-xl overflow-hidden border border-slate-200 relative"><img src="###B64_04###" onerror="this.src='Image/04 (Female).jpeg'" alt="04" class="w-full h-full object-cover"><span class="absolute top-1.5 left-1.5 bg-slate-900/90 text-white text-[10px] font-black px-2 py-0.5 rounded-md">04</span></div>
+                            <div><span class="text-[9px] font-bold uppercase text-purple-700 bg-purple-50 px-1.5 py-0.5 rounded">Women's</span><h4 class="text-xs font-black text-slate-900 mt-1 leading-tight">Short Cardigan</h4><p class="text-[10px] text-slate-500">Sizes: XS - XL</p></div>
+                        </div>
+                        <div onclick="openImageLightbox('05')" class="bg-slate-50 border border-slate-200 hover:border-orange-400 rounded-2xl p-2.5 space-y-2 cursor-pointer transition group shadow-sm col-span-2 sm:col-span-1">
+                            <div class="aspect-[3/4] bg-white rounded-xl overflow-hidden border border-slate-200 relative"><img src="###B64_05###" onerror="this.src='Image/05 (Female).jpeg'" alt="05" class="w-full h-full object-cover"><span class="absolute top-1.5 left-1.5 bg-slate-900/90 text-white text-[10px] font-black px-2 py-0.5 rounded-md">05</span></div>
+                            <div><span class="text-[9px] font-bold uppercase text-purple-700 bg-purple-50 px-1.5 py-0.5 rounded">Women's</span><h4 class="text-xs font-black text-slate-900 mt-1 leading-tight">Semi Long Cardigan</h4><p class="text-[10px] text-slate-500">Sizes: S - XXL</p></div>
+                        </div>
                     </div>
                 </div>
 
-                <!-- DETAILED SIZE & MEASUREMENT SPECIFICATIONS -->
-                <div class="space-y-4 pt-2 border-t border-slate-200">
+                <!-- ============================================== -->
+                <!-- DETAILED SIZE & MEASUREMENT SPECIFICATIONS    -->
+                <!-- ============================================== -->
+                <div class="space-y-5 pt-4 border-t border-slate-200">
                     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                         <div>
                             <h4 class="text-sm sm:text-base font-black text-slate-900 flex items-center gap-2">
                                 <i class="fa-solid fa-ruler-combined text-orange-500"></i>
-                                <span>Sweater Size Measurement Chart (Inches)</span>
+                                <span>Sweater Size Measurement Chart (Inches & CM)</span>
                             </h4>
                             <p class="text-[11px] text-slate-500">Standard apparel measurement specifications by Lubnan Trade Consortium Ltd. (Richman / Lubnan)</p>
                         </div>
-                        <span class="text-[10px] font-bold bg-orange-100 text-orange-800 border border-orange-200 px-2.5 py-1 rounded-full self-start sm:self-auto">
-                            All Measurements in Inches (")
+                        <span class="text-[10px] font-black bg-orange-100 text-orange-800 border border-orange-200 px-3 py-1 rounded-full self-start sm:self-auto">
+                            Inches (") & CM Specifications
                         </span>
                     </div>
 
                     <!-- 1. Men's Sleeveless V-Neck Sweaters -->
                     <div class="bg-slate-50 rounded-2xl p-4 border border-slate-200 space-y-2.5">
                         <div class="flex items-center justify-between">
-                            <h5 class="text-xs font-black text-slate-900 flex items-center gap-1.5">
+                            <h5 class="text-xs sm:text-sm font-black text-slate-900 flex items-center gap-1.5">
                                 <span class="w-5 h-5 rounded-md bg-orange-500 text-white text-[10px] font-black flex items-center justify-center">M</span>
                                 <span>Men's Sleeveless V-Neck Sweaters (Designs: 01, 02, 03)</span>
                             </h5>
@@ -740,47 +748,53 @@ html_template = """<!DOCTYPE html>
                                 <thead class="bg-slate-900 text-white text-[11px] font-bold">
                                     <tr>
                                         <th class="p-2.5 text-left">Size</th>
-                                        <th class="p-2.5">Chest / Bust</th>
-                                        <th class="p-2.5">Body Length</th>
+                                        <th class="p-2.5">Chest (Inches)</th>
+                                        <th class="p-2.5">1/2 Chest (CM)</th>
+                                        <th class="p-2.5">Body Length (Inches / CM)</th>
                                         <th class="p-2.5">Shoulder</th>
                                         <th class="p-2.5 text-left">Recommended Body Build</th>
                                     </tr>
                                 </thead>
-                                <tbody class="divide-y divide-slate-100 font-medium">
+                                <tbody class="divide-y divide-slate-100 font-medium text-slate-800">
                                     <tr class="hover:bg-slate-50">
                                         <td class="p-2.5 text-left font-black text-orange-600">S</td>
-                                        <td class="p-2.5 font-bold text-slate-800">38"</td>
-                                        <td class="p-2.5">26"</td>
+                                        <td class="p-2.5 font-bold text-slate-900">38" (96 cm)</td>
+                                        <td class="p-2.5 font-semibold text-slate-700">48 cm</td>
+                                        <td class="p-2.5">26" (65 cm)</td>
                                         <td class="p-2.5">15"</td>
-                                        <td class="p-2.5 text-left text-slate-600">Slim / Lean Build</td>
+                                        <td class="p-2.5 text-left text-slate-600 font-normal">Slim / Lean Build</td>
                                     </tr>
                                     <tr class="hover:bg-slate-50">
                                         <td class="p-2.5 text-left font-black text-orange-600">M</td>
-                                        <td class="p-2.5 font-bold text-slate-800">40"</td>
-                                        <td class="p-2.5">27"</td>
+                                        <td class="p-2.5 font-bold text-slate-900">40" (100 cm)</td>
+                                        <td class="p-2.5 font-semibold text-slate-700">50 cm</td>
+                                        <td class="p-2.5">27" (67 cm)</td>
                                         <td class="p-2.5">16"</td>
-                                        <td class="p-2.5 text-left text-slate-600">Medium Build (Standard)</td>
+                                        <td class="p-2.5 text-left text-slate-600 font-normal">Medium Build (Standard)</td>
                                     </tr>
                                     <tr class="hover:bg-slate-50">
                                         <td class="p-2.5 text-left font-black text-orange-600">L</td>
-                                        <td class="p-2.5 font-bold text-slate-800">42"</td>
-                                        <td class="p-2.5">28"</td>
+                                        <td class="p-2.5 font-bold text-slate-900">42" (104 cm)</td>
+                                        <td class="p-2.5 font-semibold text-slate-700">52 cm</td>
+                                        <td class="p-2.5">28" (69 cm)</td>
                                         <td class="p-2.5">17"</td>
-                                        <td class="p-2.5 text-left text-slate-600">Standard Adult Fit</td>
+                                        <td class="p-2.5 text-left text-slate-600 font-normal">Standard Adult Fit</td>
                                     </tr>
                                     <tr class="hover:bg-slate-50">
                                         <td class="p-2.5 text-left font-black text-orange-600">XL</td>
-                                        <td class="p-2.5 font-bold text-slate-800">44"</td>
-                                        <td class="p-2.5">29"</td>
+                                        <td class="p-2.5 font-bold text-slate-900">44" (108 cm)</td>
+                                        <td class="p-2.5 font-semibold text-slate-700">54 cm</td>
+                                        <td class="p-2.5">29" (71 cm)</td>
                                         <td class="p-2.5">18"</td>
-                                        <td class="p-2.5 text-left text-slate-600">Plus / Comfort Fit</td>
+                                        <td class="p-2.5 text-left text-slate-600 font-normal">Plus / Comfort Fit</td>
                                     </tr>
                                     <tr class="hover:bg-slate-50">
                                         <td class="p-2.5 text-left font-black text-orange-600">XXL</td>
-                                        <td class="p-2.5 font-bold text-slate-800">46"</td>
-                                        <td class="p-2.5">30"</td>
+                                        <td class="p-2.5 font-bold text-slate-900">46" (112 cm)</td>
+                                        <td class="p-2.5 font-semibold text-slate-700">56 cm</td>
+                                        <td class="p-2.5">30" (73 cm)</td>
                                         <td class="p-2.5">19"</td>
-                                        <td class="p-2.5 text-left text-slate-600">Extra Comfort / Loose Fit</td>
+                                        <td class="p-2.5 text-left text-slate-600 font-normal">Extra Comfort / Loose Fit</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -800,21 +814,22 @@ html_template = """<!DOCTYPE html>
                             </div>
                             <div class="overflow-x-auto">
                                 <table class="w-full text-xs text-center border-collapse bg-white rounded-xl overflow-hidden border border-purple-200 shadow-sm">
-                                    <thead class="bg-purple-900 text-white text-[11px] font-bold">
+                                    <thead class="bg-purple-900 text-white text-[10px] font-bold">
                                         <tr>
                                             <th class="p-2 text-left">Size</th>
                                             <th class="p-2">Chest</th>
+                                            <th class="p-2">1/2 Chest</th>
                                             <th class="p-2">Length</th>
                                             <th class="p-2">Sleeve</th>
                                             <th class="p-2">Shoulder</th>
                                         </tr>
                                     </thead>
-                                    <tbody class="divide-y divide-purple-100 font-medium">
-                                        <tr class="hover:bg-purple-50/50"><td class="p-2 text-left font-black text-purple-700">XS</td><td class="p-2 font-bold">34"</td><td class="p-2">21"</td><td class="p-2">21.5"</td><td class="p-2">13.5"</td></tr>
-                                        <tr class="hover:bg-purple-50/50"><td class="p-2 text-left font-black text-purple-700">S</td><td class="p-2 font-bold">36"</td><td class="p-2">22"</td><td class="p-2">22"</td><td class="p-2">14"</td></tr>
-                                        <tr class="hover:bg-purple-50/50"><td class="p-2 text-left font-black text-purple-700">M</td><td class="p-2 font-bold">38"</td><td class="p-2">23"</td><td class="p-2">22.5"</td><td class="p-2">14.5"</td></tr>
-                                        <tr class="hover:bg-purple-50/50"><td class="p-2 text-left font-black text-purple-700">L</td><td class="p-2 font-bold">40"</td><td class="p-2">24"</td><td class="p-2">23"</td><td class="p-2">15"</td></tr>
-                                        <tr class="hover:bg-purple-50/50"><td class="p-2 text-left font-black text-purple-700">XL</td><td class="p-2 font-bold">42"</td><td class="p-2">25"</td><td class="p-2">23.5"</td><td class="p-2">15.5"</td></tr>
+                                    <tbody class="divide-y divide-purple-100 font-medium text-slate-800">
+                                        <tr class="hover:bg-purple-50/50"><td class="p-2 text-left font-black text-purple-700">XS</td><td class="p-2 font-bold">34" (88 cm)</td><td class="p-2">44 cm</td><td class="p-2">21" (60 cm)</td><td class="p-2">21.5"</td><td class="p-2">13.5"</td></tr>
+                                        <tr class="hover:bg-purple-50/50"><td class="p-2 text-left font-black text-purple-700">S</td><td class="p-2 font-bold">36" (92 cm)</td><td class="p-2">46 cm</td><td class="p-2">22" (62 cm)</td><td class="p-2">22"</td><td class="p-2">14"</td></tr>
+                                        <tr class="hover:bg-purple-50/50"><td class="p-2 text-left font-black text-purple-700">M</td><td class="p-2 font-bold">38" (96 cm)</td><td class="p-2">48 cm</td><td class="p-2">23" (64 cm)</td><td class="p-2">22.5"</td><td class="p-2">14.5"</td></tr>
+                                        <tr class="hover:bg-purple-50/50"><td class="p-2 text-left font-black text-purple-700">L</td><td class="p-2 font-bold">40" (100 cm)</td><td class="p-2">50 cm</td><td class="p-2">24" (66 cm)</td><td class="p-2">23"</td><td class="p-2">15"</td></tr>
+                                        <tr class="hover:bg-purple-50/50"><td class="p-2 text-left font-black text-purple-700">XL</td><td class="p-2 font-bold">42" (104 cm)</td><td class="p-2">52 cm</td><td class="p-2">25" (68 cm)</td><td class="p-2">23.5"</td><td class="p-2">15.5"</td></tr>
                                     </tbody>
                                 </table>
                             </div>
@@ -830,21 +845,22 @@ html_template = """<!DOCTYPE html>
                             </div>
                             <div class="overflow-x-auto">
                                 <table class="w-full text-xs text-center border-collapse bg-white rounded-xl overflow-hidden border border-purple-200 shadow-sm">
-                                    <thead class="bg-purple-900 text-white text-[11px] font-bold">
+                                    <thead class="bg-purple-900 text-white text-[10px] font-bold">
                                         <tr>
                                             <th class="p-2 text-left">Size</th>
                                             <th class="p-2">Chest</th>
+                                            <th class="p-2">1/2 Chest</th>
                                             <th class="p-2">Length</th>
                                             <th class="p-2">Sleeve</th>
                                             <th class="p-2">Shoulder</th>
                                         </tr>
                                     </thead>
-                                    <tbody class="divide-y divide-purple-100 font-medium">
-                                        <tr class="hover:bg-purple-50/50"><td class="p-2 text-left font-black text-purple-700">S</td><td class="p-2 font-bold">36"</td><td class="p-2">30"</td><td class="p-2">22"</td><td class="p-2">14"</td></tr>
-                                        <tr class="hover:bg-purple-50/50"><td class="p-2 text-left font-black text-purple-700">M</td><td class="p-2 font-bold">38"</td><td class="p-2">31"</td><td class="p-2">22.5"</td><td class="p-2">14.5"</td></tr>
-                                        <tr class="hover:bg-purple-50/50"><td class="p-2 text-left font-black text-purple-700">L</td><td class="p-2 font-bold">40"</td><td class="p-2">32"</td><td class="p-2">23"</td><td class="p-2">15"</td></tr>
-                                        <tr class="hover:bg-purple-50/50"><td class="p-2 text-left font-black text-purple-700">XL</td><td class="p-2 font-bold">42"</td><td class="p-2">33"</td><td class="p-2">23.5"</td><td class="p-2">15.5"</td></tr>
-                                        <tr class="hover:bg-purple-50/50"><td class="p-2 text-left font-black text-purple-700">XXL</td><td class="p-2 font-bold">44"</td><td class="p-2">34"</td><td class="p-2">24"</td><td class="p-2">16"</td></tr>
+                                    <tbody class="divide-y divide-purple-100 font-medium text-slate-800">
+                                        <tr class="hover:bg-purple-50/50"><td class="p-2 text-left font-black text-purple-700">S</td><td class="p-2 font-bold">36" (102 cm)</td><td class="p-2">51 cm</td><td class="p-2">30" (64 cm)</td><td class="p-2">22"</td><td class="p-2">14"</td></tr>
+                                        <tr class="hover:bg-purple-50/50"><td class="p-2 text-left font-black text-purple-700">M</td><td class="p-2 font-bold">38" (106 cm)</td><td class="p-2">53 cm</td><td class="p-2">31" (66 cm)</td><td class="p-2">22.5"</td><td class="p-2">14.5"</td></tr>
+                                        <tr class="hover:bg-purple-50/50"><td class="p-2 text-left font-black text-purple-700">L</td><td class="p-2 font-bold">40" (110 cm)</td><td class="p-2">55 cm</td><td class="p-2">32" (68 cm)</td><td class="p-2">23"</td><td class="p-2">15"</td></tr>
+                                        <tr class="hover:bg-purple-50/50"><td class="p-2 text-left font-black text-purple-700">XL</td><td class="p-2 font-bold">42" (114 cm)</td><td class="p-2">57 cm</td><td class="p-2">33" (70 cm)</td><td class="p-2">23.5"</td><td class="p-2">15.5"</td></tr>
+                                        <tr class="hover:bg-purple-50/50"><td class="p-2 text-left font-black text-purple-700">XXL</td><td class="p-2 font-bold">44" (118 cm)</td><td class="p-2">59 cm</td><td class="p-2">34" (72 cm)</td><td class="p-2">24"</td><td class="p-2">16"</td></tr>
                                     </tbody>
                                 </table>
                             </div>
@@ -1064,11 +1080,86 @@ html_template = """<!DOCTYPE html>
         const DEFAULT_CLOUD_URL = "https://script.google.com/macros/s/AKfycbzEnDTtNiXEAyB5qHqrxLj1RbNytgOJAB_lKjw_VVVd1C8CiaeYU6iTROiJabkyX_-b/exec";
 
         const SWEATER_DETAILS = {
-            "01": { code: "01", name: "Men's Sleeveless V-Neck Sweater", color: "Solid Ash / Grey Textured", gender: "Men's", sizes: ["S", "M", "L", "XL", "XXL"], img: "###B64_01###", supplier: "Richman / Lubnan" },
-            "02": { code: "02", name: "Men's Sleeveless V-Neck Sweater", color: "Solid Navy Blue Textured", gender: "Men's", sizes: ["S", "M", "L", "XL", "XXL"], img: "###B64_02###", supplier: "Richman / Lubnan" },
-            "03": { code: "03", name: "Men's Sleeveless V-Neck Sweater", color: "Off-White / Cream Check", gender: "Men's", sizes: ["S", "M", "L", "XL", "XXL"], img: "###B64_03###", supplier: "Richman / Lubnan" },
-            "04": { code: "04", name: "Women's Short Cardigan", color: "White & Navy Grid Check", gender: "Women's", sizes: ["XS", "S", "M", "L", "XL"], img: "###B64_04###", supplier: "Richman / Lubnan" },
-            "05": { code: "05", name: "Women's Semi Long Cardigan", color: "Solid Black with Border Trim", gender: "Women's", sizes: ["S", "M", "L", "XL", "XXL"], img: "###B64_05###", supplier: "Richman / Lubnan" }
+            "01": { 
+                code: "01", 
+                name: "Men's Sleeveless V-Neck Sweater", 
+                color: "Solid Ash / Grey Textured", 
+                gender: "Men's", 
+                sizes: ["S", "M", "L", "XL", "XXL"], 
+                img: "###B64_01###", 
+                supplier: "Richman / Lubnan",
+                chart: [
+                    { size: "S", chest: "38\" (96 cm)", halfChest: "48 cm", length: "26\" (65 cm)", shoulder: "15\"" },
+                    { size: "M", chest: "40\" (100 cm)", halfChest: "50 cm", length: "27\" (67 cm)", shoulder: "16\"" },
+                    { size: "L", chest: "42\" (104 cm)", halfChest: "52 cm", length: "28\" (69 cm)", shoulder: "17\"" },
+                    { size: "XL", chest: "44\" (108 cm)", halfChest: "54 cm", length: "29\" (71 cm)", shoulder: "18\"" },
+                    { size: "XXL", chest: "46\" (112 cm)", halfChest: "56 cm", length: "30\" (73 cm)", shoulder: "19\"" }
+                ]
+            },
+            "02": { 
+                code: "02", 
+                name: "Men's Sleeveless V-Neck Sweater", 
+                color: "Solid Navy Blue Textured", 
+                gender: "Men's", 
+                sizes: ["S", "M", "L", "XL", "XXL"], 
+                img: "###B64_02###", 
+                supplier: "Richman / Lubnan",
+                chart: [
+                    { size: "S", chest: "38\" (96 cm)", halfChest: "48 cm", length: "26\" (65 cm)", shoulder: "15\"" },
+                    { size: "M", chest: "40\" (100 cm)", halfChest: "50 cm", length: "27\" (67 cm)", shoulder: "16\"" },
+                    { size: "L", chest: "42\" (104 cm)", halfChest: "52 cm", length: "28\" (69 cm)", shoulder: "17\"" },
+                    { size: "XL", chest: "44\" (108 cm)", halfChest: "54 cm", length: "29\" (71 cm)", shoulder: "18\"" },
+                    { size: "XXL", chest: "46\" (112 cm)", halfChest: "56 cm", length: "30\" (73 cm)", shoulder: "19\"" }
+                ]
+            },
+            "03": { 
+                code: "03", 
+                name: "Men's Sleeveless V-Neck Sweater", 
+                color: "Off-White / Cream Check", 
+                gender: "Men's", 
+                sizes: ["S", "M", "L", "XL", "XXL"], 
+                img: "###B64_03###", 
+                supplier: "Richman / Lubnan",
+                chart: [
+                    { size: "S", chest: "38\" (96 cm)", halfChest: "48 cm", length: "26\" (65 cm)", shoulder: "15\"" },
+                    { size: "M", chest: "40\" (100 cm)", halfChest: "50 cm", length: "27\" (67 cm)", shoulder: "16\"" },
+                    { size: "L", chest: "42\" (104 cm)", halfChest: "52 cm", length: "28\" (69 cm)", shoulder: "17\"" },
+                    { size: "XL", chest: "44\" (108 cm)", halfChest: "54 cm", length: "29\" (71 cm)", shoulder: "18\"" },
+                    { size: "XXL", chest: "46\" (112 cm)", halfChest: "56 cm", length: "30\" (73 cm)", shoulder: "19\"" }
+                ]
+            },
+            "04": { 
+                code: "04", 
+                name: "Women's Short Cardigan", 
+                color: "White & Navy Grid Check", 
+                gender: "Women's", 
+                sizes: ["XS", "S", "M", "L", "XL"], 
+                img: "###B64_04###", 
+                supplier: "Richman / Lubnan",
+                chart: [
+                    { size: "XS", chest: "34\" (88 cm)", halfChest: "44 cm", length: "21\" (60 cm)", sleeve: "21.5\"", shoulder: "13.5\"" },
+                    { size: "S", chest: "36\" (92 cm)", halfChest: "46 cm", length: "22\" (62 cm)", sleeve: "22\"", shoulder: "14\"" },
+                    { size: "M", chest: "38\" (96 cm)", halfChest: "48 cm", length: "23\" (64 cm)", sleeve: "22.5\"", shoulder: "14.5\"" },
+                    { size: "L", chest: "40\" (100 cm)", halfChest: "50 cm", length: "24\" (66 cm)", sleeve: "23\"", shoulder: "15\"" },
+                    { size: "XL", chest: "42\" (104 cm)", halfChest: "52 cm", length: "25\" (68 cm)", sleeve: "23.5\"", shoulder: "15.5\"" }
+                ]
+            },
+            "05": { 
+                code: "05", 
+                name: "Women's Semi Long Cardigan", 
+                color: "Solid Black with Border Trim", 
+                gender: "Women's", 
+                sizes: ["S", "M", "L", "XL", "XXL"], 
+                img: "###B64_05###", 
+                supplier: "Richman / Lubnan",
+                chart: [
+                    { size: "S", chest: "36\" (102 cm)", halfChest: "51 cm", length: "30\" (64 cm)", sleeve: "22\"", shoulder: "14\"" },
+                    { size: "M", chest: "38\" (106 cm)", halfChest: "53 cm", length: "31\" (66 cm)", sleeve: "22.5\"", shoulder: "14.5\"" },
+                    { size: "L", chest: "40\" (110 cm)", halfChest: "55 cm", length: "32\" (68 cm)", sleeve: "23\"", shoulder: "15\"" },
+                    { size: "XL", chest: "42\" (114 cm)", halfChest: "57 cm", length: "33\" (70 cm)", sleeve: "23.5\"", shoulder: "15.5\"" },
+                    { size: "XXL", chest: "44\" (118 cm)", halfChest: "59 cm", length: "34\" (72 cm)", sleeve: "24\"", shoulder: "16\"" }
+                ]
+            }
         };
 
         let store = JSON.parse(localStorage.getItem('EXIUM_SWEATER_STORE') || '{}');
@@ -2255,14 +2346,83 @@ html_template = """<!DOCTYPE html>
             document.getElementById('lightbox-subtitle').textContent = `${details.gender} • ${details.color}`;
             document.getElementById('lightbox-img').src = details.img;
 
+            let chartRowsHtml = '';
+            if (details.chart && details.chart.length > 0) {
+                if (code === '04' || code === '05') {
+                    // Women's Cardigan table
+                    chartRowsHtml = `
+                        <div class="mt-2 overflow-x-auto">
+                            <table class="w-full text-[11px] text-center border-collapse bg-slate-900/60 rounded-xl overflow-hidden border border-slate-700">
+                                <thead class="bg-slate-950 text-orange-400 font-bold uppercase text-[9px]">
+                                    <tr>
+                                        <th class="p-1.5 text-left">Size</th>
+                                        <th class="p-1.5">Chest</th>
+                                        <th class="p-1.5">1/2 Chest</th>
+                                        <th class="p-1.5">Length</th>
+                                        <th class="p-1.5">Sleeve</th>
+                                        <th class="p-1.5">Shoulder</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-800 font-medium text-slate-200">
+                                    ${details.chart.map(r => `
+                                        <tr>
+                                            <td class="p-1.5 text-left font-bold text-orange-400">${r.size}</td>
+                                            <td class="p-1.5 font-bold">${r.chest}</td>
+                                            <td class="p-1.5 text-slate-400">${r.halfChest}</td>
+                                            <td class="p-1.5">${r.length}</td>
+                                            <td class="p-1.5">${r.sleeve || '-'}</td>
+                                            <td class="p-1.5">${r.shoulder}</td>
+                                        </tr>
+                                    `).join('')}
+                                </tbody>
+                            </table>
+                        </div>
+                    `;
+                } else {
+                    // Men's table
+                    chartRowsHtml = `
+                        <div class="mt-2 overflow-x-auto">
+                            <table class="w-full text-[11px] text-center border-collapse bg-slate-900/60 rounded-xl overflow-hidden border border-slate-700">
+                                <thead class="bg-slate-950 text-orange-400 font-bold uppercase text-[9px]">
+                                    <tr>
+                                        <th class="p-1.5 text-left">Size</th>
+                                        <th class="p-1.5">Chest</th>
+                                        <th class="p-1.5">1/2 Chest</th>
+                                        <th class="p-1.5">Body Length</th>
+                                        <th class="p-1.5">Shoulder</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-800 font-medium text-slate-200">
+                                    ${details.chart.map(r => `
+                                        <tr>
+                                            <td class="p-1.5 text-left font-bold text-orange-400">${r.size}</td>
+                                            <td class="p-1.5 font-bold">${r.chest}</td>
+                                            <td class="p-1.5 text-slate-400">${r.halfChest}</td>
+                                            <td class="p-1.5">${r.length}</td>
+                                            <td class="p-1.5">${r.shoulder}</td>
+                                        </tr>
+                                    `).join('')}
+                                </tbody>
+                            </table>
+                        </div>
+                    `;
+                }
+            }
+
             document.getElementById('lightbox-details').innerHTML = `
-                <div class="flex justify-between border-b border-slate-700 pb-1">
+                <div class="flex justify-between border-b border-slate-700/60 pb-1.5">
                     <span class="text-slate-400">Available Sizes:</span>
-                    <strong class="text-orange-400 font-mono">${details.sizes.join(', ')}</strong>
+                    <strong class="text-orange-400 font-mono font-bold">${details.sizes.join(', ')}</strong>
                 </div>
-                <div class="flex justify-between pt-0.5">
-                    <span class="text-slate-400">Supplier:</span>
-                    <strong class="text-white">${details.supplier}</strong>
+                <div class="flex justify-between border-b border-slate-700/60 pb-1.5 text-[11px]">
+                    <span class="text-slate-400">Manufacturer:</span>
+                    <strong class="text-slate-200">${details.supplier}</strong>
+                </div>
+                <div class="pt-1">
+                    <span class="text-[10px] font-bold uppercase tracking-wider text-orange-400 flex items-center gap-1 mb-1">
+                        <i class="fa-solid fa-ruler-combined"></i> Size Measurement Specifications (Inches & CM)
+                    </span>
+                    ${chartRowsHtml}
                 </div>
             `;
 
@@ -2313,4 +2473,4 @@ with open(r"G:\Exium\2026\4Q'26\Sweater\Sweater_Campaign_Portal.html", "w", enco
 with open(r"G:\Exium\2026\4Q'26\Sweater\index.html", "w", encoding="utf-8") as f:
     f.write(html_content)
 
-print("Successfully regenerated web app with 3+1 C1 sweaters and 3 C2 doctors!")
+print("Successfully regenerated web app with full Territory word and complete measurement charts!")
