@@ -103,26 +103,41 @@ html_template = """<!DOCTYPE html>
     <!-- Top Navigation Header -->
     <header class="bg-white border-b border-slate-200 shadow-sm sticky top-0 z-40">
         <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-2 sm:py-2.5">
-            <div class="flex items-center justify-between gap-3">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                 
-                <!-- Left: Logo + Title -->
-                <div class="flex items-center gap-2 sm:gap-2.5 min-w-0">
-                    <img src="###B64_LOGO###" onerror="this.src='Exium MUPS Logo.png'" alt="Exium MUPS" class="h-7 sm:h-8 md:h-9 w-auto object-contain flex-shrink-0">
-                    <div class="border-l-2 border-slate-300 pl-2 sm:pl-2.5 flex items-center gap-1.5 sm:gap-2 min-w-0">
-                        <h1 class="text-sm sm:text-base md:text-lg font-black text-slate-900 tracking-tight leading-none whitespace-nowrap">Sweater for Doctors</h1>
-                        <span class="text-[10px] sm:text-xs bg-orange-500 text-white font-black px-1.5 sm:px-2 py-0.5 rounded-full leading-none shadow-sm flex-shrink-0">4Q'26</span>
+                <!-- Line 1: Logo + Title -->
+                <div class="flex items-center justify-between sm:justify-start gap-2.5">
+                    <div class="flex items-center gap-2 sm:gap-2.5 min-w-0">
+                        <img src="###B64_LOGO###" onerror="this.src='Exium MUPS Logo.png'" alt="Exium MUPS" class="h-7 sm:h-8 md:h-9 w-auto object-contain flex-shrink-0">
+                        <div class="border-l-2 border-slate-300 pl-2 sm:pl-2.5 flex items-center gap-1.5 sm:gap-2 min-w-0">
+                            <h1 class="text-sm sm:text-base md:text-lg font-black text-slate-900 tracking-tight leading-none whitespace-nowrap">Sweater for Doctors</h1>
+                            <span class="text-[10px] sm:text-xs bg-orange-500 text-white font-black px-1.5 sm:px-2 py-0.5 rounded-full leading-none shadow-sm flex-shrink-0">4Q'26</span>
+                        </div>
+                    </div>
+
+                    <!-- Desktop Buttons -->
+                    <div class="hidden sm:flex items-center gap-2">
+                        <button onclick="openCatalogModal()" class="px-3.5 py-1.5 bg-orange-50 hover:bg-orange-100 text-orange-800 border border-orange-200 rounded-xl text-xs font-bold flex items-center gap-1.5 transition shadow-sm active:scale-95 whitespace-nowrap">
+                            <i class="fa-solid fa-vest text-orange-600"></i>
+                            <span>Catalogue & Sizes</span>
+                        </button>
+                        <div id="header-admin-btn-container">
+                            <button onclick="openAdminModal()" class="px-3.5 py-1.5 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 transition shadow-sm active:scale-95 whitespace-nowrap">
+                                <i class="fa-solid fa-shield-halved text-orange-400"></i>
+                                <span>Admin</span>
+                            </button>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Right Alignment: Catalogue & Sizes + Admin -->
-                <div class="flex items-center gap-2 flex-shrink-0">
-                    <button onclick="openCatalogModal()" class="px-2.5 sm:px-3.5 py-1.5 bg-orange-50 hover:bg-orange-100 text-orange-800 border border-orange-200 rounded-xl text-xs font-bold flex items-center gap-1.5 transition shadow-sm active:scale-95 whitespace-nowrap">
+                <!-- Line 2 on Mobile -->
+                <div class="flex sm:hidden items-center gap-2 pt-1 border-t border-slate-100">
+                    <button onclick="openCatalogModal()" class="flex-1 py-1.5 px-3 bg-orange-50 hover:bg-orange-100 text-orange-800 border border-orange-200 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 shadow-sm active:scale-95">
                         <i class="fa-solid fa-vest text-orange-600"></i>
-                        <span class="hidden xs:inline">Catalogue & Sizes</span>
-                        <span class="xs:hidden">Catalog</span>
+                        <span>Catalogue & Sizes</span>
                     </button>
-                    <div id="header-admin-btn-container">
-                        <button onclick="openAdminModal()" class="px-2.5 sm:px-3.5 py-1.5 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 transition shadow-sm active:scale-95 whitespace-nowrap">
+                    <div id="mobile-admin-btn-container" class="flex-shrink-0">
+                        <button onclick="openAdminModal()" class="py-1.5 px-3 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-bold flex items-center gap-1 shadow-sm active:scale-95">
                             <i class="fa-solid fa-shield-halved text-orange-400"></i>
                             <span>Admin</span>
                         </button>
@@ -301,7 +316,7 @@ html_template = """<!DOCTYPE html>
                                 <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-white text-teal-800 flex items-center justify-center font-black text-xs sm:text-sm flex-shrink-0 shadow-sm mt-0.5 sm:mt-0">1</div>
                                 <div class="min-w-0">
                                     <h4 class="text-xs sm:text-sm md:text-base font-black text-white leading-snug">Gyne Core Doctor Development (Family Package)</h4>
-                                    <p class="text-[10px] sm:text-xs text-teal-100 mt-0.5 font-medium">3 sweaters for doctor and family</p>
+                                    <p class="text-[10px] sm:text-xs text-teal-100 mt-0.5 leading-tight">1 Doctor per Territory &bull; 4 Sweaters for Family</p>
                                 </div>
                             </div>
                             <div class="self-start sm:self-auto pl-9 sm:pl-0">
@@ -330,7 +345,7 @@ html_template = """<!DOCTYPE html>
                                 <!-- 1 -->
                                 <div class="bg-slate-50 border border-slate-200 rounded-2xl p-3 space-y-2">
                                     <div class="flex items-center justify-between">
-                                        <span class="text-xs font-bold text-teal-900 flex items-center gap-1.5"><span class="w-4 h-4 rounded-full bg-teal-600 text-white flex items-center justify-center text-[10px] font-black">1</span> Sweater 1 (Doctor / Family Member)</span>
+                                        <span class="text-xs font-bold text-teal-900 flex items-center gap-1.5"><span class="w-4 h-4 rounded-full bg-teal-600 text-white flex items-center justify-center text-[10px] font-black">1</span> Sweater 1 (Family Member)</span>
                                         <span id="c1_m1_check_badge"><span class="text-slate-400 text-[10px] font-medium"><i class="fa-regular fa-circle"></i> Pending</span></span>
                                     </div>
                                     <div class="flex gap-2.5 sm:gap-3 items-center">
@@ -408,23 +423,11 @@ html_template = """<!DOCTYPE html>
                                         </div>
                                     </div>
                                 </div>
-                                <!-- 4. Add Another Sweater Button Container -->
-                                <div id="c1_add_m4_btn_container" onclick="showC1Sweater4(true)" class="border-2 border-dashed border-teal-300 hover:border-teal-500 bg-teal-50/40 hover:bg-teal-50 rounded-2xl p-4 flex flex-col items-center justify-center text-center cursor-pointer transition group gap-2 min-h-[140px]">
-                                    <div class="w-10 h-10 rounded-full bg-teal-100 group-hover:bg-teal-600 text-teal-600 group-hover:text-white flex items-center justify-center transition shadow-sm font-black"><i class="fa-solid fa-plus text-base"></i></div>
-                                    <div>
-                                        <h5 class="text-xs font-black text-teal-950 group-hover:text-teal-700">Add Another Sweater</h5>
-                                        <p class="text-[10px] text-slate-500">Sweater 4 (Family Member)</p>
-                                    </div>
-                                </div>
-
-                                <!-- 4. Sweater 4 (Family Member) - Revealed on Click -->
-                                <div id="c1_m4_container" class="hidden bg-slate-50 border border-slate-200 rounded-2xl p-3 space-y-2">
+                                <!-- 4 -->
+                                <div class="bg-slate-50 border border-slate-200 rounded-2xl p-3 space-y-2">
                                     <div class="flex items-center justify-between">
                                         <span class="text-xs font-bold text-teal-900 flex items-center gap-1.5"><span class="w-4 h-4 rounded-full bg-teal-600 text-white flex items-center justify-center text-[10px] font-black">4</span> Sweater 4 (Family Member)</span>
-                                        <div class="flex items-center gap-1.5">
-                                            <span id="c1_m4_check_badge"><span class="text-slate-400 text-[10px] font-medium"><i class="fa-regular fa-circle"></i> Pending</span></span>
-                                            <button type="button" onclick="hideAndClearC1Sweater4()" title="Remove 4th Sweater" class="text-[10px] text-rose-500 hover:text-rose-700 font-bold px-1.5 py-0.5 rounded hover:bg-rose-50"><i class="fa-solid fa-xmark"></i></button>
-                                        </div>
+                                        <span id="c1_m4_check_badge"><span class="text-slate-400 text-[10px] font-medium"><i class="fa-regular fa-circle"></i> Pending</span></span>
                                     </div>
                                     <div class="flex gap-2.5 sm:gap-3 items-center">
                                         <div id="c1_m4_img_preview" onclick="zoomSlotImage('c1_m4_sweater')" class="sweater-card-img w-16 h-20 sm:w-20 sm:h-24 rounded-xl bg-white border border-slate-300 overflow-hidden flex-shrink-0 flex items-center justify-center text-slate-400 cursor-pointer shadow-sm relative group"><i class="fa-solid fa-shirt text-lg text-slate-300"></i></div>
@@ -458,18 +461,16 @@ html_template = """<!DOCTYPE html>
                                 <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-white text-purple-800 flex items-center justify-center font-black text-xs sm:text-sm flex-shrink-0 shadow-sm mt-0.5 sm:mt-0">2</div>
                                 <div class="min-w-0">
                                     <h4 class="text-xs sm:text-sm md:text-base font-black text-white leading-snug">Core Doctor Maximization</h4>
-                                    <p class="text-[10px] sm:text-xs text-purple-100 mt-0.5 leading-tight">3 Doctors per Territory &bull; 1 Sweater Each</p>
+                                    <p class="text-[10px] sm:text-xs text-purple-100 mt-0.5 leading-tight">4 Doctors per Territory &bull; 1 Sweater Each</p>
                                 </div>
                             </div>
                             <div class="self-start sm:self-auto pl-9 sm:pl-0">
-                                <span class="text-[10px] sm:text-xs font-black bg-purple-950/80 text-purple-200 border border-purple-400/40 px-2.5 py-0.5 rounded-full inline-block whitespace-nowrap shadow-sm">3 Doctors Total</span>
+                                <span class="text-[10px] sm:text-xs font-black bg-purple-950/80 text-purple-200 border border-purple-400/40 px-2.5 py-0.5 rounded-full inline-block whitespace-nowrap shadow-sm">4 Sweaters Total</span>
                             </div>
                         </div>
 
                         <div class="p-4 sm:p-6 space-y-4">
-                            <!-- 2 Top Side-by-Side, 1 Centered in Middle Below -->
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
-                                
                                 <!-- Doc 1 -->
                                 <div class="bg-purple-50/50 border border-purple-200 rounded-2xl p-3.5 space-y-2.5">
                                     <div class="flex items-center justify-between">
@@ -507,7 +508,6 @@ html_template = """<!DOCTYPE html>
                                         </div>
                                     </div>
                                 </div>
-
                                 <!-- Doc 2 -->
                                 <div class="bg-purple-50/50 border border-purple-200 rounded-2xl p-3.5 space-y-2.5">
                                     <div class="flex items-center justify-between">
@@ -545,47 +545,80 @@ html_template = """<!DOCTYPE html>
                                         </div>
                                     </div>
                                 </div>
-
-                                <!-- Doc 3 (Middle Centered Below) -->
-                                <div class="md:col-span-2 flex justify-center">
-                                    <div class="w-full max-w-xl bg-purple-50/50 border border-purple-200 rounded-2xl p-3.5 space-y-2.5 shadow-sm">
-                                        <div class="flex items-center justify-between">
-                                            <span class="text-xs font-bold text-purple-950 flex items-center gap-1.5"><span class="w-4 h-4 rounded-full bg-purple-600 text-white flex items-center justify-center text-[10px] font-black">3</span> Doctor 3</span>
-                                            <span id="c2_d3_check_badge"><span class="text-slate-400 text-[10px] font-medium"><i class="fa-regular fa-circle"></i> Pending</span></span>
+                                <!-- Doc 3 -->
+                                <div class="bg-purple-50/50 border border-purple-200 rounded-2xl p-3.5 space-y-2.5">
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-xs font-bold text-purple-950 flex items-center gap-1.5"><span class="w-4 h-4 rounded-full bg-purple-600 text-white flex items-center justify-center text-[10px] font-black">3</span> Doctor 3</span>
+                                        <span id="c2_d3_check_badge"><span class="text-slate-400 text-[10px] font-medium"><i class="fa-regular fa-circle"></i> Pending</span></span>
+                                    </div>
+                                    <div class="space-y-2">
+                                        <div>
+                                            <label class="text-[10px] font-bold text-purple-950">Doctor 3 Name <span class="text-rose-500">*</span></label>
+                                            <input type="text" id="c2_d3_name" oninput="onDataChanged()" placeholder="Enter Doctor 3 Name..." class="w-full mt-0.5 bg-white border border-purple-300 rounded-xl px-3 py-1.5 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-purple-500">
                                         </div>
-                                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                                        <div>
+                                            <div class="flex items-center justify-between"><label class="text-[10px] font-bold text-purple-950">Doctor 3 RPL ID <span class="text-rose-500">*</span></label><span id="c2_d3_rpl_badge" class="text-[9px] font-bold text-slate-400">6 digits</span></div>
+                                            <input type="text" inputmode="numeric" maxlength="6" id="c2_d3_rpl" oninput="onRplInput(this, 'c2_d3_rpl_badge')" placeholder="6-digit RPL ID..." class="w-full mt-0.5 bg-white border border-purple-300 rounded-xl px-3 py-1.5 text-xs text-slate-900 font-mono font-bold placeholder-slate-400 focus:outline-none focus:border-purple-500 tracking-wider">
+                                        </div>
+                                    </div>
+                                    <div class="flex gap-2.5 sm:gap-3 items-center pt-2 border-t border-purple-200/80">
+                                        <div id="c2_d3_img_preview" onclick="zoomSlotImage('c2_d3_sweater')" class="sweater-card-img w-16 h-20 sm:w-20 sm:h-24 rounded-xl bg-white border border-slate-300 overflow-hidden flex-shrink-0 flex items-center justify-center text-slate-400 cursor-pointer shadow-sm relative group"><i class="fa-solid fa-shirt text-lg text-slate-300"></i></div>
+                                        <div class="flex-1 space-y-1.5 min-w-0">
                                             <div>
-                                                <label class="text-[10px] font-bold text-purple-950">Doctor 3 Name <span class="text-rose-500">*</span></label>
-                                                <input type="text" id="c2_d3_name" oninput="onDataChanged()" placeholder="Enter Doctor 3 Name..." class="w-full mt-0.5 bg-white border border-purple-300 rounded-xl px-3 py-1.5 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-purple-500">
+                                                <label class="text-[10px] font-bold text-slate-500">Sweater Option</label>
+                                                <select id="c2_d3_sweater" onchange="onSweaterSelectChange('c2_d3', this.value)" class="w-full mt-0.5 bg-white border border-slate-300 rounded-lg px-2 py-1.5 text-xs text-slate-900 font-semibold focus:outline-none focus:border-purple-500">
+                                                    <option value="">-- Select Sweater --</option>
+                                                    <option value="01 - Men's V-Neck (Grey)">01 - Men's V-Neck (Grey)</option>
+                                                    <option value="02 - Men's V-Neck (Navy Blue)">02 - Men's V-Neck (Navy Blue)</option>
+                                                    <option value="03 - Men's V-Neck (Cream Check)">03 - Men's V-Neck (Cream Check)</option>
+                                                    <option value="04 - Women's Short Cardigan (Check)">04 - Women's Short Cardigan</option>
+                                                    <option value="05 - Women's Semi Long Cardigan (Black)">05 - Women's Semi Long</option>
+                                                </select>
                                             </div>
                                             <div>
-                                                <div class="flex items-center justify-between"><label class="text-[10px] font-bold text-purple-950">Doctor 3 RPL ID <span class="text-rose-500">*</span></label><span id="c2_d3_rpl_badge" class="text-[9px] font-bold text-slate-400">6 digits</span></div>
-                                                <input type="text" inputmode="numeric" maxlength="6" id="c2_d3_rpl" oninput="onRplInput(this, 'c2_d3_rpl_badge')" placeholder="6-digit RPL ID..." class="w-full mt-0.5 bg-white border border-purple-300 rounded-xl px-3 py-1.5 text-xs text-slate-900 font-mono font-bold placeholder-slate-400 focus:outline-none focus:border-purple-500 tracking-wider">
-                                            </div>
-                                        </div>
-                                        <div class="flex gap-2.5 sm:gap-3 items-center pt-2 border-t border-purple-200/80">
-                                            <div id="c2_d3_img_preview" onclick="zoomSlotImage('c2_d3_sweater')" class="sweater-card-img w-16 h-20 sm:w-20 sm:h-24 rounded-xl bg-white border border-slate-300 overflow-hidden flex-shrink-0 flex items-center justify-center text-slate-400 cursor-pointer shadow-sm relative group"><i class="fa-solid fa-shirt text-lg text-slate-300"></i></div>
-                                            <div class="flex-1 space-y-1.5 min-w-0">
-                                                <div>
-                                                    <label class="text-[10px] font-bold text-slate-500">Sweater Option</label>
-                                                    <select id="c2_d3_sweater" onchange="onSweaterSelectChange('c2_d3', this.value)" class="w-full mt-0.5 bg-white border border-slate-300 rounded-lg px-2 py-1.5 text-xs text-slate-900 font-semibold focus:outline-none focus:border-purple-500">
-                                                        <option value="">-- Select Sweater --</option>
-                                                        <option value="01 - Men's V-Neck (Grey)">01 - Men's V-Neck (Grey)</option>
-                                                        <option value="02 - Men's V-Neck (Navy Blue)">02 - Men's V-Neck (Navy Blue)</option>
-                                                        <option value="03 - Men's V-Neck (Cream Check)">03 - Men's V-Neck (Cream Check)</option>
-                                                        <option value="04 - Women's Short Cardigan (Check)">04 - Women's Short Cardigan</option>
-                                                        <option value="05 - Women's Semi Long Cardigan (Black)">05 - Women's Semi Long</option>
-                                                    </select>
-                                                </div>
-                                                <div>
-                                                    <label class="text-[10px] font-bold text-slate-500">Size</label>
-                                                    <select id="c2_d3_size" onchange="onDataChanged()" class="w-full mt-0.5 bg-white border border-slate-300 rounded-lg px-2 py-1 text-xs text-slate-900 font-black focus:outline-none focus:border-purple-500"><option value="">-- Size --</option></select>
-                                                </div>
+                                                <label class="text-[10px] font-bold text-slate-500">Size</label>
+                                                <select id="c2_d3_size" onchange="onDataChanged()" class="w-full mt-0.5 bg-white border border-slate-300 rounded-lg px-2 py-1 text-xs text-slate-900 font-black focus:outline-none focus:border-purple-500"><option value="">-- Size --</option></select>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-
+                                <!-- Doc 4 -->
+                                <div class="bg-purple-50/50 border border-purple-200 rounded-2xl p-3.5 space-y-2.5">
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-xs font-bold text-purple-950 flex items-center gap-1.5"><span class="w-4 h-4 rounded-full bg-purple-600 text-white flex items-center justify-center text-[10px] font-black">4</span> Doctor 4</span>
+                                        <span id="c2_d4_check_badge"><span class="text-slate-400 text-[10px] font-medium"><i class="fa-regular fa-circle"></i> Pending</span></span>
+                                    </div>
+                                    <div class="space-y-2">
+                                        <div>
+                                            <label class="text-[10px] font-bold text-purple-950">Doctor 4 Name <span class="text-rose-500">*</span></label>
+                                            <input type="text" id="c2_d4_name" oninput="onDataChanged()" placeholder="Enter Doctor 4 Name..." class="w-full mt-0.5 bg-white border border-purple-300 rounded-xl px-3 py-1.5 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-purple-500">
+                                        </div>
+                                        <div>
+                                            <div class="flex items-center justify-between"><label class="text-[10px] font-bold text-purple-950">Doctor 4 RPL ID <span class="text-rose-500">*</span></label><span id="c2_d4_rpl_badge" class="text-[9px] font-bold text-slate-400">6 digits</span></div>
+                                            <input type="text" inputmode="numeric" maxlength="6" id="c2_d4_rpl" oninput="onRplInput(this, 'c2_d4_rpl_badge')" placeholder="6-digit RPL ID..." class="w-full mt-0.5 bg-white border border-purple-300 rounded-xl px-3 py-1.5 text-xs text-slate-900 font-mono font-bold placeholder-slate-400 focus:outline-none focus:border-purple-500 tracking-wider">
+                                        </div>
+                                    </div>
+                                    <div class="flex gap-2.5 sm:gap-3 items-center pt-2 border-t border-purple-200/80">
+                                        <div id="c2_d4_img_preview" onclick="zoomSlotImage('c2_d4_sweater')" class="sweater-card-img w-16 h-20 sm:w-20 sm:h-24 rounded-xl bg-white border border-slate-300 overflow-hidden flex-shrink-0 flex items-center justify-center text-slate-400 cursor-pointer shadow-sm relative group"><i class="fa-solid fa-shirt text-lg text-slate-300"></i></div>
+                                        <div class="flex-1 space-y-1.5 min-w-0">
+                                            <div>
+                                                <label class="text-[10px] font-bold text-slate-500">Sweater Option</label>
+                                                <select id="c2_d4_sweater" onchange="onSweaterSelectChange('c2_d4', this.value)" class="w-full mt-0.5 bg-white border border-slate-300 rounded-lg px-2 py-1.5 text-xs text-slate-900 font-semibold focus:outline-none focus:border-purple-500">
+                                                    <option value="">-- Select Sweater --</option>
+                                                    <option value="01 - Men's V-Neck (Grey)">01 - Men's V-Neck (Grey)</option>
+                                                    <option value="02 - Men's V-Neck (Navy Blue)">02 - Men's V-Neck (Navy Blue)</option>
+                                                    <option value="03 - Men's V-Neck (Cream Check)">03 - Men's V-Neck (Cream Check)</option>
+                                                    <option value="04 - Women's Short Cardigan (Check)">04 - Women's Short Cardigan</option>
+                                                    <option value="05 - Women's Semi Long Cardigan (Black)">05 - Women's Semi Long</option>
+                                                </select>
+                                            </div>
+                                            <div>
+                                                <label class="text-[10px] font-bold text-slate-500">Size</label>
+                                                <select id="c2_d4_size" onchange="onDataChanged()" class="w-full mt-0.5 bg-white border border-slate-300 rounded-lg px-2 py-1 text-xs text-slate-900 font-black focus:outline-none focus:border-purple-500"><option value="">-- Size --</option></select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -652,13 +685,7 @@ html_template = """<!DOCTYPE html>
                         <p class="text-[10px] sm:text-xs text-slate-500">Lubnan Trade Consortium Ltd. (Richman / Lubnan)</p>
                     </div>
                 </div>
-                <div class="flex items-center gap-2">
-                    <button onclick="downloadCataloguePdf()" class="px-3 py-1.5 bg-orange-500 hover:bg-orange-600 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-sm transition active:scale-95">
-                        <i class="fa-solid fa-file-pdf"></i>
-                        <span>Download PDF</span>
-                    </button>
-                    <button onclick="closeCatalogModal()" class="w-8 h-8 rounded-full bg-white border border-slate-300 text-slate-600 hover:bg-slate-100 flex items-center justify-center transition"><i class="fa-solid fa-xmark text-sm"></i></button>
-                </div>
+                <button onclick="closeCatalogModal()" class="w-8 h-8 rounded-full bg-white border border-slate-300 text-slate-600 hover:bg-slate-100 flex items-center justify-center transition"><i class="fa-solid fa-xmark text-sm"></i></button>
             </div>
                         <div class="p-4 sm:p-6 overflow-y-auto custom-scrollbar space-y-6">
                 <!-- 5 Sweater Image Cards -->
@@ -1184,7 +1211,6 @@ html_template = """<!DOCTYPE html>
         }
 
         function renderTerritoryTabs() {
-            if (!currentRegionCode || !REGION_MAP[currentRegionCode]) return;
             const r = REGION_MAP[currentRegionCode];
             const deskList = document.getElementById('desktop-territory-list');
             const mobSelect = document.getElementById('mobile-territory-select');
@@ -1202,57 +1228,28 @@ html_template = """<!DOCTYPE html>
                 const mobOpt = document.createElement('option');
                 mobOpt.value = idx;
                 mobOpt.textContent = `${t.territory_name} (${status})`;
-                if (idx === activeTerritoryIndex) mobOpt.selected = true;
                 mobSelect.appendChild(mobOpt);
-
-                const isActive = (idx === activeTerritoryIndex);
-
-                let btnClasses = '';
-                let badgeClasses = '';
-                let badgeText = status;
-
-                if (status === 'Complete') {
-                    badgeText = '✓ Complete';
-                    if (isActive) {
-                        btnClasses = 'bg-emerald-600 text-white border-emerald-600 shadow-md ring-2 ring-emerald-500/30';
-                        badgeClasses = 'bg-white text-emerald-900 font-black shadow-sm';
-                    } else {
-                        btnClasses = 'bg-emerald-50/70 hover:bg-emerald-100/70 text-emerald-950 border-emerald-200/90';
-                        badgeClasses = 'bg-emerald-100 text-emerald-800 border border-emerald-300 font-bold';
-                    }
-                } else if (status === 'In Progress') {
-                    badgeText = '⏳ In Progress';
-                    if (isActive) {
-                        btnClasses = 'bg-amber-500 text-white border-amber-500 shadow-md ring-2 ring-amber-500/30';
-                        badgeClasses = 'bg-white text-amber-900 font-black shadow-sm';
-                    } else {
-                        btnClasses = 'bg-amber-50/70 hover:bg-amber-100/70 text-amber-950 border-amber-200/90';
-                        badgeClasses = 'bg-amber-100 text-amber-800 border border-amber-300 font-bold';
-                    }
-                } else {
-                    // Not Started
-                    badgeText = '○ Not Started';
-                    if (isActive) {
-                        btnClasses = 'bg-slate-900 text-white border-slate-900 shadow-md ring-2 ring-slate-900/30';
-                        badgeClasses = 'bg-slate-700 text-slate-100 font-bold';
-                    } else {
-                        btnClasses = 'bg-white hover:bg-slate-50 text-slate-700 border-slate-200';
-                        badgeClasses = 'bg-slate-100 text-slate-500 border border-slate-200 font-medium';
-                    }
-                }
 
                 const btn = document.createElement('button');
                 btn.type = 'button';
                 btn.onclick = () => selectTerritoryTab(idx);
                 btn.id = `terr-tab-btn-${idx}`;
-                btn.className = `w-full text-left p-2.5 sm:p-3 rounded-2xl text-xs font-bold transition flex items-center justify-between border ${btnClasses}`;
+                btn.className = `w-full text-left p-3 rounded-2xl text-xs font-bold transition flex items-center justify-between border ${
+                    idx === activeTerritoryIndex 
+                    ? 'bg-orange-500 text-white border-orange-500 shadow-md' 
+                    : 'bg-slate-50 hover:bg-slate-100 text-slate-700 border-slate-200'
+                }`;
 
                 btn.innerHTML = `
                     <div class="truncate pr-1 min-w-0">
-                        <div class="truncate font-black text-xs ${isActive ? 'text-white' : 'text-slate-900'}">${t.territory_name}</div>
-                        <div class="text-[10px] ${isActive ? 'text-white/80' : 'text-slate-400'} font-mono">SAP: ${t.sap_territory_code}</div>
+                        <div class="truncate font-black text-xs">${t.territory_name}</div>
+                        <div class="text-[10px] ${idx === activeTerritoryIndex ? 'text-orange-100' : 'text-slate-400'} font-mono">SAP: ${t.sap_territory_code}</div>
                     </div>
-                    <span class="text-[9px] px-2 py-0.5 rounded-full flex-shrink-0 whitespace-nowrap ${badgeClasses}">${badgeText}</span>
+                    <span class="text-[9px] font-black px-1.5 py-0.5 rounded-full flex-shrink-0 ${
+                        status === 'Complete' ? (idx === activeTerritoryIndex ? 'bg-white text-slate-950' : 'bg-emerald-100 text-emerald-800 border border-emerald-300') :
+                        status === 'In Progress' ? (idx === activeTerritoryIndex ? 'bg-white text-slate-950' : 'bg-amber-100 text-amber-800 border border-amber-300') :
+                        (idx === activeTerritoryIndex ? 'bg-orange-600 text-white' : 'bg-slate-200 text-slate-600')
+                    }">${status === 'Complete' ? '✓ Complete' : status}</span>
                 `;
                 deskList.appendChild(btn);
             });
@@ -1262,8 +1259,6 @@ html_template = """<!DOCTYPE html>
 
         function selectTerritoryTab(idx, shouldScroll = true) {
             activeTerritoryIndex = idx;
-            renderTerritoryTabs();
-
             const r = REGION_MAP[currentRegionCode];
             const t = r.territories[idx];
             const terrCode = String(t.sap_territory_code);
@@ -1274,46 +1269,35 @@ html_template = """<!DOCTYPE html>
                 territory_idx: idx
             }));
 
-            const mobSelect = document.getElementById('mobile-territory-select');
-            if (mobSelect) mobSelect.value = idx;
-
-            const tTitle = document.getElementById('current-territory-title');
-            if (tTitle) tTitle.textContent = t.territory_name;
-
-            const tCode = document.getElementById('current-territory-code');
-            if (tCode) tCode.textContent = `SAP Code: ${terrCode}`;
+            document.getElementById('mobile-territory-select').value = idx;
+            document.getElementById('current-territory-title').textContent = t.territory_name;
+            document.getElementById('current-territory-code').textContent = `SAP Code: ${terrCode}`;
 
             const status = getTerritoryStatus(d);
             const statusBadge = document.getElementById('current-territory-status');
-            if (statusBadge) {
-                statusBadge.textContent = status;
-                statusBadge.className = `text-[10px] sm:text-xs font-black px-3 py-1 rounded-full ${
-                    status === 'Complete' ? 'bg-emerald-500 text-slate-950 font-black' :
-                    status === 'In Progress' ? 'bg-amber-400 text-slate-950 font-black' :
-                    'bg-white/10 text-slate-200 border border-white/20'
-                }`;
-            }
+            statusBadge.textContent = status;
+            statusBadge.className = `text-[9px] sm:text-[10px] font-bold px-2 py-0.2 rounded-full ${
+                status === 'Complete' ? 'bg-emerald-500 text-slate-950 font-black' :
+                status === 'In Progress' ? 'bg-amber-400 text-slate-950 font-bold' :
+                'bg-white/10 text-slate-200 border border-white/20'
+            }`;
 
             const isLocked = isRegionLocked();
             const lockedNotice = document.getElementById('territory-locked-notice');
-            if (lockedNotice) {
-                if (isLocked) lockedNotice.classList.remove('hidden');
-                else lockedNotice.classList.add('hidden');
+            if (isLocked) {
+                lockedNotice.classList.remove('hidden');
+            } else {
+                lockedNotice.classList.add('hidden');
             }
 
-            // Campaign 1 Form Load
             const c1DocInput = document.getElementById('c1_doc_name');
-            if (c1DocInput) {
-                c1DocInput.value = d.c1_doc_name || '';
-                c1DocInput.disabled = isLocked;
-            }
+            c1DocInput.value = d.c1_doc_name || '';
+            c1DocInput.disabled = isLocked;
 
             const c1DocRpl = document.getElementById('c1_doc_rpl');
-            if (c1DocRpl) {
-                c1DocRpl.value = d.c1_doc_rpl || '';
-                c1DocRpl.disabled = isLocked;
-                updateRplBadgeState(c1DocRpl, 'c1_doc_rpl_badge');
-            }
+            c1DocRpl.value = d.c1_doc_rpl || '';
+            c1DocRpl.disabled = isLocked;
+            updateRplBadgeState(c1DocRpl, 'c1_doc_rpl_badge');
 
             ['m1', 'm2', 'm3', 'm4'].forEach(m => {
                 const sw = d[`c1_${m}_sweater`] || '';
@@ -1321,55 +1305,51 @@ html_template = """<!DOCTYPE html>
                 const swSel = document.getElementById(`c1_${m}_sweater`);
                 const szSel = document.getElementById(`c1_${m}_size`);
                 
-                if (swSel) {
-                    swSel.value = sw;
-                    swSel.disabled = isLocked;
-                }
+                swSel.value = sw;
+                swSel.disabled = isLocked;
                 updateSizeOptionsForSelect(`c1_${m}_sweater`, `c1_${m}_size`, sz);
-                if (szSel) szSel.disabled = isLocked;
+                szSel.disabled = isLocked;
                 updateSlotImagePreview(`c1_${m}_img_preview`, sw);
                 updateSweaterSlotIndicator(`c1_${m}`);
             });
 
-            if (d.c1_m4_sweater || d.c1_m4_size) {
-                showC1Sweater4(false);
-            } else {
-                hideC1Sweater4ViewOnly();
-            }
-
-            // Campaign 2 Form Load (3 Doctors)
-            ['d1', 'd2', 'd3'].forEach(d_item => {
+            ['d1', 'd2', 'd3', 'd4'].forEach(d_item => {
                 const dNameInput = document.getElementById(`c2_${d_item}_name`);
-                if (dNameInput) {
-                    dNameInput.value = d[`c2_${d_item}_name`] || '';
-                    dNameInput.disabled = isLocked;
-                }
+                dNameInput.value = d[`c2_${d_item}_name`] || '';
+                dNameInput.disabled = isLocked;
 
                 const dRplInput = document.getElementById(`c2_${d_item}_rpl`);
-                if (dRplInput) {
-                    dRplInput.value = d[`c2_${d_item}_rpl`] || '';
-                    dRplInput.disabled = isLocked;
-                    updateRplBadgeState(dRplInput, `c2_${d_item}_rpl_badge`);
-                }
+                dRplInput.value = d[`c2_${d_item}_rpl`] || '';
+                dRplInput.disabled = isLocked;
+                updateRplBadgeState(dRplInput, `c2_${d_item}_rpl_badge`);
 
                 const sw = d[`c2_${d_item}_sweater`] || '';
                 const sz = d[`c2_${d_item}_size`] || '';
                 const swSel = document.getElementById(`c2_${d_item}_sweater`);
                 const szSel = document.getElementById(`c2_${d_item}_size`);
 
-                if (swSel) {
-                    swSel.value = sw;
-                    swSel.disabled = isLocked;
-                }
+                swSel.value = sw;
+                swSel.disabled = isLocked;
                 updateSizeOptionsForSelect(`c2_${d_item}_sweater`, `c2_${d_item}_size`, sz);
-                if (szSel) szSel.disabled = isLocked;
+                szSel.disabled = isLocked;
                 updateSlotImagePreview(`c2_${d_item}_img_preview`, sw);
                 updateSweaterSlotIndicator(`c2_${d_item}`);
             });
 
+            r.territories.forEach((_, tabIdx) => {
+                const btn = document.getElementById(`terr-tab-btn-${tabIdx}`);
+                if (btn) {
+                    if (tabIdx === idx) {
+                        btn.className = 'w-full text-left p-3 rounded-2xl text-xs font-bold transition flex items-center justify-between border bg-orange-500 text-white border-orange-500 shadow-md';
+                    } else {
+                        btn.className = 'w-full text-left p-3 rounded-2xl text-xs font-bold transition flex items-center justify-between border bg-slate-50 hover:bg-slate-100 text-slate-700 border-slate-200';
+                    }
+                }
+            });
+
             if (shouldScroll) {
                 const bannerEl = document.getElementById('active-territory-banner-card');
-                if (bannerEl && window.innerWidth < 1024) {
+                if (bannerEl) {
                     bannerEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 }
             }
@@ -1427,32 +1407,6 @@ html_template = """<!DOCTYPE html>
             }, 1200);
         }
 
-        
-        function showC1Sweater4(triggerChange = false) {
-            const container = document.getElementById('c1_m4_container');
-            const btn = document.getElementById('c1_add_m4_btn_container');
-            if (container) container.classList.remove('hidden');
-            if (btn) btn.classList.add('hidden');
-            if (triggerChange) onDataChanged();
-        }
-
-        function hideC1Sweater4ViewOnly() {
-            const container = document.getElementById('c1_m4_container');
-            const btn = document.getElementById('c1_add_m4_btn_container');
-            if (container) container.classList.add('hidden');
-            if (btn) btn.classList.remove('hidden');
-        }
-
-        function hideAndClearC1Sweater4() {
-            const swSelect = document.getElementById('c1_m4_sweater');
-            const szSelect = document.getElementById('c1_m4_size');
-            if (swSelect) swSelect.value = '';
-            if (szSelect) szSelect.innerHTML = '<option value="">-- Size --</option>';
-            updateSweaterSlotIndicator('c1_m4');
-            hideC1Sweater4ViewOnly();
-            onDataChanged();
-        }
-
         function onDataChanged() {
             if (isRegionLocked() || !currentRegionCode) return;
 
@@ -1460,59 +1414,56 @@ html_template = """<!DOCTYPE html>
             const t = r.territories[activeTerritoryIndex];
             const terrCode = String(t.sap_territory_code);
 
-            const isM4Visible = !document.getElementById('c1_m4_container')?.classList.contains('hidden');
-
             const terrData = {
-                c1_doc_name: document.getElementById('c1_doc_name')?.value.trim() || '',
-                c1_doc_rpl: document.getElementById('c1_doc_rpl')?.value.trim() || '',
-                c1_m1_sweater: document.getElementById('c1_m1_sweater')?.value || '',
-                c1_m1_size: document.getElementById('c1_m1_size')?.value || '',
-                c1_m2_sweater: document.getElementById('c1_m2_sweater')?.value || '',
-                c1_m2_size: document.getElementById('c1_m2_size')?.value || '',
-                c1_m3_sweater: document.getElementById('c1_m3_sweater')?.value || '',
-                c1_m3_size: document.getElementById('c1_m3_size')?.value || '',
-                c1_m4_sweater: isM4Visible ? (document.getElementById('c1_m4_sweater')?.value || '') : '',
-                c1_m4_size: isM4Visible ? (document.getElementById('c1_m4_size')?.value || '') : '',
+                c1_doc_name: document.getElementById('c1_doc_name').value.trim(),
+                c1_doc_rpl: document.getElementById('c1_doc_rpl').value.trim(),
+                c1_m1_sweater: document.getElementById('c1_m1_sweater').value,
+                c1_m1_size: document.getElementById('c1_m1_size').value,
+                c1_m2_sweater: document.getElementById('c1_m2_sweater').value,
+                c1_m2_size: document.getElementById('c1_m2_size').value,
+                c1_m3_sweater: document.getElementById('c1_m3_sweater').value,
+                c1_m3_size: document.getElementById('c1_m3_size').value,
+                c1_m4_sweater: document.getElementById('c1_m4_sweater').value,
+                c1_m4_size: document.getElementById('c1_m4_size').value,
 
-                c2_d1_name: document.getElementById('c2_d1_name')?.value.trim() || '',
-                c2_d1_rpl: document.getElementById('c2_d1_rpl')?.value.trim() || '',
-                c2_d1_sweater: document.getElementById('c2_d1_sweater')?.value || '',
-                c2_d1_size: document.getElementById('c2_d1_size')?.value || '',
-
-                c2_d2_name: document.getElementById('c2_d2_name')?.value.trim() || '',
-                c2_d2_rpl: document.getElementById('c2_d2_rpl')?.value.trim() || '',
-                c2_d2_sweater: document.getElementById('c2_d2_sweater')?.value || '',
-                c2_d2_size: document.getElementById('c2_d2_size')?.value || '',
-
-                c2_d3_name: document.getElementById('c2_d3_name')?.value.trim() || '',
-                c2_d3_rpl: document.getElementById('c2_d3_rpl')?.value.trim() || '',
-                c2_d3_sweater: document.getElementById('c2_d3_sweater')?.value || '',
-                c2_d3_size: document.getElementById('c2_d3_size')?.value || '',
-
-                c2_d4_name: '',
-                c2_d4_rpl: '',
-                c2_d4_sweater: '',
-                c2_d4_size: ''
+                c2_d1_name: document.getElementById('c2_d1_name').value.trim(),
+                c2_d1_rpl: document.getElementById('c2_d1_rpl').value.trim(),
+                c2_d1_sweater: document.getElementById('c2_d1_sweater').value,
+                c2_d1_size: document.getElementById('c2_d1_size').value,
+                c2_d2_name: document.getElementById('c2_d2_name').value.trim(),
+                c2_d2_rpl: document.getElementById('c2_d2_rpl').value.trim(),
+                c2_d2_sweater: document.getElementById('c2_d2_sweater').value,
+                c2_d2_size: document.getElementById('c2_d2_size').value,
+                c2_d3_name: document.getElementById('c2_d3_name').value.trim(),
+                c2_d3_rpl: document.getElementById('c2_d3_rpl').value.trim(),
+                c2_d3_sweater: document.getElementById('c2_d3_sweater').value,
+                c2_d3_size: document.getElementById('c2_d3_size').value,
+                c2_d4_name: document.getElementById('c2_d4_name').value.trim(),
+                c2_d4_rpl: document.getElementById('c2_d4_rpl').value.trim(),
+                c2_d4_sweater: document.getElementById('c2_d4_sweater').value,
+                c2_d4_size: document.getElementById('c2_d4_size').value,
             };
 
             store[terrCode] = terrData;
             localStorage.setItem('EXIUM_SWEATER_STORE', JSON.stringify(store));
 
-            ['c1_m1', 'c1_m2', 'c1_m3', 'c1_m4', 'c2_d1', 'c2_d2', 'c2_d3'].forEach(p => updateSweaterSlotIndicator(p));
-            updateTerritorySlotCheckBadges(terrData);
+            ['c1_m1', 'c1_m2', 'c1_m3', 'c1_m4', 'c2_d1', 'c2_d2', 'c2_d3', 'c2_d4'].forEach(p => updateSweaterSlotIndicator(p));
 
             const status = getTerritoryStatus(terrData);
             const statusBadge = document.getElementById('current-territory-status');
-            if (statusBadge) {
-                statusBadge.textContent = status;
-                statusBadge.className = `text-[10px] sm:text-xs font-black px-3 py-1 rounded-full ${
-                    status === 'Complete' ? 'bg-emerald-500 text-slate-950 font-black' :
-                    status === 'In Progress' ? 'bg-amber-400 text-slate-950 font-black' :
-                    'bg-white/10 text-slate-200 border border-white/20'
-                }`;
-            }
+            statusBadge.textContent = status;
+            statusBadge.className = `text-[9px] sm:text-[10px] font-bold px-2 py-0.2 rounded-full ${
+                status === 'Complete' ? 'bg-emerald-500 text-slate-950 font-black' :
+                status === 'In Progress' ? 'bg-amber-400 text-slate-950 font-bold' :
+                'bg-white/10 text-slate-200 border border-white/20'
+            }`;
 
-            renderTerritoryTabs();
+            let completedCount = 0;
+            r.territories.forEach(ter => {
+                if (getTerritoryStatus(store[String(ter.sap_territory_code)]) === 'Complete') completedCount++;
+            });
+            document.getElementById('region-progress-badge').textContent = `${completedCount}/${r.territories.length} Done`;
+            
             triggerAutoSync();
         }
 
@@ -1545,37 +1496,15 @@ html_template = """<!DOCTYPE html>
 
         function getTerritoryStatus(d) {
             if (!d) return 'Not Started';
-
-            // Campaign 1: Doctor Name + 6-digit RPL + Sweaters 1, 2, 3 (and if Sweater 4 is selected, it must have a size)
-            const c1Mandatory = Boolean(d.c1_doc_name && d.c1_doc_rpl && String(d.c1_doc_rpl).length === 6 &&
-                                        d.c1_m1_sweater && d.c1_m1_size &&
-                                        d.c1_m2_sweater && d.c1_m2_size &&
-                                        d.c1_m3_sweater && d.c1_m3_size);
-            const c1M4HasAny = Boolean(d.c1_m4_sweater || d.c1_m4_size);
-            const c1M4Ok = !c1M4HasAny || Boolean(d.c1_m4_sweater && d.c1_m4_size);
-            const c1Ok = c1Mandatory && c1M4Ok;
-
-            // Campaign 2: 3 Doctors (1, 2, 3) each with Name + 6-digit RPL + Sweater + Size
-            const c2Doc1Ok = Boolean(d.c2_d1_name && d.c2_d1_rpl && String(d.c2_d1_rpl).length === 6 && d.c2_d1_sweater && d.c2_d1_size);
-            const c2Doc2Ok = Boolean(d.c2_d2_name && d.c2_d2_rpl && String(d.c2_d2_rpl).length === 6 && d.c2_d2_sweater && d.c2_d2_size);
-            const c2Doc3Ok = Boolean(d.c2_d3_name && d.c2_d3_rpl && String(d.c2_d3_rpl).length === 6 && d.c2_d3_sweater && d.c2_d3_size);
-            const c2Ok = c2Doc1Ok && c2Doc2Ok && c2Doc3Ok;
+            const c1Ok = d.c1_doc_name && d.c1_doc_rpl && String(d.c1_doc_rpl).length === 6 && d.c1_m1_sweater && d.c1_m1_size && d.c1_m2_sweater && d.c1_m2_size && d.c1_m3_sweater && d.c1_m3_size && d.c1_m4_sweater && d.c1_m4_size;
+            const c2Ok = d.c2_d1_name && d.c2_d1_rpl && String(d.c2_d1_rpl).length === 6 && d.c2_d1_sweater && d.c2_d1_size && 
+                         d.c2_d2_name && d.c2_d2_rpl && String(d.c2_d2_rpl).length === 6 && d.c2_d2_sweater && d.c2_d2_size && 
+                         d.c2_d3_name && d.c2_d3_rpl && String(d.c2_d3_rpl).length === 6 && d.c2_d3_sweater && d.c2_d3_size && 
+                         d.c2_d4_name && d.c2_d4_rpl && String(d.c2_d4_rpl).length === 6 && d.c2_d4_sweater && d.c2_d4_size;
 
             if (c1Ok && c2Ok) return 'Complete';
-
-            // In Progress: Any input entered across C1 or C2
-            const hasAny = Boolean(
-                d.c1_doc_name || d.c1_doc_rpl ||
-                d.c1_m1_sweater || d.c1_m1_size ||
-                d.c1_m2_sweater || d.c1_m2_size ||
-                d.c1_m3_sweater || d.c1_m3_size ||
-                d.c1_m4_sweater || d.c1_m4_size ||
-                d.c2_d1_name || d.c2_d1_rpl || d.c2_d1_sweater || d.c2_d1_size ||
-                d.c2_d2_name || d.c2_d2_rpl || d.c2_d2_sweater || d.c2_d2_size ||
-                d.c2_d3_name || d.c2_d3_rpl || d.c2_d3_sweater || d.c2_d3_size
-            );
-
-            return hasAny ? 'In Progress' : 'Not Started';
+            if (d.c1_doc_name || d.c1_doc_rpl || d.c2_d1_name || d.c2_d1_rpl || d.c2_d2_name || d.c2_d3_name || d.c2_d4_name || d.c1_m1_sweater || d.c2_d1_sweater) return 'In Progress';
+            return 'Not Started';
         }
 
         function navigateTerritory(dir) {
@@ -1655,48 +1584,6 @@ html_template = """<!DOCTYPE html>
 
         function closeImageLightbox() {
             document.getElementById('image-lightbox-modal').classList.add('hidden');
-        }
-
-        
-        function downloadCataloguePdf() {
-            const printWin = window.open('', '_blank');
-            const catContent = document.getElementById('catalog-modal')?.querySelector('.max-w-4xl')?.innerHTML || '';
-            
-            printWin.document.write(`
-                <!DOCTYPE html>
-                <html>
-                <head>
-                    <title>Exium MUPS - Sweater Designs Catalogue & Sizes Specification</title>
-                    <script src="https://cdn.tailwindcss.com"></script>
-                    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-                    <style>
-                        body { font-family: 'Plus Jakarta Sans', sans-serif; padding: 20px; background: #fff; }
-                        @media print {
-                            button { display: none !important; }
-                            @page { margin: 1cm; size: A4 portrait; }
-                        }
-                    </style>
-                </head>
-                <body class="p-6">
-                    <div class="max-w-4xl mx-auto space-y-6">
-                        <div class="flex items-center justify-between border-b-2 border-slate-900 pb-4">
-                            <div>
-                                <h1 class="text-2xl font-black text-slate-900 tracking-tight">Exium MUPS - Sweater Designs & Size Specifications</h1>
-                                <p class="text-xs text-slate-600 font-bold">Lubnan Trade Consortium Ltd. (Richman / Lubnan) &bull; Campaign 4Q'26</p>
-                            </div>
-                            <button onclick="window.print()" class="px-4 py-2 bg-orange-500 text-white font-bold rounded-xl text-xs shadow">Print / Save as PDF</button>
-                        </div>
-                        ${catContent}
-                    </div>
-                    <script>
-                        window.onload = function() {
-                            setTimeout(() => { window.print(); }, 400);
-                        };
-                    </script>
-                </body>
-                </html>
-            `);
-            printWin.document.close();
         }
 
         function openCatalogModal() {
@@ -2413,7 +2300,7 @@ html_template = """<!DOCTYPE html>
                     "Size 3": d.c1_m3_size || '',
                     "Sweater 4": d.c1_m4_sweater || '',
                     "Size 4": d.c1_m4_size || '',
-                    "Status": (d.c1_doc_name && d.c1_doc_rpl && String(d.c1_doc_rpl).length === 6 && d.c1_m1_sweater && d.c1_m1_size && d.c1_m2_sweater && d.c1_m2_size && d.c1_m3_sweater && d.c1_m3_size && (!d.c1_m4_sweater || (d.c1_m4_sweater && d.c1_m4_size))) ? "Complete" : (d.c1_doc_name || d.c1_doc_rpl || d.c1_m1_sweater ? "In Progress" : "Not Started")
+                    "Status": (d.c1_doc_name && d.c1_doc_rpl && String(d.c1_doc_rpl).length === 6 && d.c1_m1_sweater && d.c1_m1_size && d.c1_m2_sweater && d.c1_m2_size && d.c1_m3_sweater && d.c1_m3_size && d.c1_m4_sweater && d.c1_m4_size) ? "Complete" : (d.c1_doc_name || d.c1_doc_rpl || d.c1_m1_sweater ? "In Progress" : "Not Started")
                 });
 
                 c2Rows.push({
@@ -2435,11 +2322,11 @@ html_template = """<!DOCTYPE html>
                     "Doctor 3 RPL ID": d.c2_d3_rpl || '',
                     "Sweater 3": d.c2_d3_sweater || '',
                     "Size 3": d.c2_d3_size || '',
-                    "Doctor 4 Name": '',
-                    "Doctor 4 RPL ID": '',
-                    "Sweater 4": '',
-                    "Size 4": '',
-                    "Status": (d.c2_d1_name && d.c2_d1_rpl && String(d.c2_d1_rpl).length === 6 && d.c2_d1_sweater && d.c2_d1_size && d.c2_d2_name && d.c2_d2_rpl && String(d.c2_d2_rpl).length === 6 && d.c2_d2_sweater && d.c2_d2_size && d.c2_d3_name && d.c2_d3_rpl && String(d.c2_d3_rpl).length === 6 && d.c2_d3_sweater && d.c2_d3_size) ? "Complete" : (d.c2_d1_name || d.c2_d1_rpl || d.c2_d1_sweater || d.c2_d2_name || d.c2_d3_name ? "In Progress" : "Not Started")
+                    "Doctor 4 Name": d.c2_d4_name || '',
+                    "Doctor 4 RPL ID": d.c2_d4_rpl || '',
+                    "Sweater 4": d.c2_d4_sweater || '',
+                    "Size 4": d.c2_d4_size || '',
+                    "Status": (d.c2_d1_name && d.c2_d1_rpl && String(d.c2_d1_rpl).length === 6 && d.c2_d1_sweater && d.c2_d1_size && d.c2_d2_name && d.c2_d2_rpl && String(d.c2_d2_rpl).length === 6 && d.c2_d2_sweater && d.c2_d2_size && d.c2_d3_name && d.c2_d3_rpl && String(d.c2_d3_rpl).length === 6 && d.c2_d3_sweater && d.c2_d3_size && d.c2_d4_name && d.c2_d4_rpl && String(d.c2_d4_rpl).length === 6 && d.c2_d4_sweater && d.c2_d4_size) ? "Complete" : (d.c2_d1_name || d.c2_d1_rpl || d.c2_d1_sweater || d.c2_d2_name || d.c2_d2_rpl || d.c2_d3_name || d.c2_d4_name ? "In Progress" : "Not Started")
                 });
             });
 
