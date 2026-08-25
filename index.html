@@ -1163,6 +1163,80 @@
             if (passInput) passInput.value = '';
         }
 
+        
+        function getTabStyles(status, isActive) {
+            if (status === 'Complete') {
+                return {
+                    badgeText: '✓ Complete',
+                    btnClasses: isActive 
+                        ? 'bg-emerald-600 text-white border-2 border-emerald-700 shadow-md ring-2 ring-emerald-500/30' 
+                        : 'bg-emerald-50 hover:bg-emerald-100 border-2 border-emerald-300 text-emerald-950 shadow-sm',
+                    titleClass: isActive ? 'text-white' : 'text-emerald-950',
+                    sapClass: isActive ? 'text-emerald-100 font-bold' : 'text-emerald-800 font-bold',
+                    badgeClasses: isActive 
+                        ? 'bg-white text-emerald-900 font-black shadow-sm' 
+                        : 'bg-emerald-600 text-white font-black shadow-sm'
+                };
+            } else if (status === 'In Progress') {
+                return {
+                    badgeText: '⏳ In Progress',
+                    btnClasses: isActive 
+                        ? 'bg-amber-500 text-slate-950 border-2 border-amber-600 shadow-md ring-2 ring-amber-500/30' 
+                        : 'bg-amber-50 hover:bg-amber-100 border-2 border-amber-300 text-amber-950 shadow-sm',
+                    titleClass: 'text-slate-950',
+                    sapClass: isActive ? 'text-amber-950 font-bold' : 'text-amber-800 font-bold',
+                    badgeClasses: isActive 
+                        ? 'bg-slate-950 text-amber-300 font-black shadow-sm' 
+                        : 'bg-amber-500 text-slate-950 font-black shadow-sm'
+                };
+            } else {
+                // Not Started
+                return {
+                    badgeText: '○ Not Started',
+                    btnClasses: isActive 
+                        ? 'bg-slate-900 text-white border-2 border-slate-950 shadow-md ring-2 ring-slate-900/30' 
+                        : 'bg-white hover:bg-slate-100 border-2 border-slate-200 text-slate-900 shadow-sm',
+                    titleClass: isActive ? 'text-white' : 'text-slate-900',
+                    sapClass: isActive ? 'text-slate-300' : 'text-slate-500',
+                    badgeClasses: isActive 
+                        ? 'bg-slate-800 text-slate-100 border border-slate-700 font-bold' 
+                        : 'bg-slate-100 text-slate-700 border border-slate-300 font-bold'
+                };
+            }
+        }
+
+        function updateActiveTerritoryTabStyle(idx, status) {
+            const btn = document.getElementById(`terr-tab-btn-${idx}`);
+            if (!btn || !currentRegionCode || !REGION_MAP[currentRegionCode]) return;
+            const r = REGION_MAP[currentRegionCode];
+            const t = r.territories[idx];
+            const styles = getTabStyles(status, true);
+
+            btn.className = `w-full text-left p-2.5 sm:p-3 rounded-2xl text-xs font-bold transition flex items-center justify-between ${styles.btnClasses}`;
+            btn.innerHTML = `
+                <div class="truncate pr-1 min-w-0">
+                    <div class="truncate font-black text-xs ${styles.titleClass}">${t.territory_name}</div>
+                    <div class="text-[10px] ${styles.sapClass} font-mono">SAP: ${t.sap_territory_code}</div>
+                </div>
+                <span class="text-[10px] px-2 py-0.5 rounded-full flex-shrink-0 whitespace-nowrap ${styles.badgeClasses}">${styles.badgeText}</span>
+            `;
+
+            // Update mobile option
+            const mobSelect = document.getElementById('mobile-territory-select');
+            if (mobSelect && mobSelect.options[idx]) {
+                mobSelect.options[idx].textContent = `${t.territory_name} (${status})`;
+            }
+
+            // Update progress badge
+            let completedCount = 0;
+            r.territories.forEach(terr => {
+                const terrD = store[String(terr.sap_territory_code)] || {};
+                if (getTerritoryStatus(terrD) === 'Complete') completedCount++;
+            });
+            const regBadge = document.getElementById('region-progress-badge');
+            if (regBadge) regBadge.textContent = `${completedCount}/${r.territories.length} Done`;
+        }
+
         function renderTerritoryTabs() {
             if (!currentRegionCode || !REGION_MAP[currentRegionCode]) return;
             const r = REGION_MAP[currentRegionCode];
@@ -1186,58 +1260,26 @@
                 mobSelect.appendChild(mobOpt);
 
                 const isActive = (idx === activeTerritoryIndex);
-
-                let btnClasses = '';
-                let badgeClasses = '';
-                let badgeText = status;
-
-                if (status === 'Complete') {
-                    badgeText = '✓ Complete';
-                    if (isActive) {
-                        btnClasses = 'bg-emerald-600 text-white border-emerald-600 shadow-md ring-2 ring-emerald-500/30';
-                        badgeClasses = 'bg-white text-emerald-900 font-black shadow-sm';
-                    } else {
-                        btnClasses = 'bg-emerald-50/70 hover:bg-emerald-100/70 text-emerald-950 border-emerald-200/90';
-                        badgeClasses = 'bg-emerald-100 text-emerald-800 border border-emerald-300 font-bold';
-                    }
-                } else if (status === 'In Progress') {
-                    badgeText = '⏳ In Progress';
-                    if (isActive) {
-                        btnClasses = 'bg-amber-500 text-white border-amber-500 shadow-md ring-2 ring-amber-500/30';
-                        badgeClasses = 'bg-white text-amber-900 font-black shadow-sm';
-                    } else {
-                        btnClasses = 'bg-amber-50/70 hover:bg-amber-100/70 text-amber-950 border-amber-200/90';
-                        badgeClasses = 'bg-amber-100 text-amber-800 border border-amber-300 font-bold';
-                    }
-                } else {
-                    // Not Started
-                    badgeText = '○ Not Started';
-                    if (isActive) {
-                        btnClasses = 'bg-slate-900 text-white border-slate-900 shadow-md ring-2 ring-slate-900/30';
-                        badgeClasses = 'bg-slate-700 text-slate-100 font-bold';
-                    } else {
-                        btnClasses = 'bg-white hover:bg-slate-50 text-slate-700 border-slate-200';
-                        badgeClasses = 'bg-slate-100 text-slate-500 border border-slate-200 font-medium';
-                    }
-                }
+                const styles = getTabStyles(status, isActive);
 
                 const btn = document.createElement('button');
                 btn.type = 'button';
                 btn.onclick = () => selectTerritoryTab(idx);
                 btn.id = `terr-tab-btn-${idx}`;
-                btn.className = `w-full text-left p-2.5 sm:p-3 rounded-2xl text-xs font-bold transition flex items-center justify-between border ${btnClasses}`;
+                btn.className = `w-full text-left p-2.5 sm:p-3 rounded-2xl text-xs font-bold transition flex items-center justify-between ${styles.btnClasses}`;
 
                 btn.innerHTML = `
                     <div class="truncate pr-1 min-w-0">
-                        <div class="truncate font-black text-xs ${isActive ? 'text-white' : 'text-slate-900'}">${t.territory_name}</div>
-                        <div class="text-[10px] ${isActive ? 'text-white/80' : 'text-slate-400'} font-mono">SAP: ${t.sap_territory_code}</div>
+                        <div class="truncate font-black text-xs ${styles.titleClass}">${t.territory_name}</div>
+                        <div class="text-[10px] ${styles.sapClass} font-mono">SAP: ${t.sap_territory_code}</div>
                     </div>
-                    <span class="text-[9px] px-2 py-0.5 rounded-full flex-shrink-0 whitespace-nowrap ${badgeClasses}">${badgeText}</span>
+                    <span class="text-[10px] px-2 py-0.5 rounded-full flex-shrink-0 whitespace-nowrap ${styles.badgeClasses}">${styles.badgeText}</span>
                 `;
                 deskList.appendChild(btn);
             });
 
-            document.getElementById('region-progress-badge').textContent = `${completedCount}/${r.territories.length} Done`;
+            const regBadge = document.getElementById('region-progress-badge');
+            if (regBadge) regBadge.textContent = `${completedCount}/${r.territories.length} Done`;
         }
 
         function selectTerritoryTab(idx, shouldScroll = true) {
@@ -1419,6 +1461,7 @@
         }
 
         
+        
         function updateC1DynamicCounter() {
             const isM4Visible = !document.getElementById('c1_m4_container')?.classList.contains('hidden');
             const maxCount = isM4Visible ? 4 : 3;
@@ -1444,7 +1487,7 @@
             if (maxEl) maxEl.textContent = maxCount;
 
             if (badgeEl) {
-                if (completedSweaters === maxCount) {
+                if (completedSweaters === maxCount && maxCount > 0) {
                     badgeEl.className = 'text-[10px] sm:text-xs font-black bg-emerald-500 text-slate-950 border border-emerald-300 px-2.5 py-0.5 rounded-full inline-block whitespace-nowrap shadow-sm';
                 } else if (completedSweaters > 0) {
                     badgeEl.className = 'text-[10px] sm:text-xs font-black bg-amber-400 text-slate-950 border border-amber-300 px-2.5 py-0.5 rounded-full inline-block whitespace-nowrap shadow-sm';
@@ -1455,90 +1498,82 @@
         }
 
         function onDataChanged() {
-            if (isRegionLocked() || !currentRegionCode) return;
-
+            if (isRegionLocked() || !currentRegionCode || !REGION_MAP[currentRegionCode]) return;
             const r = REGION_MAP[currentRegionCode];
             const t = r.territories[activeTerritoryIndex];
             const terrCode = String(t.sap_territory_code);
 
-            const terrData = {
-                c1_doc_name: document.getElementById('c1_doc_name').value.trim(),
-                c1_doc_rpl: document.getElementById('c1_doc_rpl').value.trim(),
-                c1_m1_sweater: document.getElementById('c1_m1_sweater').value,
-                c1_m1_size: document.getElementById('c1_m1_size').value,
-                c1_m2_sweater: document.getElementById('c1_m2_sweater').value,
-                c1_m2_size: document.getElementById('c1_m2_size').value,
-                c1_m3_sweater: document.getElementById('c1_m3_sweater').value,
-                c1_m3_size: document.getElementById('c1_m3_size').value,
-                c1_m4_sweater: document.getElementById('c1_m4_sweater').value,
-                c1_m4_size: document.getElementById('c1_m4_size').value,
+            const isM4Visible = !document.getElementById('c1_m4_container')?.classList.contains('hidden');
 
-                c2_d1_name: document.getElementById('c2_d1_name').value.trim(),
-                c2_d1_rpl: document.getElementById('c2_d1_rpl').value.trim(),
-                c2_d1_sweater: document.getElementById('c2_d1_sweater').value,
-                c2_d1_size: document.getElementById('c2_d1_size').value,
-                c2_d2_name: document.getElementById('c2_d2_name').value.trim(),
-                c2_d2_rpl: document.getElementById('c2_d2_rpl').value.trim(),
-                c2_d2_sweater: document.getElementById('c2_d2_sweater').value,
-                c2_d2_size: document.getElementById('c2_d2_size').value,
-                c2_d3_name: document.getElementById('c2_d3_name').value.trim(),
-                c2_d3_rpl: document.getElementById('c2_d3_rpl').value.trim(),
-                c2_d3_sweater: document.getElementById('c2_d3_sweater').value,
-                c2_d3_size: document.getElementById('c2_d3_size').value,
-                c2_d4_name: document.getElementById('c2_d4_name').value.trim(),
-                c2_d4_rpl: document.getElementById('c2_d4_rpl').value.trim(),
-                c2_d4_sweater: document.getElementById('c2_d4_sweater').value,
-                c2_d4_size: document.getElementById('c2_d4_size').value,
+            const terrData = {
+                c1_doc_name: document.getElementById('c1_doc_name')?.value.trim() || '',
+                c1_doc_rpl: document.getElementById('c1_doc_rpl')?.value.trim() || '',
+                c1_m1_sweater: document.getElementById('c1_m1_sweater')?.value || '',
+                c1_m1_size: document.getElementById('c1_m1_size')?.value || '',
+                c1_m2_sweater: document.getElementById('c1_m2_sweater')?.value || '',
+                c1_m2_size: document.getElementById('c1_m2_size')?.value || '',
+                c1_m3_sweater: document.getElementById('c1_m3_sweater')?.value || '',
+                c1_m3_size: document.getElementById('c1_m3_size')?.value || '',
+                c1_m4_sweater: isM4Visible ? (document.getElementById('c1_m4_sweater')?.value || '') : '',
+                c1_m4_size: isM4Visible ? (document.getElementById('c1_m4_size')?.value || '') : '',
+
+                c2_d1_name: document.getElementById('c2_d1_name')?.value.trim() || '',
+                c2_d1_rpl: document.getElementById('c2_d1_rpl')?.value.trim() || '',
+                c2_d1_sweater: document.getElementById('c2_d1_sweater')?.value || '',
+                c2_d1_size: document.getElementById('c2_d1_size')?.value || '',
+
+                c2_d2_name: document.getElementById('c2_d2_name')?.value.trim() || '',
+                c2_d2_rpl: document.getElementById('c2_d2_rpl')?.value.trim() || '',
+                c2_d2_sweater: document.getElementById('c2_d2_sweater')?.value || '',
+                c2_d2_size: document.getElementById('c2_d2_size')?.value || '',
+
+                c2_d3_name: document.getElementById('c2_d3_name')?.value.trim() || '',
+                c2_d3_rpl: document.getElementById('c2_d3_rpl')?.value.trim() || '',
+                c2_d3_sweater: document.getElementById('c2_d3_sweater')?.value || '',
+                c2_d3_size: document.getElementById('c2_d3_size')?.value || '',
+
+                c2_d4_name: '',
+                c2_d4_rpl: '',
+                c2_d4_sweater: '',
+                c2_d4_size: ''
             };
 
             store[terrCode] = terrData;
             localStorage.setItem('EXIUM_SWEATER_STORE', JSON.stringify(store));
 
-            ['c1_m1', 'c1_m2', 'c1_m3', 'c1_m4', 'c2_d1', 'c2_d2', 'c2_d3', 'c2_d4'].forEach(p => updateSweaterSlotIndicator(p));
-
             const status = getTerritoryStatus(terrData);
-            const statusBadge = document.getElementById('current-territory-status');
-            statusBadge.textContent = status;
-            statusBadge.className = `text-[9px] sm:text-[10px] font-bold px-2 py-0.2 rounded-full ${
-                status === 'Complete' ? 'bg-emerald-500 text-slate-950 font-black' :
-                status === 'In Progress' ? 'bg-amber-400 text-slate-950 font-bold' :
-                'bg-white/10 text-slate-200 border border-white/20'
-            }`;
-
-            let completedCount = 0;
-            r.territories.forEach(ter => {
-                if (getTerritoryStatus(store[String(ter.sap_territory_code)]) === 'Complete') completedCount++;
-            });
-            document.getElementById('region-progress-badge').textContent = `${completedCount}/${r.territories.length} Done`;
             
-            triggerAutoSync();
-        }
-
-        function saveCurrentTerritoryClick() {
-            onDataChanged();
-            const r = REGION_MAP[currentRegionCode];
-            const t = r ? r.territories[activeTerritoryIndex] : null;
-            const name = t ? t.territory_name : 'Territory';
-            const terrCode = t ? String(t.sap_territory_code) : '';
-
-            if (terrCode && t) {
-                syncTerritoryToCloud(terrCode, store[terrCode]);
+            // 1. Instant Active Territory Banner update
+            const statusBadge = document.getElementById('current-territory-status');
+            if (statusBadge) {
+                statusBadge.textContent = status;
+                statusBadge.className = `text-[10px] sm:text-xs font-black px-3 py-1 rounded-full ${
+                    status === 'Complete' ? 'bg-emerald-500 text-slate-950 font-black shadow-sm' :
+                    status === 'In Progress' ? 'bg-amber-400 text-slate-950 font-black shadow-sm' :
+                    'bg-slate-800 text-slate-300 border border-slate-700'
+                }`;
             }
 
-            showToast(`✅ ${name} saved successfully!`);
+            // 2. Instant Left-side Territory item update (0ms, no DOM rebuild)
+            updateActiveTerritoryTabStyle(activeTerritoryIndex, status);
+
+            // 3. Instant Dynamic Sweater Counter update
+            updateC1DynamicCounter();
+
+            // 4. Update slot check badges
+            updateTerritorySlotCheckBadges(terrData);
+
+            // 5. Debounced cloud sync
+            if (autoSyncTimeout) clearTimeout(autoSyncTimeout);
+            autoSyncTimeout = setTimeout(() => {
+                syncTerritoryToCloud(terrCode, terrData);
+            }, 1200);
         }
 
-        function showToast(msg) {
-            const toast = document.getElementById('toast-notification');
-            const msgEl = document.getElementById('toast-msg');
-            msgEl.textContent = msg;
-            toast.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-10');
-            toast.classList.add('opacity-100', 'translate-y-0');
-
-            setTimeout(() => {
-                toast.classList.remove('opacity-100', 'translate-y-0');
-                toast.classList.add('opacity-0', 'pointer-events-none', 'translate-y-10');
-            }, 2200);
+        
+        function saveCurrentTerritoryClick() {
+            onDataChanged();
+            showToast("💾 Saved! Synced to local & cloud storage.");
         }
 
         function getTerritoryStatus(d) {
