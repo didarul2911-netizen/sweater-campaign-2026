@@ -1123,18 +1123,41 @@
             }
         }
 
-        function exitRegionWorkspace() {
-            onDataChanged();
+                function exitRegionWorkspace() {
+            if (currentRegionCode) {
+                onDataChanged();
+            }
             localStorage.removeItem('EXIUM_ACTIVE_SESSION');
             currentRegionCode = null;
+            activeTerritoryIndex = 0;
+
             document.getElementById('workspace-view').classList.add('hidden');
             document.getElementById('selection-view').classList.remove('hidden');
+
             const passInput = document.getElementById('region-password');
             if (passInput) passInput.value = '';
+
+            const zoneSel = document.getElementById('select-zone');
+            if (zoneSel) zoneSel.value = '';
+
+            const regSel = document.getElementById('select-region');
+            if (regSel) {
+                regSel.innerHTML = '<option value="">-- 2. Select Region --</option>';
+                regSel.disabled = true;
+            }
+
+            const rhCard = document.getElementById('rh-info-card');
+            if (rhCard) rhCard.classList.add('hidden');
+
+            const passSec = document.getElementById('password-section');
+            if (passSec) passSec.classList.add('hidden');
+
+            const unlockBtn = document.getElementById('unlock-btn-container');
+            if (unlockBtn) unlockBtn.classList.add('hidden');
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        
-        
         function getTabStyles(status, isActive) {
             if (status === 'Complete') {
                 return {
@@ -1253,9 +1276,12 @@
             if (regBadge) regBadge.textContent = `${completedCount}/${r.territories.length} Done`;
         }
 
-        function selectTerritoryTab(idx, shouldScroll = true) {
-            activeTerritoryIndex = idx;
+                function selectTerritoryTab(idx, shouldScroll = true) {
+            if (!currentRegionCode || !REGION_MAP[currentRegionCode]) return;
             const r = REGION_MAP[currentRegionCode];
+            if (idx < 0 || idx >= r.territories.length) return;
+
+            activeTerritoryIndex = idx;
             const t = r.territories[idx];
             const terrCode = String(t.sap_territory_code);
             const d = store[terrCode] || {};
@@ -1265,89 +1291,106 @@
                 territory_idx: idx
             }));
 
-            document.getElementById('mobile-territory-select').value = idx;
-            document.getElementById('current-territory-title').textContent = t.territory_name;
-            document.getElementById('current-territory-code').textContent = `SAP Code: ${terrCode}`;
+            const mobSelect = document.getElementById('mobile-territory-select');
+            if (mobSelect) mobSelect.value = idx;
+
+            const titleEl = document.getElementById('current-territory-title');
+            if (titleEl) titleEl.textContent = t.territory_name;
+
+            const codeEl = document.getElementById('current-territory-code');
+            if (codeEl) codeEl.textContent = `SAP Code: ${terrCode}`;
 
             const status = getTerritoryStatus(d);
             const statusBadge = document.getElementById('current-territory-status');
-            statusBadge.textContent = status;
-            statusBadge.className = `text-[9px] sm:text-[10px] font-bold px-2 py-0.2 rounded-full ${
-                status === 'Complete' ? 'bg-emerald-500 text-slate-950 font-black' :
-                status === 'In Progress' ? 'bg-amber-400 text-slate-950 font-bold' :
-                'bg-white/10 text-slate-200 border border-white/20'
-            }`;
+            if (statusBadge) {
+                statusBadge.textContent = status;
+                statusBadge.className = `text-[10px] sm:text-xs font-black px-3 py-1 rounded-full ${
+                    status === 'Complete' ? 'bg-emerald-500 text-slate-950 font-black shadow-sm' :
+                    status === 'In Progress' ? 'bg-amber-400 text-slate-950 font-black shadow-sm' :
+                    'bg-slate-800 text-slate-300 border border-slate-700'
+                }`;
+            }
 
             const isLocked = isRegionLocked();
             const lockedNotice = document.getElementById('territory-locked-notice');
-            if (isLocked) {
-                lockedNotice.classList.remove('hidden');
-            } else {
-                lockedNotice.classList.add('hidden');
+            if (lockedNotice) {
+                if (isLocked) lockedNotice.classList.remove('hidden');
+                else lockedNotice.classList.add('hidden');
             }
 
+            // Campaign 1: 1 Doctor + 3 (or 4) Sweaters
             const c1DocInput = document.getElementById('c1_doc_name');
-            c1DocInput.value = d.c1_doc_name || '';
-            c1DocInput.disabled = isLocked;
+            if (c1DocInput) {
+                c1DocInput.value = d.c1_doc_name || '';
+                c1DocInput.disabled = isLocked;
+            }
 
             const c1DocRpl = document.getElementById('c1_doc_rpl');
-            c1DocRpl.value = d.c1_doc_rpl || '';
-            c1DocRpl.disabled = isLocked;
-            updateRplBadgeState(c1DocRpl, 'c1_doc_rpl_badge');
+            if (c1DocRpl) {
+                c1DocRpl.value = d.c1_doc_rpl || '';
+                c1DocRpl.disabled = isLocked;
+                updateRplBadgeState(c1DocRpl, 'c1_doc_rpl_badge');
+            }
 
             ['m1', 'm2', 'm3', 'm4'].forEach(m => {
                 const sw = d[`c1_${m}_sweater`] || '';
                 const sz = d[`c1_${m}_size`] || '';
                 const swSel = document.getElementById(`c1_${m}_sweater`);
                 const szSel = document.getElementById(`c1_${m}_size`);
-                
-                swSel.value = sw;
-                swSel.disabled = isLocked;
+
+                if (swSel) {
+                    swSel.value = sw;
+                    swSel.disabled = isLocked;
+                }
                 updateSizeOptionsForSelect(`c1_${m}_sweater`, `c1_${m}_size`, sz);
-                szSel.disabled = isLocked;
-                updateSlotImagePreview(`c1_${m}_img_preview`, sw);
-                updateSweaterSlotIndicator(`c1_${m}`);
+                if (szSel) szSel.disabled = isLocked;
+                updateSlotImagePreview(`c1_${m}`);
             });
 
-            ['d1', 'd2', 'd3', 'd4'].forEach(d_item => {
+            if (d.c1_m4_sweater || d.c1_m4_size) {
+                showC1Sweater4(false);
+            } else {
+                hideC1Sweater4ViewOnly();
+            }
+
+            // Campaign 2: Exactly 3 Doctors
+            ['d1', 'd2', 'd3'].forEach(d_item => {
                 const dNameInput = document.getElementById(`c2_${d_item}_name`);
-                dNameInput.value = d[`c2_${d_item}_name`] || '';
-                dNameInput.disabled = isLocked;
+                if (dNameInput) {
+                    dNameInput.value = d[`c2_${d_item}_name`] || '';
+                    dNameInput.disabled = isLocked;
+                }
 
                 const dRplInput = document.getElementById(`c2_${d_item}_rpl`);
-                dRplInput.value = d[`c2_${d_item}_rpl`] || '';
-                dRplInput.disabled = isLocked;
-                updateRplBadgeState(dRplInput, `c2_${d_item}_rpl_badge`);
+                if (dRplInput) {
+                    dRplInput.value = d[`c2_${d_item}_rpl`] || '';
+                    dRplInput.disabled = isLocked;
+                    updateRplBadgeState(dRplInput, `c2_${d_item}_rpl_badge`);
+                }
 
                 const sw = d[`c2_${d_item}_sweater`] || '';
                 const sz = d[`c2_${d_item}_size`] || '';
                 const swSel = document.getElementById(`c2_${d_item}_sweater`);
                 const szSel = document.getElementById(`c2_${d_item}_size`);
 
-                swSel.value = sw;
-                swSel.disabled = isLocked;
+                if (swSel) {
+                    swSel.value = sw;
+                    swSel.disabled = isLocked;
+                }
                 updateSizeOptionsForSelect(`c2_${d_item}_sweater`, `c2_${d_item}_size`, sz);
-                szSel.disabled = isLocked;
-                updateSlotImagePreview(`c2_${d_item}_img_preview`, sw);
-                updateSweaterSlotIndicator(`c2_${d_item}`);
+                if (szSel) szSel.disabled = isLocked;
+                updateSlotImagePreview(`c2_${d_item}`);
             });
 
-            r.territories.forEach((_, tabIdx) => {
-                const btn = document.getElementById(`terr-tab-btn-${tabIdx}`);
-                if (btn) {
-                    if (tabIdx === idx) {
-                        btn.className = 'w-full text-left p-3 rounded-2xl text-xs font-bold transition flex items-center justify-between border bg-orange-500 text-white border-orange-500 shadow-md';
-                    } else {
-                        btn.className = 'w-full text-left p-3 rounded-2xl text-xs font-bold transition flex items-center justify-between border bg-slate-50 hover:bg-slate-100 text-slate-700 border-slate-200';
-                    }
-                }
-            });
+            // Update indicators and dynamic sweater counter
+            updateTerritorySlotCheckBadges(d);
+            updateC1DynamicCounter();
+
+            // Re-render sidebar territory tabs so all background colors and selection rings reflect current state
+            renderTerritoryTabs();
 
             if (shouldScroll) {
-                const bannerEl = document.getElementById('active-territory-banner-card');
-                if (bannerEl) {
-                    bannerEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
+                window.scrollTo({ top: 0, behavior: 'smooth' });
             }
         }
 
