@@ -1164,42 +1164,43 @@
         }
 
         
+        
         function getTabStyles(status, isActive) {
             if (status === 'Complete') {
                 return {
                     badgeText: '✓ Complete',
                     btnClasses: isActive 
-                        ? 'bg-emerald-600 text-white border-2 border-emerald-700 shadow-md ring-2 ring-emerald-500/30' 
-                        : 'bg-emerald-50 hover:bg-emerald-100 border-2 border-emerald-300 text-emerald-950 shadow-sm',
-                    titleClass: isActive ? 'text-white' : 'text-emerald-950',
+                        ? 'bg-emerald-600 text-white border-2 border-emerald-700 shadow-md ring-2 ring-emerald-400/50' 
+                        : 'bg-emerald-50/80 hover:bg-emerald-100 border border-emerald-300 text-slate-900 shadow-sm',
+                    titleClass: isActive ? 'text-white' : 'text-slate-900',
                     sapClass: isActive ? 'text-emerald-100 font-bold' : 'text-emerald-800 font-bold',
                     badgeClasses: isActive 
                         ? 'bg-white text-emerald-900 font-black shadow-sm' 
-                        : 'bg-emerald-600 text-white font-black shadow-sm'
+                        : 'bg-emerald-100 text-emerald-800 border border-emerald-300 font-black'
                 };
             } else if (status === 'In Progress') {
                 return {
                     badgeText: '⏳ In Progress',
                     btnClasses: isActive 
-                        ? 'bg-amber-500 text-slate-950 border-2 border-amber-600 shadow-md ring-2 ring-amber-500/30' 
-                        : 'bg-amber-50 hover:bg-amber-100 border-2 border-amber-300 text-amber-950 shadow-sm',
+                        ? 'bg-amber-500 text-slate-950 border-2 border-amber-600 shadow-md ring-2 ring-amber-400/50' 
+                        : 'bg-amber-50/80 hover:bg-amber-100 border border-amber-300 text-slate-900 shadow-sm',
                     titleClass: 'text-slate-950',
-                    sapClass: isActive ? 'text-amber-950 font-bold' : 'text-amber-800 font-bold',
+                    sapClass: isActive ? 'text-amber-950 font-bold' : 'text-amber-900 font-bold',
                     badgeClasses: isActive 
-                        ? 'bg-slate-950 text-amber-300 font-black shadow-sm' 
-                        : 'bg-amber-500 text-slate-950 font-black shadow-sm'
+                        ? 'bg-white text-slate-950 font-black shadow-sm' 
+                        : 'bg-amber-100 text-amber-900 border border-amber-300 font-black'
                 };
             } else {
                 // Not Started
                 return {
                     badgeText: '○ Not Started',
                     btnClasses: isActive 
-                        ? 'bg-slate-900 text-white border-2 border-slate-950 shadow-md ring-2 ring-slate-900/30' 
-                        : 'bg-white hover:bg-slate-100 border-2 border-slate-200 text-slate-900 shadow-sm',
+                        ? 'bg-slate-900 text-white border-2 border-slate-900 shadow-md ring-2 ring-slate-400/40' 
+                        : 'bg-white hover:bg-slate-50 border border-slate-200 hover:border-slate-300 text-slate-900 shadow-sm',
                     titleClass: isActive ? 'text-white' : 'text-slate-900',
                     sapClass: isActive ? 'text-slate-300' : 'text-slate-500',
                     badgeClasses: isActive 
-                        ? 'bg-slate-800 text-slate-100 border border-slate-700 font-bold' 
+                        ? 'bg-slate-800 text-slate-100 border border-slate-600 font-bold' 
                         : 'bg-slate-100 text-slate-700 border border-slate-300 font-bold'
                 };
             }
