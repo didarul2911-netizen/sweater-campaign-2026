@@ -1243,7 +1243,7 @@ html_template = """<!DOCTYPE html>
                 if (status === 'Complete') {
                     badgeText = '✓ Complete';
                     if (isActive) {
-                        btnClasses = 'bg-emerald-600 text-white border-2 border-emerald-800 shadow-xl ring-2 ring-emerald-500/40';
+                        btnClasses = 'bg-emerald-600 text-white border-2 border-emerald-800 shadow-xl ring-2 ring-emerald-500/50';
                         titleClasses = 'text-white font-black';
                         sapClasses = 'text-emerald-100';
                         badgeClasses = 'bg-white text-emerald-950 font-black shadow-md';
@@ -1256,7 +1256,7 @@ html_template = """<!DOCTYPE html>
                 } else if (status === 'In Progress') {
                     badgeText = '⏳ In Progress';
                     if (isActive) {
-                        btnClasses = 'bg-amber-500 text-white border-2 border-amber-700 shadow-xl ring-2 ring-amber-500/40';
+                        btnClasses = 'bg-amber-500 text-white border-2 border-amber-700 shadow-xl ring-2 ring-amber-500/50';
                         titleClasses = 'text-white font-black';
                         sapClasses = 'text-amber-100';
                         badgeClasses = 'bg-white text-amber-950 font-black shadow-md';
@@ -1270,14 +1270,14 @@ html_template = """<!DOCTYPE html>
                     // Not Started: Slate Grey background, Text color Black
                     badgeText = '○ Not Started';
                     if (isActive) {
-                        btnClasses = 'bg-slate-200 text-slate-950 border-2 border-slate-900 shadow-xl ring-2 ring-slate-900/40';
+                        btnClasses = 'bg-slate-200 text-slate-950 border-2 border-slate-950 shadow-xl ring-2 ring-slate-900/40';
                         titleClasses = 'text-slate-950 font-black';
-                        sapClasses = 'text-slate-700';
-                        badgeClasses = 'bg-slate-900 text-white font-black shadow-sm';
+                        sapClasses = 'text-slate-700 font-bold';
+                        badgeClasses = 'bg-slate-950 text-white font-black shadow-md';
                     } else {
                         btnClasses = 'bg-slate-200 hover:bg-slate-300/80 text-slate-950 border border-slate-300';
                         titleClasses = 'text-slate-950 font-bold';
-                        sapClasses = 'text-slate-600';
+                        sapClasses = 'text-slate-600 font-medium';
                         badgeClasses = 'bg-slate-300 text-slate-900 border border-slate-400 font-bold';
                     }
                 }
@@ -1541,15 +1541,34 @@ html_template = """<!DOCTYPE html>
         }
 
         function getTerritoryStatus(d) {
-            if (!d) return 'Not Started';
-            const c1Ok = d.c1_doc_name && d.c1_doc_rpl && String(d.c1_doc_rpl).length === 6 && d.c1_m1_sweater && d.c1_m1_size && d.c1_m2_sweater && d.c1_m2_size && d.c1_m3_sweater && d.c1_m3_size && d.c1_m4_sweater && d.c1_m4_size;
-            const c2Ok = d.c2_d1_name && d.c2_d1_rpl && String(d.c2_d1_rpl).length === 6 && d.c2_d1_sweater && d.c2_d1_size && 
-                         d.c2_d2_name && d.c2_d2_rpl && String(d.c2_d2_rpl).length === 6 && d.c2_d2_sweater && d.c2_d2_size && 
-                         d.c2_d3_name && d.c2_d3_rpl && String(d.c2_d3_rpl).length === 6 && d.c2_d3_sweater && d.c2_d3_size && 
-                         d.c2_d4_name && d.c2_d4_rpl && String(d.c2_d4_rpl).length === 6 && d.c2_d4_sweater && d.c2_d4_size;
+            if (!d || typeof d !== 'object') return 'Not Started';
+
+            const c1Ok = Boolean(
+                d.c1_doc_name && String(d.c1_doc_name).trim() !== '' &&
+                d.c1_doc_rpl && String(d.c1_doc_rpl).trim().length === 6 &&
+                d.c1_m1_sweater && d.c1_m1_size &&
+                d.c1_m2_sweater && d.c1_m2_size &&
+                d.c1_m3_sweater && d.c1_m3_size &&
+                d.c1_m4_sweater && d.c1_m4_size
+            );
+
+            const c2Ok = Boolean(
+                d.c2_d1_name && String(d.c2_d1_name).trim() !== '' && d.c2_d1_rpl && String(d.c2_d1_rpl).trim().length === 6 && d.c2_d1_sweater && d.c2_d1_size &&
+                d.c2_d2_name && String(d.c2_d2_name).trim() !== '' && d.c2_d2_rpl && String(d.c2_d2_rpl).trim().length === 6 && d.c2_d2_sweater && d.c2_d2_size &&
+                d.c2_d3_name && String(d.c2_d3_name).trim() !== '' && d.c2_d3_rpl && String(d.c2_d3_rpl).trim().length === 6 && d.c2_d3_sweater && d.c2_d3_size &&
+                d.c2_d4_name && String(d.c2_d4_name).trim() !== '' && d.c2_d4_rpl && String(d.c2_d4_rpl).trim().length === 6 && d.c2_d4_sweater && d.c2_d4_size
+            );
 
             if (c1Ok && c2Ok) return 'Complete';
-            if (d.c1_doc_name || d.c1_doc_rpl || d.c2_d1_name || d.c2_d1_rpl || d.c2_d2_name || d.c2_d3_name || d.c2_d4_name || d.c1_m1_sweater || d.c2_d1_sweater) return 'In Progress';
+
+            const keys = Object.keys(d);
+            for (let i = 0; i < keys.length; i++) {
+                const val = d[keys[i]];
+                if (val && typeof val === 'string' && val.trim() !== '') {
+                    return 'In Progress';
+                }
+            }
+
             return 'Not Started';
         }
 
