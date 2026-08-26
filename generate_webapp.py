@@ -316,11 +316,11 @@ html_template = """<!DOCTYPE html>
                                 <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-white text-teal-800 flex items-center justify-center font-black text-xs sm:text-sm flex-shrink-0 shadow-sm mt-0.5 sm:mt-0">1</div>
                                 <div class="min-w-0">
                                     <h4 class="text-xs sm:text-sm md:text-base font-black text-white leading-snug">Gyne Core Doctor Development (Family Package)</h4>
-                                    <p class="text-[10px] sm:text-xs text-teal-100 mt-0.5 leading-tight">1 Doctor per Territory &bull; 4 Sweaters for Family</p>
+                                    <p class="text-[10px] sm:text-xs text-teal-100 mt-0.5 leading-tight">3 Sweaters for family (4 Sweater maximum in special case)</p>
                                 </div>
                             </div>
                             <div class="self-start sm:self-auto pl-9 sm:pl-0">
-                                <span class="text-[10px] sm:text-xs font-black bg-teal-950/80 text-teal-200 border border-teal-400/40 px-2.5 py-0.5 rounded-full inline-block whitespace-nowrap shadow-sm">4 Sweaters Total</span>
+                                <span id="c1_dynamic_counter_badge" class="text-[10px] sm:text-xs font-black bg-teal-950/80 text-teal-200 border border-teal-400/40 px-2.5 py-0.5 rounded-full inline-block whitespace-nowrap shadow-sm"><span id="c1_count_display">0</span> / <span id="c1_max_display">3</span> Sweaters Selected</span>
                             </div>
                         </div>
 
@@ -1414,6 +1414,8 @@ html_template = """<!DOCTYPE html>
                 updateSweaterSlotIndicator(`c2_${d_item}`);
             });
 
+            updateC1DynamicCounter();
+
             if (shouldScroll) {
                 const bannerEl = document.getElementById('active-territory-banner-card');
                 if (bannerEl && window.innerWidth < 1024) {
@@ -1480,6 +1482,7 @@ html_template = """<!DOCTYPE html>
             const btn = document.getElementById('c1_add_m4_btn_container');
             if (container) container.classList.remove('hidden');
             if (btn) btn.classList.add('hidden');
+            updateC1DynamicCounter();
             if (triggerChange) onDataChanged();
         }
 
@@ -1488,6 +1491,7 @@ html_template = """<!DOCTYPE html>
             const btn = document.getElementById('c1_add_m4_btn_container');
             if (container) container.classList.add('hidden');
             if (btn) btn.classList.remove('hidden');
+            updateC1DynamicCounter();
         }
 
         function hideAndClearC1Sweater4() {
@@ -1498,6 +1502,42 @@ html_template = """<!DOCTYPE html>
             updateSlotImagePreview('c1_m4_img_preview', '');
             hideC1Sweater4ViewOnly();
             onDataChanged();
+        }
+
+        
+        function updateC1DynamicCounter() {
+            const isM4Visible = !document.getElementById('c1_m4_container')?.classList.contains('hidden');
+            const maxCount = isM4Visible ? 4 : 3;
+            
+            let completedSweaters = 0;
+            ['m1', 'm2', 'm3'].forEach(m => {
+                const sw = document.getElementById(`c1_${m}_sweater`)?.value;
+                const sz = document.getElementById(`c1_${m}_size`)?.value;
+                if (sw && sz) completedSweaters++;
+            });
+
+            if (isM4Visible) {
+                const sw4 = document.getElementById('c1_m4_sweater')?.value;
+                const sz4 = document.getElementById('c1_m4_size')?.value;
+                if (sw4 && sz4) completedSweaters++;
+            }
+
+            const countEl = document.getElementById('c1_count_display');
+            const maxEl = document.getElementById('c1_max_display');
+            const badgeEl = document.getElementById('c1_dynamic_counter_badge');
+
+            if (countEl) countEl.textContent = completedSweaters;
+            if (maxEl) maxEl.textContent = maxCount;
+
+            if (badgeEl) {
+                if (completedSweaters === maxCount) {
+                    badgeEl.className = 'text-[10px] sm:text-xs font-black bg-emerald-500 text-slate-950 border border-emerald-300 px-2.5 py-0.5 rounded-full inline-block whitespace-nowrap shadow-sm';
+                } else if (completedSweaters > 0) {
+                    badgeEl.className = 'text-[10px] sm:text-xs font-black bg-amber-400 text-slate-950 border border-amber-300 px-2.5 py-0.5 rounded-full inline-block whitespace-nowrap shadow-sm';
+                } else {
+                    badgeEl.className = 'text-[10px] sm:text-xs font-black bg-teal-950/80 text-teal-200 border border-teal-400/40 px-2.5 py-0.5 rounded-full inline-block whitespace-nowrap shadow-sm';
+                }
+            }
         }
 
         function onDataChanged() {
@@ -1555,6 +1595,7 @@ html_template = """<!DOCTYPE html>
                 }`;
             }
 
+            updateC1DynamicCounter();
             renderTerritoryTabs();
             triggerAutoSync();
         }
