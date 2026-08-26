@@ -1210,7 +1210,8 @@ html_template = """<!DOCTYPE html>
             if (passInput) passInput.value = '';
         }
 
-        function renderTerritoryTabs() {
+                function renderTerritoryTabs() {
+            if (!currentRegionCode || !REGION_MAP[currentRegionCode]) return;
             const r = REGION_MAP[currentRegionCode];
             const deskList = document.getElementById('desktop-territory-list');
             const mobSelect = document.getElementById('mobile-territory-select');
@@ -1228,28 +1229,71 @@ html_template = """<!DOCTYPE html>
                 const mobOpt = document.createElement('option');
                 mobOpt.value = idx;
                 mobOpt.textContent = `${t.territory_name} (${status})`;
+                if (idx === activeTerritoryIndex) mobOpt.selected = true;
                 mobSelect.appendChild(mobOpt);
+
+                const isActive = (idx === activeTerritoryIndex);
+
+                let btnClasses = '';
+                let titleClasses = '';
+                let sapClasses = '';
+                let badgeClasses = '';
+                let badgeText = status;
+
+                if (status === 'Complete') {
+                    badgeText = '✓ Complete';
+                    if (isActive) {
+                        btnClasses = 'bg-emerald-600 text-white border-2 border-emerald-800 shadow-xl ring-2 ring-emerald-500/40';
+                        titleClasses = 'text-white font-black';
+                        sapClasses = 'text-emerald-100';
+                        badgeClasses = 'bg-white text-emerald-950 font-black shadow-md';
+                    } else {
+                        btnClasses = 'bg-emerald-100 hover:bg-emerald-200/80 text-emerald-950 border border-emerald-300';
+                        titleClasses = 'text-emerald-950 font-bold';
+                        sapClasses = 'text-emerald-700';
+                        badgeClasses = 'bg-emerald-200 text-emerald-950 border border-emerald-400 font-bold';
+                    }
+                } else if (status === 'In Progress') {
+                    badgeText = '⏳ In Progress';
+                    if (isActive) {
+                        btnClasses = 'bg-amber-500 text-white border-2 border-amber-700 shadow-xl ring-2 ring-amber-500/40';
+                        titleClasses = 'text-white font-black';
+                        sapClasses = 'text-amber-100';
+                        badgeClasses = 'bg-white text-amber-950 font-black shadow-md';
+                    } else {
+                        btnClasses = 'bg-amber-100 hover:bg-amber-200/80 text-amber-950 border border-amber-300';
+                        titleClasses = 'text-amber-950 font-bold';
+                        sapClasses = 'text-amber-700';
+                        badgeClasses = 'bg-amber-200 text-amber-950 border border-amber-400 font-bold';
+                    }
+                } else {
+                    // Not Started: Slate Grey background, Text color Black
+                    badgeText = '○ Not Started';
+                    if (isActive) {
+                        btnClasses = 'bg-slate-200 text-slate-950 border-2 border-slate-900 shadow-xl ring-2 ring-slate-900/40';
+                        titleClasses = 'text-slate-950 font-black';
+                        sapClasses = 'text-slate-700';
+                        badgeClasses = 'bg-slate-900 text-white font-black shadow-sm';
+                    } else {
+                        btnClasses = 'bg-slate-200 hover:bg-slate-300/80 text-slate-950 border border-slate-300';
+                        titleClasses = 'text-slate-950 font-bold';
+                        sapClasses = 'text-slate-600';
+                        badgeClasses = 'bg-slate-300 text-slate-900 border border-slate-400 font-bold';
+                    }
+                }
 
                 const btn = document.createElement('button');
                 btn.type = 'button';
                 btn.onclick = () => selectTerritoryTab(idx);
                 btn.id = `terr-tab-btn-${idx}`;
-                btn.className = `w-full text-left p-3 rounded-2xl text-xs font-bold transition flex items-center justify-between border ${
-                    idx === activeTerritoryIndex 
-                    ? 'bg-orange-500 text-white border-orange-500 shadow-md' 
-                    : 'bg-slate-50 hover:bg-slate-100 text-slate-700 border-slate-200'
-                }`;
+                btn.className = `w-full text-left p-2.5 sm:p-3 rounded-2xl text-xs transition flex items-center justify-between ${btnClasses}`;
 
                 btn.innerHTML = `
                     <div class="truncate pr-1 min-w-0">
-                        <div class="truncate font-black text-xs">${t.territory_name}</div>
-                        <div class="text-[10px] ${idx === activeTerritoryIndex ? 'text-orange-100' : 'text-slate-400'} font-mono">SAP: ${t.sap_territory_code}</div>
+                        <div class="truncate text-xs ${titleClasses}">${t.territory_name}</div>
+                        <div class="text-[10px] ${sapClasses} font-mono">SAP: ${t.sap_territory_code}</div>
                     </div>
-                    <span class="text-[9px] font-black px-1.5 py-0.5 rounded-full flex-shrink-0 ${
-                        status === 'Complete' ? (idx === activeTerritoryIndex ? 'bg-white text-slate-950' : 'bg-emerald-100 text-emerald-800 border border-emerald-300') :
-                        status === 'In Progress' ? (idx === activeTerritoryIndex ? 'bg-white text-slate-950' : 'bg-amber-100 text-amber-800 border border-amber-300') :
-                        (idx === activeTerritoryIndex ? 'bg-orange-600 text-white' : 'bg-slate-200 text-slate-600')
-                    }">${status === 'Complete' ? '✓ Complete' : status}</span>
+                    <span class="text-[9px] px-2 py-0.5 rounded-full flex-shrink-0 whitespace-nowrap ${badgeClasses}">${badgeText}</span>
                 `;
                 deskList.appendChild(btn);
             });
@@ -1259,6 +1303,8 @@ html_template = """<!DOCTYPE html>
 
         function selectTerritoryTab(idx, shouldScroll = true) {
             activeTerritoryIndex = idx;
+            renderTerritoryTabs();
+
             const r = REGION_MAP[currentRegionCode];
             const t = r.territories[idx];
             const terrCode = String(t.sap_territory_code);
@@ -1269,35 +1315,41 @@ html_template = """<!DOCTYPE html>
                 territory_idx: idx
             }));
 
-            document.getElementById('mobile-territory-select').value = idx;
+            const mobSelect = document.getElementById('mobile-territory-select');
+            if (mobSelect) mobSelect.value = idx;
             document.getElementById('current-territory-title').textContent = t.territory_name;
             document.getElementById('current-territory-code').textContent = `SAP Code: ${terrCode}`;
 
             const status = getTerritoryStatus(d);
             const statusBadge = document.getElementById('current-territory-status');
-            statusBadge.textContent = status;
-            statusBadge.className = `text-[9px] sm:text-[10px] font-bold px-2 py-0.2 rounded-full ${
-                status === 'Complete' ? 'bg-emerald-500 text-slate-950 font-black' :
-                status === 'In Progress' ? 'bg-amber-400 text-slate-950 font-bold' :
-                'bg-white/10 text-slate-200 border border-white/20'
-            }`;
+            if (statusBadge) {
+                statusBadge.textContent = status;
+                statusBadge.className = `text-[10px] sm:text-xs font-black px-3 py-1 rounded-full ${
+                    status === 'Complete' ? 'bg-emerald-500 text-slate-950 font-black shadow-sm' :
+                    status === 'In Progress' ? 'bg-amber-400 text-slate-950 font-black shadow-sm' :
+                    'bg-slate-800 text-slate-300 border border-slate-700'
+                }`;
+            }
 
             const isLocked = isRegionLocked();
             const lockedNotice = document.getElementById('territory-locked-notice');
-            if (isLocked) {
-                lockedNotice.classList.remove('hidden');
-            } else {
-                lockedNotice.classList.add('hidden');
+            if (lockedNotice) {
+                if (isLocked) lockedNotice.classList.remove('hidden');
+                else lockedNotice.classList.add('hidden');
             }
 
             const c1DocInput = document.getElementById('c1_doc_name');
-            c1DocInput.value = d.c1_doc_name || '';
-            c1DocInput.disabled = isLocked;
+            if (c1DocInput) {
+                c1DocInput.value = d.c1_doc_name || '';
+                c1DocInput.disabled = isLocked;
+            }
 
             const c1DocRpl = document.getElementById('c1_doc_rpl');
-            c1DocRpl.value = d.c1_doc_rpl || '';
-            c1DocRpl.disabled = isLocked;
-            updateRplBadgeState(c1DocRpl, 'c1_doc_rpl_badge');
+            if (c1DocRpl) {
+                c1DocRpl.value = d.c1_doc_rpl || '';
+                c1DocRpl.disabled = isLocked;
+                updateRplBadgeState(c1DocRpl, 'c1_doc_rpl_badge');
+            }
 
             ['m1', 'm2', 'm3', 'm4'].forEach(m => {
                 const sw = d[`c1_${m}_sweater`] || '';
@@ -1305,51 +1357,48 @@ html_template = """<!DOCTYPE html>
                 const swSel = document.getElementById(`c1_${m}_sweater`);
                 const szSel = document.getElementById(`c1_${m}_size`);
                 
-                swSel.value = sw;
-                swSel.disabled = isLocked;
+                if (swSel) {
+                    swSel.value = sw;
+                    swSel.disabled = isLocked;
+                }
                 updateSizeOptionsForSelect(`c1_${m}_sweater`, `c1_${m}_size`, sz);
-                szSel.disabled = isLocked;
+                if (szSel) szSel.disabled = isLocked;
                 updateSlotImagePreview(`c1_${m}_img_preview`, sw);
                 updateSweaterSlotIndicator(`c1_${m}`);
             });
 
             ['d1', 'd2', 'd3', 'd4'].forEach(d_item => {
                 const dNameInput = document.getElementById(`c2_${d_item}_name`);
-                dNameInput.value = d[`c2_${d_item}_name`] || '';
-                dNameInput.disabled = isLocked;
+                if (dNameInput) {
+                    dNameInput.value = d[`c2_${d_item}_name`] || '';
+                    dNameInput.disabled = isLocked;
+                }
 
                 const dRplInput = document.getElementById(`c2_${d_item}_rpl`);
-                dRplInput.value = d[`c2_${d_item}_rpl`] || '';
-                dRplInput.disabled = isLocked;
-                updateRplBadgeState(dRplInput, `c2_${d_item}_rpl_badge`);
+                if (dRplInput) {
+                    dRplInput.value = d[`c2_${d_item}_rpl`] || '';
+                    dRplInput.disabled = isLocked;
+                    updateRplBadgeState(dRplInput, `c2_${d_item}_rpl_badge`);
+                }
 
                 const sw = d[`c2_${d_item}_sweater`] || '';
                 const sz = d[`c2_${d_item}_size`] || '';
                 const swSel = document.getElementById(`c2_${d_item}_sweater`);
                 const szSel = document.getElementById(`c2_${d_item}_size`);
 
-                swSel.value = sw;
-                swSel.disabled = isLocked;
+                if (swSel) {
+                    swSel.value = sw;
+                    swSel.disabled = isLocked;
+                }
                 updateSizeOptionsForSelect(`c2_${d_item}_sweater`, `c2_${d_item}_size`, sz);
-                szSel.disabled = isLocked;
+                if (szSel) szSel.disabled = isLocked;
                 updateSlotImagePreview(`c2_${d_item}_img_preview`, sw);
                 updateSweaterSlotIndicator(`c2_${d_item}`);
             });
 
-            r.territories.forEach((_, tabIdx) => {
-                const btn = document.getElementById(`terr-tab-btn-${tabIdx}`);
-                if (btn) {
-                    if (tabIdx === idx) {
-                        btn.className = 'w-full text-left p-3 rounded-2xl text-xs font-bold transition flex items-center justify-between border bg-orange-500 text-white border-orange-500 shadow-md';
-                    } else {
-                        btn.className = 'w-full text-left p-3 rounded-2xl text-xs font-bold transition flex items-center justify-between border bg-slate-50 hover:bg-slate-100 text-slate-700 border-slate-200';
-                    }
-                }
-            });
-
             if (shouldScroll) {
                 const bannerEl = document.getElementById('active-territory-banner-card');
-                if (bannerEl) {
+                if (bannerEl && window.innerWidth < 1024) {
                     bannerEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 }
             }
@@ -1415,33 +1464,33 @@ html_template = """<!DOCTYPE html>
             const terrCode = String(t.sap_territory_code);
 
             const terrData = {
-                c1_doc_name: document.getElementById('c1_doc_name').value.trim(),
-                c1_doc_rpl: document.getElementById('c1_doc_rpl').value.trim(),
-                c1_m1_sweater: document.getElementById('c1_m1_sweater').value,
-                c1_m1_size: document.getElementById('c1_m1_size').value,
-                c1_m2_sweater: document.getElementById('c1_m2_sweater').value,
-                c1_m2_size: document.getElementById('c1_m2_size').value,
-                c1_m3_sweater: document.getElementById('c1_m3_sweater').value,
-                c1_m3_size: document.getElementById('c1_m3_size').value,
-                c1_m4_sweater: document.getElementById('c1_m4_sweater').value,
-                c1_m4_size: document.getElementById('c1_m4_size').value,
+                c1_doc_name: document.getElementById('c1_doc_name')?.value.trim() || '',
+                c1_doc_rpl: document.getElementById('c1_doc_rpl')?.value.trim() || '',
+                c1_m1_sweater: document.getElementById('c1_m1_sweater')?.value || '',
+                c1_m1_size: document.getElementById('c1_m1_size')?.value || '',
+                c1_m2_sweater: document.getElementById('c1_m2_sweater')?.value || '',
+                c1_m2_size: document.getElementById('c1_m2_size')?.value || '',
+                c1_m3_sweater: document.getElementById('c1_m3_sweater')?.value || '',
+                c1_m3_size: document.getElementById('c1_m3_size')?.value || '',
+                c1_m4_sweater: document.getElementById('c1_m4_sweater')?.value || '',
+                c1_m4_size: document.getElementById('c1_m4_size')?.value || '',
 
-                c2_d1_name: document.getElementById('c2_d1_name').value.trim(),
-                c2_d1_rpl: document.getElementById('c2_d1_rpl').value.trim(),
-                c2_d1_sweater: document.getElementById('c2_d1_sweater').value,
-                c2_d1_size: document.getElementById('c2_d1_size').value,
-                c2_d2_name: document.getElementById('c2_d2_name').value.trim(),
-                c2_d2_rpl: document.getElementById('c2_d2_rpl').value.trim(),
-                c2_d2_sweater: document.getElementById('c2_d2_sweater').value,
-                c2_d2_size: document.getElementById('c2_d2_size').value,
-                c2_d3_name: document.getElementById('c2_d3_name').value.trim(),
-                c2_d3_rpl: document.getElementById('c2_d3_rpl').value.trim(),
-                c2_d3_sweater: document.getElementById('c2_d3_sweater').value,
-                c2_d3_size: document.getElementById('c2_d3_size').value,
-                c2_d4_name: document.getElementById('c2_d4_name').value.trim(),
-                c2_d4_rpl: document.getElementById('c2_d4_rpl').value.trim(),
-                c2_d4_sweater: document.getElementById('c2_d4_sweater').value,
-                c2_d4_size: document.getElementById('c2_d4_size').value,
+                c2_d1_name: document.getElementById('c2_d1_name')?.value.trim() || '',
+                c2_d1_rpl: document.getElementById('c2_d1_rpl')?.value.trim() || '',
+                c2_d1_sweater: document.getElementById('c2_d1_sweater')?.value || '',
+                c2_d1_size: document.getElementById('c2_d1_size')?.value || '',
+                c2_d2_name: document.getElementById('c2_d2_name')?.value.trim() || '',
+                c2_d2_rpl: document.getElementById('c2_d2_rpl')?.value.trim() || '',
+                c2_d2_sweater: document.getElementById('c2_d2_sweater')?.value || '',
+                c2_d2_size: document.getElementById('c2_d2_size')?.value || '',
+                c2_d3_name: document.getElementById('c2_d3_name')?.value.trim() || '',
+                c2_d3_rpl: document.getElementById('c2_d3_rpl')?.value.trim() || '',
+                c2_d3_sweater: document.getElementById('c2_d3_sweater')?.value || '',
+                c2_d3_size: document.getElementById('c2_d3_size')?.value || '',
+                c2_d4_name: document.getElementById('c2_d4_name')?.value.trim() || '',
+                c2_d4_rpl: document.getElementById('c2_d4_rpl')?.value.trim() || '',
+                c2_d4_sweater: document.getElementById('c2_d4_sweater')?.value || '',
+                c2_d4_size: document.getElementById('c2_d4_size')?.value || '',
             };
 
             store[terrCode] = terrData;
@@ -1451,19 +1500,16 @@ html_template = """<!DOCTYPE html>
 
             const status = getTerritoryStatus(terrData);
             const statusBadge = document.getElementById('current-territory-status');
-            statusBadge.textContent = status;
-            statusBadge.className = `text-[9px] sm:text-[10px] font-bold px-2 py-0.2 rounded-full ${
-                status === 'Complete' ? 'bg-emerald-500 text-slate-950 font-black' :
-                status === 'In Progress' ? 'bg-amber-400 text-slate-950 font-bold' :
-                'bg-white/10 text-slate-200 border border-white/20'
-            }`;
+            if (statusBadge) {
+                statusBadge.textContent = status;
+                statusBadge.className = `text-[10px] sm:text-xs font-black px-3 py-1 rounded-full ${
+                    status === 'Complete' ? 'bg-emerald-500 text-slate-950 font-black shadow-sm' :
+                    status === 'In Progress' ? 'bg-amber-400 text-slate-950 font-black shadow-sm' :
+                    'bg-slate-800 text-slate-300 border border-slate-700'
+                }`;
+            }
 
-            let completedCount = 0;
-            r.territories.forEach(ter => {
-                if (getTerritoryStatus(store[String(ter.sap_territory_code)]) === 'Complete') completedCount++;
-            });
-            document.getElementById('region-progress-badge').textContent = `${completedCount}/${r.territories.length} Done`;
-            
+            renderTerritoryTabs();
             triggerAutoSync();
         }
 
