@@ -31,6 +31,30 @@ function getOrCreateSheets(ss) {
   return { sheet1: sheet1, sheet2: sheet2 };
 }
 
+/**
+ * Run this function once from Apps Script editor to instantly clean
+ * old 4th doctor columns and set up the 3-doctor headers!
+ */
+function setupAndCleanSheets() {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var pair = getOrCreateSheets(ss);
+  var sheet2 = pair.sheet2;
+
+  if (sheet2) {
+    // Unmerge row 1
+    sheet2.getRange("A1:Z1").breakApart();
+
+    // If there are more than 19 columns, delete old Doctor 4 columns
+    var maxCol = sheet2.getMaxColumns();
+    if (maxCol > 19) {
+      sheet2.deleteColumns(20, maxCol - 19);
+    }
+  }
+
+  restoreHeaders();
+  SpreadsheetApp.getActiveSpreadsheet().toast("Google Sheet successfully updated to 3 Doctors layout!", "Success", 5);
+}
+
 function restoreHeaders() {
   var ss = SpreadsheetApp.getActiveSpreadsheet();
   var pair = getOrCreateSheets(ss);
@@ -38,6 +62,7 @@ function restoreHeaders() {
   var sheet2 = pair.sheet2;
 
   if (sheet1) {
+    sheet1.getRange("A1:Z1").breakApart();
     sheet1.getRange("A1:F1").merge().setValue("TERRITORY INFORMATION (EXIUM FIELD FORCE LIST)")
       .setBackground("#1E293B").setFontColor("#FFFFFF").setFontWeight("bold").setHorizontalAlignment("center").setVerticalAlignment("middle");
     sheet1.getRange("G1:P1").merge().setValue("CAMPAIGN 1: GYNE CORE DOCTOR DEVELOPMENT (FAMILY PACKAGE - 4 SWEATERS / TERRITORY)")
@@ -59,6 +84,7 @@ function restoreHeaders() {
   }
 
   if (sheet2) {
+    sheet2.getRange("A1:Z1").breakApart();
     sheet2.getRange("A1:F1").merge().setValue("TERRITORY INFORMATION (EXIUM FIELD FORCE LIST)")
       .setBackground("#1E293B").setFontColor("#FFFFFF").setFontWeight("bold").setHorizontalAlignment("center").setVerticalAlignment("middle");
     sheet2.getRange("G1:R1").merge().setValue("CAMPAIGN 2: CORE DOCTOR MAXIMIZATION (1 SWEATER / DOCTOR - 3 DOCTORS / TERRITORY)")
@@ -321,7 +347,7 @@ function clearAllSheetData(ss) {
   var sheet1 = pair.sheet1;
   var sheet2 = pair.sheet2;
 
-  restoreHeaders();
+  setupAndCleanSheets();
 
   if (sheet1) {
     var lr1 = sheet1.getLastRow();

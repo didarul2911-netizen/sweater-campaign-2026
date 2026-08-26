@@ -1,101 +1,365 @@
 /**
- * =================================================================================
- * GOOGLE APPS SCRIPT FOR REAL-TIME CLOUD DATABASE (GOOGLE SHEETS SYNC)
- * =================================================================================
- * Instructions to deploy in 2 minutes:
- * 1. Open your Google Drive -> New -> Google Sheets (or upload 'Sweater_Campaign_2026_Master_Format.xlsx').
- * 2. In Google Sheets, click "Extensions" -> "Apps Script".
- * 3. Delete any default code and paste this entire file content.
- * 4. Click "Deploy" -> "New deployment".
- * 5. Select type: "Web app".
- * 6. Set "Execute as": "Me" and "Who has access": "Anyone".
- * 7. Click "Deploy" and copy the "Web app URL".
- * 8. Paste your Web App URL into the Web Portal settings to sync live data directly to Google Sheets!
- * =================================================================================
+ * =========================================================================
+ * EXIUM MUPS - SWEATER CAMPAIGN 2026 (4Q'26)
+ * GOOGLE APPS SCRIPT BACKEND (WITH JSONP + DIRECT CORS SUPPORT)
+ * =========================================================================
  */
 
-function doPost(e) {
-  var lock = LockService.getScriptLock();
-  lock.tryLock(10000);
-  
-  try {
-    var ss = SpreadsheetApp.getActiveSpreadsheet();
-    var postData = JSON.parse(e.postData.contents);
-    var action = postData.action;
-    
-    if (action === "save_territory") {
-      var terrCode = String(postData.sap_territory_code);
-      var data = postData.data;
-      
-      // Update Campaign 1 Sheet: "Gyne Core Doctor (Family)"
-      var sheetC1 = ss.getSheetByName("Gyne Core Doctor (Family)");
-      if (sheetC1) {
-        var valuesC1 = sheetC1.getDataRange().getValues();
-        for (var i = 2; i < valuesC1.length; i++) {
-          if (String(valuesC1[i][4]) === terrCode) { // Column E is SAP Territory Code (0-indexed 4)
-            var r = i + 1;
-            sheetC1.getRange(r, 7).setValue(data.c1_doc_name || ""); // G: Doc Name
-            sheetC1.getRange(r, 8).setValue(data.c1_m1_sweater || "");
-            sheetC1.getRange(r, 9).setValue(data.c1_m1_size || "");
-            sheetC1.getRange(r, 10).setValue(data.c1_m2_sweater || "");
-            sheetC1.getRange(r, 11).setValue(data.c1_m2_size || "");
-            sheetC1.getRange(r, 12).setValue(data.c1_m3_sweater || "");
-            sheetC1.getRange(r, 13).setValue(data.c1_m3_size || "");
-            sheetC1.getRange(r, 14).setValue(data.c1_m4_sweater || "");
-            sheetC1.getRange(r, 15).setValue(data.c1_m4_size || "");
-            break;
-          }
-        }
-      }
-      
-      // Update Campaign 2 Sheet: "Core Doctor Maximization"
-      var sheetC2 = ss.getSheetByName("Core Doctor Maximization");
-      if (sheetC2) {
-        var valuesC2 = sheetC2.getDataRange().getValues();
-        for (var j = 2; j < valuesC2.length; j++) {
-          if (String(valuesC2[j][4]) === terrCode) {
-            var r2 = j + 1;
-            sheetC2.getRange(r2, 7).setValue(data.c2_d1_name || "");
-            sheetC2.getRange(r2, 8).setValue(data.c2_d1_sweater || "");
-            sheetC2.getRange(r2, 9).setValue(data.c2_d1_size || "");
-            sheetC2.getRange(r2, 10).setValue(data.c2_d2_name || "");
-            sheetC2.getRange(r2, 11).setValue(data.c2_d2_sweater || "");
-            sheetC2.getRange(r2, 12).setValue(data.c2_d2_size || "");
-            sheetC2.getRange(r2, 13).setValue(data.c2_d3_name || "");
-            sheetC2.getRange(r2, 14).setValue(data.c2_d3_sweater || "");
-            sheetC2.getRange(r2, 15).setValue(data.c2_d3_size || "");
-            sheetC2.getRange(r2, 16).setValue(data.c2_d4_name || "");
-            sheetC2.getRange(r2, 17).setValue(data.c2_d4_sweater || "");
-            sheetC2.getRange(r2, 18).setValue(data.c2_d4_size || "");
-            break;
-          }
-        }
-      }
-      
-      return ContentService.createTextOutput(JSON.stringify({
-        status: "success",
-        message: "Territory " + terrCode + " saved successfully in Google Sheets"
-      })).setMimeType(ContentService.MimeType.JSON);
+function getOrCreateSheets(ss) {
+  var sheets = ss.getSheets();
+  var sheet1 = ss.getSheetByName("Gyne Core Doctor (Family)");
+  var sheet2 = ss.getSheetByName("Core Doctor Maximization");
+
+  if (!sheet1) {
+    if (sheets.length > 0) {
+      sheet1 = sheets[0];
+      sheet1.setName("Gyne Core Doctor (Family)");
+    } else {
+      sheet1 = ss.insertSheet("Gyne Core Doctor (Family)");
     }
+  }
+
+  if (!sheet2) {
+    if (sheets.length > 1 && sheets[1] !== sheet1) {
+      sheet2 = sheets[1];
+      sheet2.setName("Core Doctor Maximization");
+    } else {
+      sheet2 = ss.insertSheet("Core Doctor Maximization");
+    }
+  }
+
+  return { sheet1: sheet1, sheet2: sheet2 };
+}
+
+/**
+ * Run this function once from Apps Script editor to instantly clean
+ * old 4th doctor columns and set up the 3-doctor headers!
+ */
+function setupAndCleanSheets() {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var pair = getOrCreateSheets(ss);
+  var sheet2 = pair.sheet2;
+
+  if (sheet2) {
+    // Unmerge row 1
+    sheet2.getRange("A1:Z1").breakApart();
+
+    // If there are more than 19 columns, delete old Doctor 4 columns
+    var maxCol = sheet2.getMaxColumns();
+    if (maxCol > 19) {
+      sheet2.deleteColumns(20, maxCol - 19);
+    }
+  }
+
+  restoreHeaders();
+  SpreadsheetApp.getActiveSpreadsheet().toast("Google Sheet successfully updated to 3 Doctors layout!", "Success", 5);
+}
+
+function restoreHeaders() {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var pair = getOrCreateSheets(ss);
+  var sheet1 = pair.sheet1;
+  var sheet2 = pair.sheet2;
+
+  if (sheet1) {
+    sheet1.getRange("A1:Z1").breakApart();
+    sheet1.getRange("A1:F1").merge().setValue("TERRITORY INFORMATION (EXIUM FIELD FORCE LIST)")
+      .setBackground("#1E293B").setFontColor("#FFFFFF").setFontWeight("bold").setHorizontalAlignment("center").setVerticalAlignment("middle");
+    sheet1.getRange("G1:P1").merge().setValue("CAMPAIGN 1: GYNE CORE DOCTOR DEVELOPMENT (FAMILY PACKAGE - 4 SWEATERS / TERRITORY)")
+      .setBackground("#0F766E").setFontColor("#FFFFFF").setFontWeight("bold").setHorizontalAlignment("center").setVerticalAlignment("middle");
+    sheet1.getRange("Q1").setValue("STATUS")
+      .setBackground("#047857").setFontColor("#FFFFFF").setFontWeight("bold").setHorizontalAlignment("center").setVerticalAlignment("middle");
+
+    var h1 = [
+      "Zone", "SAP Region Code", "Region", "Regional Head", "SAP Territory Code", "Territory",
+      "Doctor Name", "Doctor RPL ID",
+      "Sweater 1", "Size 1", "Sweater 2", "Size 2", "Sweater 3", "Size 3", "Sweater 4", "Size 4",
+      "Territory Status"
+    ];
+    sheet1.getRange(2, 1, 1, h1.length).setValues([h1])
+      .setBackground("#F1F5F9").setFontColor("#0F172A").setFontWeight("bold").setHorizontalAlignment("center").setVerticalAlignment("middle");
     
-    return ContentService.createTextOutput(JSON.stringify({
-      status: "error",
-      message: "Unknown action"
-    })).setMimeType(ContentService.MimeType.JSON);
+    sheet1.setFrozenRows(2);
+    sheet1.setRowHeights(1, 2, 28);
+  }
+
+  if (sheet2) {
+    sheet2.getRange("A1:Z1").breakApart();
+    sheet2.getRange("A1:F1").merge().setValue("TERRITORY INFORMATION (EXIUM FIELD FORCE LIST)")
+      .setBackground("#1E293B").setFontColor("#FFFFFF").setFontWeight("bold").setHorizontalAlignment("center").setVerticalAlignment("middle");
+    sheet2.getRange("G1:R1").merge().setValue("CAMPAIGN 2: CORE DOCTOR MAXIMIZATION (1 SWEATER / DOCTOR - 3 DOCTORS / TERRITORY)")
+      .setBackground("#6B21A8").setFontColor("#FFFFFF").setFontWeight("bold").setHorizontalAlignment("center").setVerticalAlignment("middle");
+    sheet2.getRange("S1").setValue("STATUS")
+      .setBackground("#047857").setFontColor("#FFFFFF").setFontWeight("bold").setHorizontalAlignment("center").setVerticalAlignment("middle");
+
+    var h2 = [
+      "Zone", "SAP Region Code", "Region", "Regional Head", "SAP Territory Code", "Territory",
+      "Doctor 1 Name", "Doctor 1 RPL ID", "Sweater 1", "Size 1",
+      "Doctor 2 Name", "Doctor 2 RPL ID", "Sweater 2", "Size 2",
+      "Doctor 3 Name", "Doctor 3 RPL ID", "Sweater 3", "Size 3",
+      "Territory Status"
+    ];
+    sheet2.getRange(2, 1, 1, h2.length).setValues([h2])
+      .setBackground("#F1F5F9").setFontColor("#0F172A").setFontWeight("bold").setHorizontalAlignment("center").setVerticalAlignment("middle");
     
-  } catch (err) {
-    return ContentService.createTextOutput(JSON.stringify({
-      status: "error",
-      error: err.toString()
-    })).setMimeType(ContentService.MimeType.JSON);
-  } finally {
-    lock.releaseLock();
+    sheet2.setFrozenRows(2);
+    sheet2.setRowHeights(1, 2, 28);
   }
 }
 
 function doGet(e) {
-  return ContentService.createTextOutput(JSON.stringify({
-    status: "online",
-    message: "Exium Sweater Campaign Google Cloud API is running!"
-  })).setMimeType(ContentService.MimeType.JSON);
+  var callback = (e && e.parameter && e.parameter.callback) ? e.parameter.callback : "";
+  var action = (e && e.parameter && e.parameter.action) ? e.parameter.action : "pull_data";
+
+  try {
+    var ss = SpreadsheetApp.getActiveSpreadsheet();
+    var pair = getOrCreateSheets(ss);
+    var sheet1 = pair.sheet1;
+    var sheet2 = pair.sheet2;
+
+    if (action === "test") {
+      return sendResponse({ status: "success", message: "Google Sheet connection successful!" }, callback);
+    }
+
+    var store = {};
+    var populatedCount = 0;
+
+    if (sheet1) {
+      var lr1 = sheet1.getLastRow();
+      if (lr1 > 2) {
+        var v1 = sheet1.getRange(3, 1, lr1 - 2, 16).getValues();
+        for (var i = 0; i < v1.length; i++) {
+          var code = String(v1[i][4]).trim();
+          if (code) {
+            if (!store[code]) store[code] = {};
+            store[code].c1_doc_name = String(v1[i][6] || "").trim();
+            store[code].c1_doc_rpl = String(v1[i][7] || "").trim();
+            store[code].c1_m1_sweater = String(v1[i][8] || "").trim();
+            store[code].c1_m1_size = String(v1[i][9] || "").trim();
+            store[code].c1_m2_sweater = String(v1[i][10] || "").trim();
+            store[code].c1_m2_size = String(v1[i][11] || "").trim();
+            store[code].c1_m3_sweater = String(v1[i][12] || "").trim();
+            store[code].c1_m3_size = String(v1[i][13] || "").trim();
+            store[code].c1_m4_sweater = String(v1[i][14] || "").trim();
+            store[code].c1_m4_size = String(v1[i][15] || "").trim();
+          }
+        }
+      }
+    }
+
+    if (sheet2) {
+      var lr2 = sheet2.getLastRow();
+      if (lr2 > 2) {
+        var v2 = sheet2.getRange(3, 1, lr2 - 2, 18).getValues();
+        for (var j = 0; j < v2.length; j++) {
+          var code2 = String(v2[j][4]).trim();
+          if (code2) {
+            if (!store[code2]) store[code2] = {};
+            store[code2].c2_d1_name = String(v2[j][6] || "").trim();
+            store[code2].c2_d1_rpl = String(v2[j][7] || "").trim();
+            store[code2].c2_d1_sweater = String(v2[j][8] || "").trim();
+            store[code2].c2_d1_size = String(v2[j][9] || "").trim();
+            store[code2].c2_d2_name = String(v2[j][10] || "").trim();
+            store[code2].c2_d2_rpl = String(v2[j][11] || "").trim();
+            store[code2].c2_d2_sweater = String(v2[j][12] || "").trim();
+            store[code2].c2_d2_size = String(v2[j][13] || "").trim();
+            store[code2].c2_d3_name = String(v2[j][14] || "").trim();
+            store[code2].c2_d3_rpl = String(v2[j][15] || "").trim();
+            store[code2].c2_d3_sweater = String(v2[j][16] || "").trim();
+            store[code2].c2_d3_size = String(v2[j][17] || "").trim();
+            store[code2].c2_d4_name = "";
+            store[code2].c2_d4_rpl = "";
+            store[code2].c2_d4_sweater = "";
+            store[code2].c2_d4_size = "";
+          }
+        }
+      }
+    }
+
+    for (var k in store) {
+      var item = store[k];
+      if (item.c1_doc_name || item.c1_doc_rpl || item.c1_m1_sweater || item.c2_d1_name || item.c2_d1_rpl || item.c2_d1_sweater) {
+        populatedCount++;
+      }
+    }
+
+    return sendResponse({
+      status: "success",
+      store: store,
+      total_territories: Object.keys(store).length,
+      populated_territories: populatedCount
+    }, callback);
+
+  } catch (err) {
+    return sendResponse({ status: "error", message: err.toString() }, callback);
+  }
+}
+
+function sendResponse(obj, callback) {
+  var jsonStr = JSON.stringify(obj);
+  if (callback && callback.trim()) {
+    return ContentService
+      .createTextOutput(callback.trim() + "(" + jsonStr + ");")
+      .setMimeType(ContentService.MimeType.JAVASCRIPT);
+  }
+  return ContentService
+    .createTextOutput(jsonStr)
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
+function doPost(e) {
+  try {
+    var rawText = (e && e.postData && e.postData.contents) ? e.postData.contents : "";
+    var postData = rawText ? JSON.parse(rawText) : (e ? e.parameter : {});
+    var action = postData.action || "save_territory";
+    var ss = SpreadsheetApp.getActiveSpreadsheet();
+
+    if (action === "save_territory") {
+      updateTerritoryInSheets(ss, String(postData.sap_territory_code), postData.data);
+      return ContentService.createTextOutput(JSON.stringify({ status: "success" })).setMimeType(ContentService.MimeType.JSON);
+    }
+
+    if (action === "save_batch") {
+      var batch = postData.batch || {};
+      for (var tCode in batch) {
+        updateTerritoryInSheets(ss, String(tCode), batch[tCode]);
+      }
+      return ContentService.createTextOutput(JSON.stringify({ status: "success", count: Object.keys(batch).length })).setMimeType(ContentService.MimeType.JSON);
+    }
+
+    if (action === "delete_region") {
+      clearRegionSheetData(ss, String(postData.sap_region_code));
+      return ContentService.createTextOutput(JSON.stringify({ status: "success", message: "Region cleared" })).setMimeType(ContentService.MimeType.JSON);
+    }
+
+    if (action === "reset_all") {
+      clearAllSheetData(ss);
+      return ContentService.createTextOutput(JSON.stringify({ status: "success", message: "All sheet data reset" })).setMimeType(ContentService.MimeType.JSON);
+    }
+
+    return ContentService.createTextOutput(JSON.stringify({ status: "error", message: "Unknown action" })).setMimeType(ContentService.MimeType.JSON);
+  } catch (err) {
+    return ContentService.createTextOutput(JSON.stringify({ status: "error", message: err.toString() })).setMimeType(ContentService.MimeType.JSON);
+  }
+}
+
+function updateTerritoryInSheets(ss, terrCode, d) {
+  if (!d || !terrCode) return;
+  var pair = getOrCreateSheets(ss);
+  var sheet1 = pair.sheet1;
+  var sheet2 = pair.sheet2;
+
+  if (sheet1) {
+    var lr1 = sheet1.getLastRow();
+    if (lr1 > 2) {
+      var codes1 = sheet1.getRange(3, 5, lr1 - 2, 1).getValues();
+      for (var i = 0; i < codes1.length; i++) {
+        if (String(codes1[i][0]).trim() === String(terrCode).trim()) {
+          var c1Mandatory = Boolean(
+            d.c1_doc_name && d.c1_doc_rpl && String(d.c1_doc_rpl).length === 6 &&
+            d.c1_m1_sweater && d.c1_m1_size &&
+            d.c1_m2_sweater && d.c1_m2_size &&
+            d.c1_m3_sweater && d.c1_m3_size
+          );
+          var c1M4HasAny = Boolean(d.c1_m4_sweater || d.c1_m4_size);
+          var c1M4Ok = !c1M4HasAny || Boolean(d.c1_m4_sweater && d.c1_m4_size);
+          var c1Complete = c1Mandatory && c1M4Ok;
+          var c1HasAny = Boolean(d.c1_doc_name || d.c1_doc_rpl || d.c1_m1_sweater || d.c1_m1_size || d.c1_m2_sweater || d.c1_m2_size || d.c1_m3_sweater || d.c1_m3_size || d.c1_m4_sweater || d.c1_m4_size);
+          var c1Status = c1Complete ? "Complete" : (c1HasAny ? "In Progress" : "Not Started");
+
+          var v1 = [
+            d.c1_doc_name||"", d.c1_doc_rpl||"",
+            d.c1_m1_sweater||"", d.c1_m1_size||"",
+            d.c1_m2_sweater||"", d.c1_m2_size||"",
+            d.c1_m3_sweater||"", d.c1_m3_size||"",
+            d.c1_m4_sweater||"", d.c1_m4_size||"",
+            c1Status
+          ];
+          sheet1.getRange(i + 3, 7, 1, 11).setValues([v1]);
+          break;
+        }
+      }
+    }
+  }
+
+  if (sheet2) {
+    var lr2 = sheet2.getLastRow();
+    if (lr2 > 2) {
+      var codes2 = sheet2.getRange(3, 5, lr2 - 2, 1).getValues();
+      for (var j = 0; j < codes2.length; j++) {
+        if (String(codes2[j][0]).trim() === String(terrCode).trim()) {
+          var c2Doc1Ok = Boolean(d.c2_d1_name && d.c2_d1_rpl && String(d.c2_d1_rpl).length === 6 && d.c2_d1_sweater && d.c2_d1_size);
+          var c2Doc2Ok = Boolean(d.c2_d2_name && d.c2_d2_rpl && String(d.c2_d2_rpl).length === 6 && d.c2_d2_sweater && d.c2_d2_size);
+          var c2Doc3Ok = Boolean(d.c2_d3_name && d.c2_d3_rpl && String(d.c2_d3_rpl).length === 6 && d.c2_d3_sweater && d.c2_d3_size);
+          var c2Complete = c2Doc1Ok && c2Doc2Ok && c2Doc3Ok;
+          var c2HasAny = Boolean(d.c2_d1_name || d.c2_d1_rpl || d.c2_d1_sweater || d.c2_d1_size || d.c2_d2_name || d.c2_d2_rpl || d.c2_d2_sweater || d.c2_d2_size || d.c2_d3_name || d.c2_d3_rpl || d.c2_d3_sweater || d.c2_d3_size);
+          var c2Status = c2Complete ? "Complete" : (c2HasAny ? "In Progress" : "Not Started");
+
+          var v2 = [
+            d.c2_d1_name||"", d.c2_d1_rpl||"", d.c2_d1_sweater||"", d.c2_d1_size||"",
+            d.c2_d2_name||"", d.c2_d2_rpl||"", d.c2_d2_sweater||"", d.c2_d2_size||"",
+            d.c2_d3_name||"", d.c2_d3_rpl||"", d.c2_d3_sweater||"", d.c2_d3_size||"",
+            c2Status
+          ];
+          sheet2.getRange(j + 3, 7, 1, 13).setValues([v2]);
+          break;
+        }
+      }
+    }
+  }
+}
+
+function clearRegionSheetData(ss, regCode) {
+  if (!regCode) return;
+  var pair = getOrCreateSheets(ss);
+  var sheet1 = pair.sheet1;
+  var sheet2 = pair.sheet2;
+
+  if (sheet1) {
+    var lr1 = sheet1.getLastRow();
+    if (lr1 > 2) {
+      var rCodes1 = sheet1.getRange(3, 2, lr1 - 2, 1).getValues();
+      for (var i = 0; i < rCodes1.length; i++) {
+        if (String(rCodes1[i][0]).trim() === String(regCode).trim()) {
+          var v1 = ["", "", "", "", "", "", "", "", "", "", "Not Started"];
+          sheet1.getRange(i + 3, 7, 1, 11).setValues([v1]);
+        }
+      }
+    }
+  }
+
+  if (sheet2) {
+    var lr2 = sheet2.getLastRow();
+    if (lr2 > 2) {
+      var rCodes2 = sheet2.getRange(3, 2, lr2 - 2, 1).getValues();
+      for (var j = 0; j < rCodes2.length; j++) {
+        if (String(rCodes2[j][0]).trim() === String(regCode).trim()) {
+          var v2 = ["", "", "", "", "", "", "", "", "", "", "", "", "Not Started"];
+          sheet2.getRange(j + 3, 7, 1, 13).setValues([v2]);
+        }
+      }
+    }
+  }
+}
+
+function clearAllSheetData(ss) {
+  var pair = getOrCreateSheets(ss);
+  var sheet1 = pair.sheet1;
+  var sheet2 = pair.sheet2;
+
+  setupAndCleanSheets();
+
+  if (sheet1) {
+    var lr1 = sheet1.getLastRow();
+    if (lr1 > 2) {
+      sheet1.getRange(3, 7, lr1 - 2, 11).clearContent();
+    }
+  }
+
+  if (sheet2) {
+    var lr2 = sheet2.getLastRow();
+    if (lr2 > 2) {
+      sheet2.getRange(3, 7, lr2 - 2, 13).clearContent();
+    }
+  }
 }
