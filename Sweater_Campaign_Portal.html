@@ -2293,7 +2293,7 @@
                         }
                     }
                 });
-                ['d1', 'd2', 'd3', 'd4'].forEach(di => {
+                ['d1', 'd2', 'd3'].forEach(di => {
                     const sw = d[`c2_${di}_sweater`];
                     const sz = d[`c2_${di}_size`];
                     if (sw && sz) {
@@ -2380,6 +2380,18 @@
                 const terrCode = String(t['SAP Territory Code']).trim();
                 const d = currentStore[terrCode] || {};
 
+                const c1Mandatory = Boolean(
+                    d.c1_doc_name && d.c1_doc_rpl && String(d.c1_doc_rpl).length === 6 &&
+                    d.c1_m1_sweater && d.c1_m1_size &&
+                    d.c1_m2_sweater && d.c1_m2_size &&
+                    d.c1_m3_sweater && d.c1_m3_size
+                );
+                const c1M4HasAny = Boolean(d.c1_m4_sweater || d.c1_m4_size);
+                const c1M4Ok = !c1M4HasAny || Boolean(d.c1_m4_sweater && d.c1_m4_size);
+                const c1Complete = c1Mandatory && c1M4Ok;
+                const c1HasAny = Boolean(d.c1_doc_name || d.c1_doc_rpl || d.c1_m1_sweater || d.c1_m1_size || d.c1_m2_sweater || d.c1_m2_size || d.c1_m3_sweater || d.c1_m3_size || d.c1_m4_sweater || d.c1_m4_size);
+                const c1Status = c1Complete ? "Complete" : (c1HasAny ? "In Progress" : "Not Started");
+
                 c1Rows.push({
                     "Zone": t.Zone,
                     "SAP Region Code": t['SAP Region Code'],
@@ -2397,8 +2409,15 @@
                     "Size 3": d.c1_m3_size || '',
                     "Sweater 4": d.c1_m4_sweater || '',
                     "Size 4": d.c1_m4_size || '',
-                    "Status": (d.c1_doc_name && d.c1_doc_rpl && String(d.c1_doc_rpl).length === 6 && d.c1_m1_sweater && d.c1_m1_size && d.c1_m2_sweater && d.c1_m2_size && d.c1_m3_sweater && d.c1_m3_size && d.c1_m4_sweater && d.c1_m4_size) ? "Complete" : (d.c1_doc_name || d.c1_doc_rpl || d.c1_m1_sweater ? "In Progress" : "Not Started")
+                    "Status": c1Status
                 });
+
+                const c2Doc1Ok = Boolean(d.c2_d1_name && d.c2_d1_rpl && String(d.c2_d1_rpl).length === 6 && d.c2_d1_sweater && d.c2_d1_size);
+                const c2Doc2Ok = Boolean(d.c2_d2_name && d.c2_d2_rpl && String(d.c2_d2_rpl).length === 6 && d.c2_d2_sweater && d.c2_d2_size);
+                const c2Doc3Ok = Boolean(d.c2_d3_name && d.c2_d3_rpl && String(d.c2_d3_rpl).length === 6 && d.c2_d3_sweater && d.c2_d3_size);
+                const c2Complete = c2Doc1Ok && c2Doc2Ok && c2Doc3Ok;
+                const c2HasAny = Boolean(d.c2_d1_name || d.c2_d1_rpl || d.c2_d1_sweater || d.c2_d1_size || d.c2_d2_name || d.c2_d2_rpl || d.c2_d2_sweater || d.c2_d2_size || d.c2_d3_name || d.c2_d3_rpl || d.c2_d3_sweater || d.c2_d3_size);
+                const c2Status = c2Complete ? "Complete" : (c2HasAny ? "In Progress" : "Not Started");
 
                 c2Rows.push({
                     "Zone": t.Zone,
@@ -2419,11 +2438,7 @@
                     "Doctor 3 RPL ID": d.c2_d3_rpl || '',
                     "Sweater 3": d.c2_d3_sweater || '',
                     "Size 3": d.c2_d3_size || '',
-                    "Doctor 4 Name": d.c2_d4_name || '',
-                    "Doctor 4 RPL ID": d.c2_d4_rpl || '',
-                    "Sweater 4": d.c2_d4_sweater || '',
-                    "Size 4": d.c2_d4_size || '',
-                    "Status": (d.c2_d1_name && d.c2_d1_rpl && String(d.c2_d1_rpl).length === 6 && d.c2_d1_sweater && d.c2_d1_size && d.c2_d2_name && d.c2_d2_rpl && String(d.c2_d2_rpl).length === 6 && d.c2_d2_sweater && d.c2_d2_size && d.c2_d3_name && d.c2_d3_rpl && String(d.c2_d3_rpl).length === 6 && d.c2_d3_sweater && d.c2_d3_size && d.c2_d4_name && d.c2_d4_rpl && String(d.c2_d4_rpl).length === 6 && d.c2_d4_sweater && d.c2_d4_size) ? "Complete" : (d.c2_d1_name || d.c2_d1_rpl || d.c2_d1_sweater || d.c2_d2_name || d.c2_d2_rpl || d.c2_d3_name || d.c2_d4_name ? "In Progress" : "Not Started")
+                    "Status": c2Status
                 });
             });
 
