@@ -364,11 +364,23 @@
                                         </div>
                                     </div>
                                 </div>
-                                <!-- 4 -->
-                                <div class="bg-slate-50 border border-slate-200 rounded-2xl p-3 space-y-2">
+                                <!-- 4. Add Another Sweater Button Container (Shown initially) -->
+                                <div id="c1_add_m4_btn_container" onclick="showC1Sweater4(true)" class="border-2 border-dashed border-teal-300 hover:border-teal-500 bg-teal-50/40 hover:bg-teal-50 rounded-2xl p-4 flex flex-col items-center justify-center text-center cursor-pointer transition group gap-2 min-h-[140px]">
+                                    <div class="w-10 h-10 rounded-full bg-teal-100 group-hover:bg-teal-600 text-teal-600 group-hover:text-white flex items-center justify-center transition shadow-sm font-black"><i class="fa-solid fa-plus text-base"></i></div>
+                                    <div>
+                                        <h5 class="text-xs font-black text-teal-950 group-hover:text-teal-700">Add Another Sweater</h5>
+                                        <p class="text-[10px] text-slate-500">Sweater 4 (Family Member)</p>
+                                    </div>
+                                </div>
+
+                                <!-- 4. Sweater 4 (Family Member) - Revealed on Click -->
+                                <div id="c1_m4_container" class="hidden bg-slate-50 border border-slate-200 rounded-2xl p-3 space-y-2">
                                     <div class="flex items-center justify-between">
                                         <span class="text-xs font-bold text-teal-900 flex items-center gap-1.5"><span class="w-4 h-4 rounded-full bg-teal-600 text-white flex items-center justify-center text-[10px] font-black">4</span> Sweater 4 (Family Member)</span>
-                                        <span id="c1_m4_check_badge"><span class="text-slate-400 text-[10px] font-medium"><i class="fa-regular fa-circle"></i> Pending</span></span>
+                                        <div class="flex items-center gap-1.5">
+                                            <span id="c1_m4_check_badge"><span class="text-slate-400 text-[10px] font-medium"><i class="fa-regular fa-circle"></i> Pending</span></span>
+                                            <button type="button" onclick="hideAndClearC1Sweater4()" title="Remove 4th Sweater" class="text-[10px] text-rose-500 hover:text-rose-700 font-bold px-1.5 py-0.5 rounded hover:bg-rose-50"><i class="fa-solid fa-xmark"></i></button>
+                                        </div>
                                     </div>
                                     <div class="flex gap-2.5 sm:gap-3 items-center">
                                         <div id="c1_m4_img_preview" onclick="zoomSlotImage('c1_m4_sweater')" class="sweater-card-img w-16 h-20 sm:w-20 sm:h-24 rounded-xl bg-white border border-slate-300 overflow-hidden flex-shrink-0 flex items-center justify-center text-slate-400 cursor-pointer shadow-sm relative group"><i class="fa-solid fa-shirt text-lg text-slate-300"></i></div>
@@ -1308,6 +1320,12 @@
                 updateSweaterSlotIndicator(`c1_${m}`);
             });
 
+            if (d.c1_m4_sweater || d.c1_m4_size) {
+                showC1Sweater4(false);
+            } else {
+                hideC1Sweater4ViewOnly();
+            }
+
             ['d1', 'd2', 'd3', 'd4'].forEach(d_item => {
                 const dNameInput = document.getElementById(`c2_${d_item}_name`);
                 if (dNameInput) {
@@ -1397,12 +1415,40 @@
             }, 1200);
         }
 
+        
+        function showC1Sweater4(triggerChange = false) {
+            const container = document.getElementById('c1_m4_container');
+            const btn = document.getElementById('c1_add_m4_btn_container');
+            if (container) container.classList.remove('hidden');
+            if (btn) btn.classList.add('hidden');
+            if (triggerChange) onDataChanged();
+        }
+
+        function hideC1Sweater4ViewOnly() {
+            const container = document.getElementById('c1_m4_container');
+            const btn = document.getElementById('c1_add_m4_btn_container');
+            if (container) container.classList.add('hidden');
+            if (btn) btn.classList.remove('hidden');
+        }
+
+        function hideAndClearC1Sweater4() {
+            const swSelect = document.getElementById('c1_m4_sweater');
+            const szSelect = document.getElementById('c1_m4_size');
+            if (swSelect) swSelect.value = '';
+            if (szSelect) szSelect.innerHTML = '<option value="">-- Size --</option>';
+            updateSlotImagePreview('c1_m4_img_preview', '');
+            hideC1Sweater4ViewOnly();
+            onDataChanged();
+        }
+
         function onDataChanged() {
             if (isRegionLocked() || !currentRegionCode) return;
 
             const r = REGION_MAP[currentRegionCode];
             const t = r.territories[activeTerritoryIndex];
             const terrCode = String(t.sap_territory_code);
+
+            const isM4Visible = !document.getElementById('c1_m4_container')?.classList.contains('hidden');
 
             const terrData = {
                 c1_doc_name: document.getElementById('c1_doc_name')?.value.trim() || '',
@@ -1413,8 +1459,8 @@
                 c1_m2_size: document.getElementById('c1_m2_size')?.value || '',
                 c1_m3_sweater: document.getElementById('c1_m3_sweater')?.value || '',
                 c1_m3_size: document.getElementById('c1_m3_size')?.value || '',
-                c1_m4_sweater: document.getElementById('c1_m4_sweater')?.value || '',
-                c1_m4_size: document.getElementById('c1_m4_size')?.value || '',
+                c1_m4_sweater: isM4Visible ? (document.getElementById('c1_m4_sweater')?.value || '') : '',
+                c1_m4_size: isM4Visible ? (document.getElementById('c1_m4_size')?.value || '') : '',
 
                 c2_d1_name: document.getElementById('c2_d1_name')?.value.trim() || '',
                 c2_d1_rpl: document.getElementById('c2_d1_rpl')?.value.trim() || '',
@@ -1484,14 +1530,16 @@
         function getTerritoryStatus(d) {
             if (!d || typeof d !== 'object') return 'Not Started';
 
-            const c1Ok = Boolean(
+            const c1Mandatory = Boolean(
                 d.c1_doc_name && String(d.c1_doc_name).trim() !== '' &&
                 d.c1_doc_rpl && String(d.c1_doc_rpl).trim().length === 6 &&
                 d.c1_m1_sweater && d.c1_m1_size &&
                 d.c1_m2_sweater && d.c1_m2_size &&
-                d.c1_m3_sweater && d.c1_m3_size &&
-                d.c1_m4_sweater && d.c1_m4_size
+                d.c1_m3_sweater && d.c1_m3_size
             );
+            const c1M4HasAny = Boolean(d.c1_m4_sweater || d.c1_m4_size);
+            const c1M4Ok = !c1M4HasAny || Boolean(d.c1_m4_sweater && d.c1_m4_size);
+            const c1Ok = c1Mandatory && c1M4Ok;
 
             const c2Ok = Boolean(
                 d.c2_d1_name && String(d.c2_d1_name).trim() !== '' && d.c2_d1_rpl && String(d.c2_d1_rpl).trim().length === 6 && d.c2_d1_sweater && d.c2_d1_size &&
