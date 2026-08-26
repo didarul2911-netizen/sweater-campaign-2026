@@ -1386,11 +1386,12 @@ html_template = """<!DOCTYPE html>
 
             updateC1DynamicCounter();
             updateC2DynamicCounter();
-            updateC2DynamicCounter();
 
             if (shouldScroll) {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                document.documentElement.scrollTo({ top: 0, behavior: 'smooth' });
                 const bannerEl = document.getElementById('active-territory-banner-card');
-                if (bannerEl && window.innerWidth < 1024) {
+                if (bannerEl) {
                     bannerEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 }
             }
@@ -1666,6 +1667,8 @@ html_template = """<!DOCTYPE html>
             const nextIdx = activeTerritoryIndex + dir;
             if (nextIdx >= 0 && nextIdx < r.territories.length) {
                 selectTerritoryTab(nextIdx, true);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                document.documentElement.scrollTo({ top: 0, behavior: 'smooth' });
             }
         }
 
