@@ -207,23 +207,23 @@ def create_updated_master_workbook():
         cell.alignment = align_center
         cell.border = header_border
         
-    ws_c2.merge_cells("G1:V1")
-    ws_c2["G1"] = "CAMPAIGN 2: CORE DOCTOR MAXIMIZATION (1 SWEATER / DOCTOR - 4 DOCTORS / TERRITORY)"
-    for c in range(7, 23):
+    ws_c2.merge_cells("G1:R1")
+    ws_c2["G1"] = "CAMPAIGN 2: CORE DOCTOR MAXIMIZATION (1 SWEATER / DOCTOR - 3 DOCTORS / TERRITORY)"
+    for c in range(7, 19):
         cell = ws_c2.cell(row=1, column=c)
         cell.fill = fill_c2_group
         cell.font = font_main_title
         cell.alignment = align_center
         cell.border = header_border
 
-    ws_c2.merge_cells("W1:W1")
-    ws_c2["W1"] = "STATUS"
-    ws_c2["W1"].fill = fill_status_sub
-    ws_c2["W1"].font = font_main_title
-    ws_c2["W1"].alignment = align_center
-    ws_c2["W1"].border = header_border
+    ws_c2.merge_cells("S1:S1")
+    ws_c2["S1"] = "STATUS"
+    ws_c2["S1"].fill = fill_status_sub
+    ws_c2["S1"].font = font_main_title
+    ws_c2["S1"].alignment = align_center
+    ws_c2["S1"].border = header_border
     
-    # Sub-Headers Row 2
+    # Sub-Headers Row 2 (3 Doctors)
     c2_headers = [
         ("Zone", fill_territory_sub),
         ("SAP Region Code", fill_territory_sub),
@@ -243,10 +243,6 @@ def create_updated_master_workbook():
         ("Doctor 3 RPL ID", fill_c2_rpl),
         ("Sweater 3", fill_c2_sub),
         ("Size 3", fill_c2_sub),
-        ("Doctor 4 Name", fill_c2_sub_alt),
-        ("Doctor 4 RPL ID", fill_c2_rpl),
-        ("Sweater 4", fill_c2_sub_alt),
-        ("Size 4", fill_c2_sub_alt),
         ("Territory Status", fill_status_sub)
     ]
     
@@ -276,15 +272,15 @@ def create_updated_master_workbook():
             c.border = thin_border
             c.alignment = align_center if c_idx in [2, 5] else align_left
 
-        for c_idx in range(7, 23):
+        for c_idx in range(7, 19):
             c = ws_c2.cell(row=e_row, column=c_idx)
             c.font = font_data
             c.border = thin_border
-            c.alignment = align_center if c_idx in [8, 9, 10, 12, 13, 14, 16, 17, 18, 20, 21, 22] else align_left
+            c.alignment = align_center if c_idx in [8, 9, 10, 12, 13, 14, 16, 17, 18] else align_left
 
-        # Status Formula
-        status_f2 = f'=IF(AND(G{e_row}<>"",LEN(H{e_row})=6,I{e_row}<>"",J{e_row}<>"",K{e_row}<>"",LEN(L{e_row})=6,M{e_row}<>"",N{e_row}<>"",O{e_row}<>"",LEN(P{e_row})=6,Q{e_row}<>"",R{e_row}<>"",S{e_row}<>"",LEN(T{e_row})=6,U{e_row}<>"",V{e_row}<>""), "Complete", IF(OR(G{e_row}<>"",H{e_row}<>"",I{e_row}<>"",K{e_row}<>"",L{e_row}<>"",M{e_row}<>"",O{e_row}<>"",P{e_row}<>"",Q{e_row}<>"",S{e_row}<>"",T{e_row}<>"",U{e_row}<>""), "In Progress", "Not Started"))'
-        sc2 = ws_c2.cell(row=e_row, column=23, value=status_f2)
+        # Status Formula for 3 Doctors
+        status_f2 = f'=IF(AND(G{e_row}<>"",LEN(H{e_row})=6,I{e_row}<>"",J{e_row}<>"",K{e_row}<>"",LEN(L{e_row})=6,M{e_row}<>"",N{e_row}<>"",O{e_row}<>"",LEN(P{e_row})=6,Q{e_row}<>"",R{e_row}<>""), "Complete", IF(OR(G{e_row}<>"",H{e_row}<>"",I{e_row}<>"",J{e_row}<>"",K{e_row}<>"",L{e_row}<>"",M{e_row}<>"",N{e_row}<>"",O{e_row}<>"",P{e_row}<>"",Q{e_row}<>"",R{e_row}<>""), "In Progress", "Not Started"))'
+        sc2 = ws_c2.cell(row=e_row, column=19, value=status_f2)
         sc2.font = font_bold_data
         sc2.alignment = align_center
         sc2.border = thin_border
@@ -294,13 +290,13 @@ def create_updated_master_workbook():
     dv_size_c2 = DataValidation(type="list", formula1="=Dropdown_Lists!$B$2:$B$7", allow_blank=True)
     ws_c2.add_data_validation(dv_sweater_c2)
     ws_c2.add_data_validation(dv_size_c2)
-    for col_l in ['I', 'M', 'Q', 'U']:
+    for col_l in ['I', 'M', 'Q']:
         dv_sweater_c2.add(f"{col_l}3:{col_l}{max_row}")
-    for col_l in ['J', 'N', 'R', 'V']:
+    for col_l in ['J', 'N', 'R']:
         dv_size_c2.add(f"{col_l}3:{col_l}{max_row}")
 
     ws_c2.freeze_panes = "G3"
-    c2_widths = {'A': 18, 'B': 16, 'C': 20, 'D': 22, 'E': 18, 'F': 20, 'G': 24, 'H': 18, 'I': 32, 'J': 12, 'K': 24, 'L': 18, 'M': 32, 'N': 12, 'O': 24, 'P': 18, 'Q': 32, 'R': 12, 'S': 24, 'T': 18, 'U': 32, 'V': 12, 'W': 16}
+    c2_widths = {'A': 18, 'B': 16, 'C': 20, 'D': 22, 'E': 18, 'F': 20, 'G': 24, 'H': 18, 'I': 32, 'J': 12, 'K': 24, 'L': 18, 'M': 32, 'N': 12, 'O': 24, 'P': 18, 'Q': 32, 'R': 12, 'S': 16}
     for col_l, w in c2_widths.items():
         ws_c2.column_dimensions[col_l].width = w
 
@@ -345,8 +341,8 @@ def create_updated_master_workbook():
     c1_sw_cols = ['I', 'K', 'M', 'O']
     c1_sz_cols = ['J', 'L', 'N', 'P']
 
-    c2_sw_cols = ['I', 'M', 'Q', 'U']
-    c2_sz_cols = ['J', 'N', 'R', 'V']
+    c2_sw_cols = ['I', 'M', 'Q']
+    c2_sz_cols = ['J', 'N', 'R']
 
     size_headers = ["XS", "S", "M", "L", "XL", "XXL"]
 
