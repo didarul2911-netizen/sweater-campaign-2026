@@ -477,7 +477,7 @@ html_template = """<!DOCTYPE html>
                                 </div>
                             </div>
                             <div class="self-start sm:self-auto pl-9 sm:pl-0">
-                                <span class="text-[10px] sm:text-xs font-black bg-purple-950/80 text-purple-200 border border-purple-400/40 px-2.5 py-0.5 rounded-full inline-block whitespace-nowrap shadow-sm">3 Doctors Total</span>
+                                <span id="c2_dynamic_counter_badge" class="text-[10px] sm:text-xs font-black bg-purple-950/80 text-purple-200 border border-purple-400/40 px-2.5 py-0.5 rounded-full inline-block whitespace-nowrap shadow-sm"><span id="c2_count_display">0</span> / 3 Sweaters Selected</span>
                             </div>
                         </div>
 
@@ -1385,6 +1385,8 @@ html_template = """<!DOCTYPE html>
             });
 
             updateC1DynamicCounter();
+            updateC2DynamicCounter();
+            updateC2DynamicCounter();
 
             if (shouldScroll) {
                 const bannerEl = document.getElementById('active-territory-banner-card');
@@ -1453,6 +1455,7 @@ html_template = """<!DOCTYPE html>
             if (container) container.classList.remove('hidden');
             if (btn) btn.classList.add('hidden');
             updateC1DynamicCounter();
+            updateC2DynamicCounter();
             if (triggerChange) onDataChanged();
         }
 
@@ -1462,6 +1465,7 @@ html_template = """<!DOCTYPE html>
             if (container) container.classList.add('hidden');
             if (btn) btn.classList.remove('hidden');
             updateC1DynamicCounter();
+            updateC2DynamicCounter();
         }
 
         function hideAndClearC1Sweater4() {
@@ -1506,6 +1510,31 @@ html_template = """<!DOCTYPE html>
                     badgeEl.className = 'text-[10px] sm:text-xs font-black bg-amber-400 text-slate-950 border border-amber-300 px-2.5 py-0.5 rounded-full inline-block whitespace-nowrap shadow-sm';
                 } else {
                     badgeEl.className = 'text-[10px] sm:text-xs font-black bg-teal-950/80 text-teal-200 border border-teal-400/40 px-2.5 py-0.5 rounded-full inline-block whitespace-nowrap shadow-sm';
+                }
+            }
+        }
+
+        
+        function updateC2DynamicCounter() {
+            let completedSweaters = 0;
+            ['d1', 'd2', 'd3'].forEach(d => {
+                const sw = document.getElementById(`c2_${d}_sweater`)?.value;
+                const sz = document.getElementById(`c2_${d}_size`)?.value;
+                if (sw && sz) completedSweaters++;
+            });
+
+            const countEl = document.getElementById('c2_count_display');
+            const badgeEl = document.getElementById('c2_dynamic_counter_badge');
+
+            if (countEl) countEl.textContent = completedSweaters;
+
+            if (badgeEl) {
+                if (completedSweaters === 3) {
+                    badgeEl.className = 'text-[10px] sm:text-xs font-black bg-emerald-500 text-slate-950 border border-emerald-300 px-2.5 py-0.5 rounded-full inline-block whitespace-nowrap shadow-sm';
+                } else if (completedSweaters > 0) {
+                    badgeEl.className = 'text-[10px] sm:text-xs font-black bg-amber-400 text-slate-950 border border-amber-300 px-2.5 py-0.5 rounded-full inline-block whitespace-nowrap shadow-sm';
+                } else {
+                    badgeEl.className = 'text-[10px] sm:text-xs font-black bg-purple-950/80 text-purple-200 border border-purple-400/40 px-2.5 py-0.5 rounded-full inline-block whitespace-nowrap shadow-sm';
                 }
             }
         }
@@ -1566,6 +1595,7 @@ html_template = """<!DOCTYPE html>
             }
 
             updateC1DynamicCounter();
+            updateC2DynamicCounter();
             renderTerritoryTabs();
             triggerAutoSync();
         }
