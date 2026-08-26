@@ -1149,7 +1149,7 @@ html_template = """<!DOCTYPE html>
             if (e.key === 'Enter') unlockRegion();
         }
 
-        function unlockRegion(bypassCode = null, isRestoringSession = false) {
+                function unlockRegion(bypassCode = null, isRestoringSession = false) {
             const code = bypassCode || document.getElementById('select-region').value;
             const passInput = document.getElementById('region-password');
             const pass = passInput ? passInput.value.trim() : '';
@@ -1164,34 +1164,59 @@ html_template = """<!DOCTYPE html>
             currentRegionCode = code;
             const r = REGION_MAP[code];
 
+            const targetTerrIdx = isRestoringSession ? activeTerritoryIndex : 0;
+            activeTerritoryIndex = (targetTerrIdx >= 0 && targetTerrIdx < r.territories.length) ? targetTerrIdx : 0;
+
             localStorage.setItem('EXIUM_ACTIVE_SESSION', JSON.stringify({
                 region_code: code,
-                territory_idx: isRestoringSession ? activeTerritoryIndex : 0
+                territory_idx: activeTerritoryIndex
             }));
 
-            document.getElementById('selection-view').classList.add('hidden');
-            document.getElementById('workspace-view').classList.remove('hidden');
+            const selectionEl = document.getElementById('selection-view');
+            const workspaceEl = document.getElementById('workspace-view');
+
+            if (selectionEl) {
+                selectionEl.classList.add('hidden');
+                selectionEl.style.display = 'none';
+            }
+            if (workspaceEl) {
+                workspaceEl.classList.remove('hidden');
+                workspaceEl.style.display = 'flex';
+            }
 
             document.getElementById('banner-zone').textContent = r.zone;
             document.getElementById('banner-region').textContent = `SAP: ${r.sap_region_code}`;
-            document.getElementById('banner-rh').textContent = `Region: ${r.region_name} (${r.regional_head})`;
+            document.getElementById('banner-rh').textContent = r.regional_head || 'Regional Head';
+            
 
             renderTerritoryTabs();
-            if (!isRestoringSession) {
-                selectTerritoryTab(0, true);
-            }
+            selectTerritoryTab(activeTerritoryIndex, false);
         }
 
                 function exitRegionWorkspace() {
-            if (currentRegionCode) {
-                onDataChanged();
+            try {
+                if (currentRegionCode) {
+                    onDataChanged();
+                }
+            } catch (err) {
+                console.warn("Save on exit:", err);
             }
+
             localStorage.removeItem('EXIUM_ACTIVE_SESSION');
             currentRegionCode = null;
             activeTerritoryIndex = 0;
 
-            document.getElementById('workspace-view').classList.add('hidden');
-            document.getElementById('selection-view').classList.remove('hidden');
+            const workspaceEl = document.getElementById('workspace-view');
+            const selectionEl = document.getElementById('selection-view');
+
+            if (workspaceEl) {
+                workspaceEl.classList.add('hidden');
+                workspaceEl.style.display = 'none';
+            }
+            if (selectionEl) {
+                selectionEl.classList.remove('hidden');
+                selectionEl.style.display = 'flex';
+            }
 
             const passInput = document.getElementById('region-password');
             if (passInput) passInput.value = '';
