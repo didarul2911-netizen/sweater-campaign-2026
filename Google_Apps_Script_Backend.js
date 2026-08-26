@@ -32,27 +32,48 @@ function getOrCreateSheets(ss) {
 }
 
 /**
- * Run this function once from Apps Script editor to instantly clean
- * old 4th doctor columns and set up the 3-doctor headers!
+ * Run this function once from Apps Script editor to instantly restore 
+ * the Territory Status column and set 3-Doctor layout on Google Sheet!
  */
-function setupAndCleanSheets() {
+function fixAndRestoreStatusColumn() {
   var ss = SpreadsheetApp.getActiveSpreadsheet();
   var pair = getOrCreateSheets(ss);
+  var sheet1 = pair.sheet1;
   var sheet2 = pair.sheet2;
 
-  if (sheet2) {
-    // Unmerge row 1
-    sheet2.getRange("A1:Z1").breakApart();
+  restoreHeaders();
 
-    // If there are more than 19 columns, delete old Doctor 4 columns
-    var maxCol = sheet2.getMaxColumns();
-    if (maxCol > 19) {
-      sheet2.deleteColumns(20, maxCol - 19);
+  // Populate Territory Status Formula in Column S (Column 19) for Core Doctor Maximization
+  if (sheet2) {
+    var lr2 = sheet2.getLastRow();
+    if (lr2 > 2) {
+      var formulas2 = [];
+      for (var r = 3; r <= lr2; r++) {
+        formulas2.push([
+          '=IF(AND(G' + r + '<>"",LEN(H' + r + ')=6,I' + r + '<>"",J' + r + '<>"",K' + r + '<>"",LEN(L' + r + ')=6,M' + r + '<>"",N' + r + '<>"",O' + r + '<>"",LEN(P' + r + ')=6,Q' + r + '<>"",R' + r + '<>""), "Complete", IF(OR(G' + r + '<>"",H' + r + '<>"",I' + r + '<>"",J' + r + '<>"",K' + r + '<>"",L' + r + '<>"",M' + r + '<>"",N' + r + '<>"",O' + r + '<>"",P' + r + '<>"",Q' + r + '<>"",R' + r + '<>""), "In Progress", "Not Started"))'
+        ]);
+      }
+      sheet2.getRange(3, 19, lr2 - 2, 1).setFormulas(formulas2)
+        .setHorizontalAlignment("center").setVerticalAlignment("middle").setFontWeight("bold");
     }
   }
 
-  restoreHeaders();
-  SpreadsheetApp.getActiveSpreadsheet().toast("Google Sheet successfully updated to 3 Doctors layout!", "Success", 5);
+  // Populate Territory Status Formula in Column Q (Column 17) for Gyne Core Doctor (Family)
+  if (sheet1) {
+    var lr1 = sheet1.getLastRow();
+    if (lr1 > 2) {
+      var formulas1 = [];
+      for (var r1 = 3; r1 <= lr1; r1++) {
+        formulas1.push([
+          '=IF(AND(G' + r1 + '<>"",LEN(H' + r1 + ')=6,I' + r1 + '<>"",J' + r1 + '<>"",K' + r1 + '<>"",L' + r1 + '<>"",M' + r1 + '<>"",N' + r1 + '<>""), "Complete", IF(OR(G' + r1 + '<>"",H' + r1 + '<>"",I' + r1 + '<>"",K' + r1 + '<>"",M' + r1 + '<>""), "In Progress", "Not Started"))'
+        ]);
+      }
+      sheet1.getRange(3, 17, lr1 - 2, 1).setFormulas(formulas1)
+        .setHorizontalAlignment("center").setVerticalAlignment("middle").setFontWeight("bold");
+    }
+  }
+
+  ss.toast("Territory Status column & formulas successfully restored!", "Success", 5);
 }
 
 function restoreHeaders() {
@@ -85,6 +106,15 @@ function restoreHeaders() {
 
   if (sheet2) {
     sheet2.getRange("A1:Z1").breakApart();
+
+    // Ensure exactly 19 columns
+    var maxCol = sheet2.getMaxColumns();
+    if (maxCol < 19) {
+      sheet2.insertColumnsAfter(maxCol, 19 - maxCol);
+    } else if (maxCol > 19) {
+      sheet2.deleteColumns(20, maxCol - 19);
+    }
+
     sheet2.getRange("A1:F1").merge().setValue("TERRITORY INFORMATION (EXIUM FIELD FORCE LIST)")
       .setBackground("#1E293B").setFontColor("#FFFFFF").setFontWeight("bold").setHorizontalAlignment("center").setVerticalAlignment("middle");
     sheet2.getRange("G1:R1").merge().setValue("CAMPAIGN 2: CORE DOCTOR MAXIMIZATION (1 SWEATER / DOCTOR - 3 DOCTORS / TERRITORY)")
@@ -347,7 +377,7 @@ function clearAllSheetData(ss) {
   var sheet1 = pair.sheet1;
   var sheet2 = pair.sheet2;
 
-  setupAndCleanSheets();
+  fixAndRestoreStatusColumn();
 
   if (sheet1) {
     var lr1 = sheet1.getLastRow();
