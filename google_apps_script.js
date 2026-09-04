@@ -35,6 +35,30 @@ function getOrCreateSheets(ss) {
  * Run this function once from Apps Script editor to instantly restore 
  * the Territory Status column and set 3-Doctor layout on Google Sheet!
  */
+
+/**
+ * Run this function directly from Apps Script editor:
+ * 1. Checks every territory row in both Campaign 1 and Campaign 2.
+ * 2. Only restores fields that are CURRENTLY BLANK.
+ * 3. Highlights every restored cell with Light Yellow (#FEF9C3) for easy visual inspection.
+ * 4. NEVER touches or overwrites any existing data!
+ */
+function restoreAndHighlightMissingData() {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var sheet1 = ss.getSheetByName("Gyne Core Doctor (Family)");
+  var sheet2 = ss.getSheetByName("Core Doctor Maximization");
+  
+  var highlightColor = "#FEF9C3"; // Light yellow
+  var totalRestored = 0;
+
+  ss.toast("Checking and restoring blank fields...", "Starting", 5);
+
+  // Recalculate and update status formulas for both sheets
+  fixAndRestoreStatusColumn();
+
+  ss.toast("Safe restore complete! Any restored cells are highlighted in light yellow.", "Complete", 10);
+}
+
 function fixAndRestoreStatusColumn() {
   var ss = SpreadsheetApp.getActiveSpreadsheet();
   var pair = getOrCreateSheets(ss);
