@@ -1066,6 +1066,9 @@ html_template = """<!DOCTYPE html>
             populateZoneDropdown();
             checkGlobalLockBanner();
 
+            // Background auto-fetch latest cloud data so all territories are up to date
+            pullCloudData(false);
+
             const savedSession = JSON.parse(localStorage.getItem('EXIUM_ACTIVE_SESSION') || 'null');
             if (savedSession && savedSession.region_code && REGION_MAP[savedSession.region_code]) {
                 unlockRegion(savedSession.region_code, true);
@@ -1180,10 +1183,18 @@ html_template = """<!DOCTYPE html>
             if (!isRestoringSession) {
                 selectTerritoryTab(0, true);
             }
+
+            // Immediately pull latest cloud data in background and refresh view
+            pullCloudData(false).then(res => {
+                if (res && res.success && currentRegionCode) {
+                    renderTerritoryTabs();
+                    selectTerritoryTab(activeTerritoryIndex, false);
+                }
+            });
         }
 
         function exitRegionWorkspace() {
-            onDataChanged();
+            onDataChanged(false);
             localStorage.removeItem('EXIUM_ACTIVE_SESSION');
             currentRegionCode = null;
             document.getElementById('workspace-view').classList.add('hidden');
@@ -1540,7 +1551,7 @@ html_template = """<!DOCTYPE html>
             }
         }
 
-        function onDataChanged() {
+        function onDataChanged(shouldSync = true) {
             if (isRegionLocked() || !currentRegionCode) return;
 
             const r = REGION_MAP[currentRegionCode];
@@ -1579,8 +1590,13 @@ html_template = """<!DOCTYPE html>
                 c2_d4_size: '',
             };
 
-            store[terrCode] = terrData;
-            localStorage.setItem('EXIUM_SWEATER_STORE', JSON.stringify(store));
+            // If current form is empty and store already has non-empty data, protect it
+            if (isTerritoryDataEmpty(terrData) && store[terrCode] && !isTerritoryDataEmpty(store[terrCode])) {
+                // Preserve existing stored data
+            } else {
+                store[terrCode] = terrData;
+                localStorage.setItem('EXIUM_SWEATER_STORE', JSON.stringify(store));
+            }
 
             ['c1_m1', 'c1_m2', 'c1_m3', 'c1_m4', 'c2_d1', 'c2_d2', 'c2_d3'].forEach(p => updateSweaterSlotIndicator(p));
 
@@ -1598,7 +1614,9 @@ html_template = """<!DOCTYPE html>
             updateC1DynamicCounter();
             updateC2DynamicCounter();
             renderTerritoryTabs();
-            triggerAutoSync();
+            if (shouldSync && !isTerritoryDataEmpty(terrData)) {
+                triggerAutoSync();
+            }
         }
 
         function saveCurrentTerritoryClick() {
@@ -1662,7 +1680,7 @@ html_template = """<!DOCTYPE html>
         }
 
         function navigateTerritory(dir) {
-            onDataChanged();
+            onDataChanged(false);
             const r = REGION_MAP[currentRegionCode];
             const nextIdx = activeTerritoryIndex + dir;
             if (nextIdx >= 0 && nextIdx < r.territories.length) {
@@ -1829,9 +1847,39 @@ html_template = """<!DOCTYPE html>
             el.classList.remove('hidden');
         }
 
+        function isTerritoryDataEmpty(data) {
+            if (!data) return true;
+            const hasC1 = Boolean(
+                (data.c1_doc_name && String(data.c1_doc_name).trim() !== '') ||
+                (data.c1_doc_rpl && String(data.c1_doc_rpl).trim() !== '') ||
+                (data.c1_m1_sweater && String(data.c1_m1_sweater) !== '') ||
+                (data.c1_m2_sweater && String(data.c1_m2_sweater) !== '') ||
+                (data.c1_m3_sweater && String(data.c1_m3_sweater) !== '') ||
+                (data.c1_m4_sweater && String(data.c1_m4_sweater) !== '')
+            );
+            const hasC2 = Boolean(
+                (data.c2_d1_name && String(data.c2_d1_name).trim() !== '') ||
+                (data.c2_d1_rpl && String(data.c2_d1_rpl).trim() !== '') ||
+                (data.c2_d1_sweater && String(data.c2_d1_sweater) !== '') ||
+                (data.c2_d2_name && String(data.c2_d2_name).trim() !== '') ||
+                (data.c2_d2_rpl && String(data.c2_d2_rpl).trim() !== '') ||
+                (data.c2_d2_sweater && String(data.c2_d2_sweater) !== '') ||
+                (data.c2_d3_name && String(data.c2_d3_name).trim() !== '') ||
+                (data.c2_d3_rpl && String(data.c2_d3_rpl).trim() !== '') ||
+                (data.c2_d3_sweater && String(data.c2_d3_sweater) !== '')
+            );
+            return !hasC1 && !hasC2;
+        }
+
         async function syncTerritoryToCloud(terrCode, terrData) {
             const url = (cloudApiUrl && cloudApiUrl.startsWith('http')) ? cloudApiUrl : DEFAULT_CLOUD_URL;
             if (!url || !terrData || !terrCode) return;
+
+            // ANTI-OVERWRITE SAFETY GUARD: Never sync completely blank territories to cloud!
+            if (isTerritoryDataEmpty(terrData)) {
+                console.log(`[Cloud Sync Guard] Skipped blank territory ${terrCode} to protect cloud data.`);
+                return;
+            }
 
             try {
                 const payload = {

@@ -285,6 +285,16 @@ function updateTerritoryInSheets(ss, terrCode, d) {
       var codes1 = sheet1.getRange(3, 5, lr1 - 2, 1).getValues();
       for (var i = 0; i < codes1.length; i++) {
         if (String(codes1[i][0]).trim() === String(terrCode).trim()) {
+          // ANTI-OVERWRITE GUARD: If incoming payload is blank, preserve existing doctor info
+          var existingRow1 = sheet1.getRange(i + 3, 7, 1, 10).getValues()[0];
+          var existingDoc1 = String(existingRow1[0] || "").trim();
+          var existingSw1 = String(existingRow1[2] || "").trim();
+          var incomingHasC1 = Boolean((d.c1_doc_name && String(d.c1_doc_name).trim()) || (d.c1_m1_sweater && String(d.c1_m1_sweater).trim()));
+          if (!incomingHasC1 && (existingDoc1 || existingSw1)) {
+            // Keep existing data in Sheet 1
+            break;
+          }
+
           var c1Mandatory = Boolean(
             d.c1_doc_name && d.c1_doc_rpl && String(d.c1_doc_rpl).length === 6 &&
             d.c1_m1_sweater && d.c1_m1_size &&
@@ -318,6 +328,16 @@ function updateTerritoryInSheets(ss, terrCode, d) {
       var codes2 = sheet2.getRange(3, 5, lr2 - 2, 1).getValues();
       for (var j = 0; j < codes2.length; j++) {
         if (String(codes2[j][0]).trim() === String(terrCode).trim()) {
+          // ANTI-OVERWRITE GUARD: If incoming payload is blank, preserve existing doctor info
+          var existingRow2 = sheet2.getRange(j + 3, 7, 1, 12).getValues()[0];
+          var existingDoc2_1 = String(existingRow2[0] || "").trim();
+          var existingSw2_1 = String(existingRow2[2] || "").trim();
+          var incomingHasC2 = Boolean((d.c2_d1_name && String(d.c2_d1_name).trim()) || (d.c2_d1_sweater && String(d.c2_d1_sweater).trim()) || (d.c2_d2_name && String(d.c2_d2_name).trim()) || (d.c2_d3_name && String(d.c2_d3_name).trim()));
+          if (!incomingHasC2 && (existingDoc2_1 || existingSw2_1)) {
+            // Keep existing data in Sheet 2
+            break;
+          }
+
           var c2Doc1Ok = Boolean(d.c2_d1_name && d.c2_d1_rpl && String(d.c2_d1_rpl).length === 6 && d.c2_d1_sweater && d.c2_d1_size);
           var c2Doc2Ok = Boolean(d.c2_d2_name && d.c2_d2_rpl && String(d.c2_d2_rpl).length === 6 && d.c2_d2_sweater && d.c2_d2_size);
           var c2Doc3Ok = Boolean(d.c2_d3_name && d.c2_d3_rpl && String(d.c2_d3_rpl).length === 6 && d.c2_d3_sweater && d.c2_d3_size);
